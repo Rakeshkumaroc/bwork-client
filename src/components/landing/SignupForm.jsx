@@ -107,7 +107,7 @@ const SignupForm = () => {
             >
               terms & conditions
             </Link>{" "}
-            on Opmize
+            on MANPOWER
           </label>
           <button
             type="submit"
