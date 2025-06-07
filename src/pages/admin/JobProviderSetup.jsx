@@ -10,29 +10,22 @@ const baseUrl = import.meta.env.VITE_APP_URL;
 
 const JobProviderSetup = () => {
   const [formData, setFormData] = useState({
-    jobProviderName: "",
-    email: "",
-    phone: "", 
+    providerName: "", 
     userId: "",
-    jobProviderLogo: "",
- 
+    jobProviderPic: "",
+    address: "", // Added address field
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();  
 
   // Define validation schema
   const validationSchema = {
-    requiredFields: ["jobProviderName", "email", "phone", "userId" ],
-    jobProviderName: (value) =>
+    requiredFields: ["providerName", "userId", "address"], // Added address to required fields
+    providerName: (value) =>
       value.length < 3 ? "Job provider name must be at least 3 characters long" : null,
-    email: (value) =>
-      !/\S+@\S+\.\S+/.test(value) ? "Please enter a valid email address" : null,
-    phone: (value) =>
-      !/^\d{10}$/.test(value) ? "Please enter a valid 10-digit phone number" : null,
-    
     userId: (value) =>
       !value ? "User ID is required" : null,
-    jobProviderLogo: (value) => {
+    jobProviderPic: (value) => {
       if (!value) return null; // Optional
       if (!(value instanceof File)) return "Invalid file format";
       if (!["image/png", "image/jpeg"].includes(value.type)) {
@@ -43,7 +36,8 @@ const JobProviderSetup = () => {
       }
       return null;
     },
-    
+    address: (value) =>
+      value.length < 5 ? "Address must be at least 5 characters long" : null, // Added validation for address
   };
 
   useEffect(() => {
@@ -57,26 +51,22 @@ const JobProviderSetup = () => {
 
     // Parse authToken and populate formData
     try {
-      const { userId, email, phone } = JSON.parse(authToken);
+      const { userId } = JSON.parse(authToken);
       setFormData((prev) => ({
         ...prev,
-        userId: userId || "",
-        email: email || "",
-        phone: phone || "",
+        userId: userId || "", 
       }));
     } catch (error) {
       console.error("Failed to parse authToken:", error);
       toast.error("Invalid authentication data. Please log in again.");
       navigate("/login");
     }
-
- 
   }, [navigate]);
 
   const handleImageChange = (image) => {
     setFormData((prev) => ({
       ...prev,
-      jobProviderLogo: image || "", // Store image data (base64, URL, or File)
+      jobProviderPic: image || "",
     }));
   };
 
@@ -95,29 +85,28 @@ const JobProviderSetup = () => {
 
     // Prepare payload
     const payload = {
-      jobProviderName: formData.jobProviderName,
-      email: formData.email,
-      phone: formData.phone, 
+      providerName: formData.providerName, 
       userId: formData.userId,
-      jobProviderLogo: formData.jobProviderLogo || "", 
+      jobProviderPic: formData.jobProviderPic || "", 
+      address: formData.address, // Added address to payload
     };
 
     // Submit form using submitForm function
     try {
-     const data= await submitForm({
-        url: `${baseUrl}/org/add-new-org`,
+      const data = await submitForm({
+        url: `${baseUrl}/job-providers/create-Job-provider-details`, // Fixed typo in URL
         payload,
         setIsLoading,
         navigate,
         successMessage: "Job provider created successfully!",
         successRedirect: "/dashboard",
-        formDataFields: formData.jobProviderLogo instanceof File ? ["jobProviderLogo"] : [],
+        formDataFields: formData.jobProviderPic instanceof File ? ["jobProviderPic"] : [],
         localStorageKey: "jobProviderData",
         localStorageData: payload,
       });
       console.log(data);
       
-       localStorage.setItem("jobProviderData", JSON.stringify(data.resData.jobProvider));
+      localStorage.setItem("jobProviderData", JSON.stringify(data.resData.jobProvider));
     } catch (error) {
       // Error is already handled by submitForm via toast.error
       return;
@@ -134,29 +123,18 @@ const JobProviderSetup = () => {
         <div className="space-y-4">
           <Input
             placeholder="Job Provider Name"
-            name="jobProviderName"
-            value={formData.jobProviderName}
+            name="providerName"
+            value={formData.providerName}
             onChange={(e) => handleFormChange(e, setFormData)}
             required
           />
           <Input
-            placeholder="Email"
-            name="email"
-            value={formData.email}
+            placeholder="Address"
+            name="address"
+            value={formData.address}
             onChange={(e) => handleFormChange(e, setFormData)}
             required
-            disabled // Disable to prevent editing authToken email
           />
-          <Input
-            placeholder="Phone"
-            name="phone"
-            value={formData.phone}
-            onChange={(e) => handleFormChange(e, setFormData)}
-            required
-            disabled // Disable to prevent editing authToken phone
-          />
-   
-          
           <TakeImage onChange={handleImageChange} />
          
           <div className="mt-10 text-center">
@@ -177,5 +155,3 @@ const JobProviderSetup = () => {
 };
 
 export default JobProviderSetup;
-
- 

@@ -2,16 +2,16 @@
 import { toast } from "react-toastify";
 
 // Updates form state dynamically with optional conditional logic
-export const handleFormChange = (event, setFormState ) => {
+export const handleFormChange = (event, setFormState) => {
   const { name, value, type, checked } = event.target;
   console.log(value);
-  
+
   setFormState((prev) => {
     const newState = {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     };
-   
+
     return newState;
   });
 };
@@ -25,9 +25,7 @@ export const validateForm = (formData, validationSchema) => {
     if (!formData[field]) {
       errors.push(
         validationSchema[field](formData[field]) ||
-          `${
-            field.charAt(0).toUpperCase() + field.slice(1)
-          } is required`
+          `${field.charAt(0).toUpperCase() + field.slice(1)} is required`
       );
     }
   });
@@ -57,6 +55,7 @@ export const submitForm = async ({
   resetForm,
   localStorageKey,
   localStorageData,
+  page
 }) => {
   setIsLoading(true);
   try {
@@ -87,6 +86,7 @@ export const submitForm = async ({
     }
 
     const data = await response.json();
+    console.log("data", data);
 
     if (data.success !== undefined && !data.success) {
       throw new Error(data.message || "Request failed");
@@ -103,8 +103,12 @@ export const submitForm = async ({
     }
 
     toast.success(successMessage || "Request successful!");
-    if (successRedirect) {
-      navigate(successRedirect);
+    if (data.resData && data.resData.role && page === "employers-login") {
+      navigate(`${data.resData.route}`);
+    } else {
+      if (successRedirect) {
+        navigate(successRedirect);
+      }
     }
 
     return data;
@@ -187,7 +191,6 @@ export const updateForm = async ({
   }
 };
 
-
 // Deletes data via an API endpoint (DELETE)
 export const deleteForm = async ({
   url,
@@ -258,4 +261,3 @@ export const deleteForm = async ({
 export const resetForm = (setFormState, initialState) => {
   setFormState(initialState);
 };
-

@@ -56,6 +56,7 @@ const EmployersLoginForm = () => {
         successMessage: "Login successful!",
         successRedirect: "/org-setup",
         localStorageKey: "authToken",
+        page:"employers-login",
       });
 
       // Store resData in localStorage
