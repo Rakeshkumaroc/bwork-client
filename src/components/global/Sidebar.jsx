@@ -100,7 +100,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     >
       <div>
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-orange-global">OPMIZE</h1>
+          <h1 className="text-2xl font-bold text-orange-global">Man Power</h1>
           <p className="text-xs text-gray-500 -mt-1">Business made easy</p>
         </div>
 

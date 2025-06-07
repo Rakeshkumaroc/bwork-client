@@ -3,7 +3,7 @@
     <div className="flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-6">
      
       <h1 className="text-3xl hidden md:block sm:text-4xl md:text-5xl lg:text-6xl font-bold text-orange-global mb-4 sm:mb-6 leading-tight tracking-wide">
-        Choose Opmize
+        Choose Man Power
         <br />
         Business Made
         <br />
@@ -16,7 +16,7 @@
           className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3"
         />
         <p className="text-xs sm:text-sm md:text-base">
-          “Since we moved to Opmize, we got everything in the same place. It
+          “Since we moved to Man Power, we got everything in the same place. It
           really streamlined our business; It helps in managing our whole
           business.”
           <br />
