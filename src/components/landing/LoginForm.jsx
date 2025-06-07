@@ -31,39 +31,39 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form using validateForm function
-    const errors = validateForm(formData, validationSchema);
+    // // Validate form using validateForm function
+    // const errors = validateForm(formData, validationSchema);
 
-    if (errors.length > 0) {
-      // Show first error to user
-      toast.error(errors[0]);
-      return;
-    }
+    // if (errors.length > 0) {
+    //   // Show first error to user
+    //   toast.error(errors[0]);
+    //   return;
+    // }
 
-    // Prepare payload
-    const payload = {
-      contact: formData.email,
-      password: formData.password,
-    };
+    // // Prepare payload
+    // const payload = {
+    //   contact: formData.email,
+    //   password: formData.password,
+    // };
 
-    // Submit form using submitForm function
-    try {
-      const responseData = await submitForm({
-        url: `${baseUrl}/user/login`,
-        payload,
-        setIsLoading,
-        navigate,
-        successMessage: "Login successful!",
-        successRedirect: "/org-setup",
-        localStorageKey: "authToken",
-      });
+    // // Submit form using submitForm function
+    // try {
+    //   const responseData = await submitForm({
+    //     url: `${baseUrl}/user/login`,
+    //     payload,
+    //     setIsLoading,
+    //     navigate,
+    //     successMessage: "Login successful!",
+    //     successRedirect: "/org-setup",
+    //     localStorageKey: "authToken",
+    //   });
 
-      // Store resData in localStorage
-      localStorage.setItem("authToken", JSON.stringify(responseData.resData));
-    } catch (error) {
-      // Error is already handled by submitForm via toast.error
-      return;
-    }
+    //   // Store resData in localStorage
+    //   localStorage.setItem("authToken", JSON.stringify(responseData.resData));
+    // } catch (error) {
+    //   // Error is already handled by submitForm via toast.error
+    //   return;
+    // }
   };
 
   return (
