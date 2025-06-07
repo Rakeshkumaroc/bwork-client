@@ -70,7 +70,7 @@ const LoginForm = () => {
     <div className="flex items-center justify-center bg-light-cream py-6 px-4 sm:px-6 lg:px-8 md:h-screen">
       <div className="bg-light-cream w-full max-w-md sm:max-w-lg lg:max-w-xl p-6 sm:p-8">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-global mb-4 sm:mb-6 text-center leading-tight tracking-wide">
-          Login to MANPOWER
+          Login to Opmize
         </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
@@ -102,7 +102,7 @@ const LoginForm = () => {
             <Link to="/terms" className="text-orange-global underline cursor-pointer">
               terms & conditions
             </Link>{" "}
-            on MANPOWER
+            on Opmize
           </label>
           <button
             type="submit"

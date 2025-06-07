@@ -50,16 +50,7 @@ const ManageBranchesList = () => {
           url: `${baseUrl}/branch/delete-branch/${branch._id}`,
           setIsLoading: setLoading,
           successMessage: "Branch deleted successfully!",
-          onSuccess: async () => {
-            const organizationData = JSON.parse(localStorage.getItem("organizationData") || "{}");
-            const orgId = organizationData._id;
-            await fetchData(
-              `${baseUrl}/branch/get-branch-by-org-id/${orgId}`,
-              setBranches,
-              setLoading,
-              setError
-            );
-          },
+           
         });
       } catch (err) {
         console.error("Error deleting branch:", err);

@@ -174,7 +174,7 @@ const AddBranchDetails = ({ action }) => {
       <Topbar />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-orange-global">
-          Add Branch Details
+          {action==="edit"?"Edit":"Add"} Branch Details
         </h1>
       </div>
       <div className="flex items-center justify-center">

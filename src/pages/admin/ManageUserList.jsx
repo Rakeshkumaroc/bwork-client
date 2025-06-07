@@ -12,8 +12,7 @@ const ManageUserList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-http://localhost:5000/api/v1/user/get-user-by-org-id/683ff86cd1fa238ecc67ca9c
+ 
   useEffect(() => {
      
      const organizationData = JSON.parse(
@@ -51,9 +50,20 @@ http://localhost:5000/api/v1/user/get-user-by-org-id/683ff86cd1fa238ecc67ca9c
     // Add edit logic here
   };
 
-  const handleDelete = (user) => {
-    console.log("Delete user:", user);
-    // Add delete logic here
+  const handleDelete = async(user) => {
+ if (window.confirm(`Are you sure you want to delete ${user.userName}?`)) {
+      try {
+        await deleteForm({
+          url: `${baseUrl}/user/delete-user/${user._id}`,
+          setIsLoading: setLoading,
+          successMessage: "user deleted successfully!",
+           
+        });
+      } catch (err) {
+        console.error("Error deleting user:", err);
+        setError(err.message);
+      }
+    }
   };
 
   return (

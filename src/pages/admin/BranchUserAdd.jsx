@@ -6,7 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Topbar from "../../components/admin/Topbar";
 import InputField from "../../components/common/admin/InputField";
 import SelectField from "../../components/common/admin/SelectField";
-import { handleFormChange, validateForm, submitForm } from "../../utils/form";
+import {
+  handleFormChange,
+  validateForm,
+  submitForm,
+  updateForm,
+} from "../../utils/form";
 import { fetchData } from "../../utils/api";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
@@ -99,31 +104,54 @@ const BranchUserAdd = ({ action }) => {
       password: formData.password,
       image: image ? "" : "", // Placeholder, actual image sent via FormData if present
     };
-    console.log("payload:", payload);
 
     // Submit form using submitForm function
+    const apiUrl =
+      action === "edit"
+        ? `${baseUrl}/user/update-user/${id}`
+        : `${baseUrl}/user/add-internal-user`;
+
     try {
-      await submitForm({
-        url: `${baseUrl}/user/add-internal-user`,
-        payload,
-        setIsLoading,
-        navigate,
-        successMessage: "User created successfully!",
-        successRedirect: "/dashboard/branch-user/list",
-        formDataFields: image instanceof File ? ["image"] : [],
-        resetForm: () => {
-          setFormData({
-            userName: "",
-            phone: "",
-            email: "",
-            branch: "",
-            address: "",
-            password: "",
+      if (action === "edit") {
+        const response = await fetch(apiUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          toast.success("User updated successfully!", {
+            position: "top-right",
+            autoClose: 3000,
           });
-          setImage(null);
-          document.getElementById("image-upload").value = "";
-        },
-      });
+          navigate("/dashboard/branch-user/list");
+        }
+      } else {
+        await submitForm({
+          url: `${apiUrl}`,
+          payload,
+          setIsLoading,
+          navigate,
+          successMessage: "User created successfully!",
+          successRedirect: "/dashboard/branch-user/list",
+          formDataFields: image instanceof File ? ["image"] : [],
+          resetForm: () => {
+            setFormData({
+              userName: "",
+              phone: "",
+              email: "",
+              branch: "",
+              address: "",
+              password: "",
+            });
+            setImage(null);
+            document.getElementById("image-upload").value = "";
+          },
+        });
+      }
     } catch (error) {
       // Error is already handled by submitForm via toast.error
       return;
@@ -144,12 +172,13 @@ const BranchUserAdd = ({ action }) => {
   }, []);
 
   // Map branches to SelectField options format
+  
   const branchOptions = branches.map((branch) => ({
     value: branch._id,
     label: branch.branchName,
   }));
 
-  console.log("branches:", branches);
+ 
 
   const getData = async () => {
     if (!id) {
@@ -159,31 +188,26 @@ const BranchUserAdd = ({ action }) => {
       });
       return;
     }
-    
-     
+
     try {
       const res = await fetch(`${baseUrl}/user/get-user-by-id/${id}`);
       const data = await res.json();
       console.log("Fetched user data:", data);
       if (res.ok && data.resData) {
         setFormData(data.resData);
-        
       } else {
         throw new Error(data.message || "Failed to fetch user data.");
       }
     } catch (err) {
-      console.error("Error fetching user:", err); 
+      console.error("Error fetching user:", err);
       toast.error(err.message || "Error fetching user data.", {
         position: "top-right",
         autoClose: 3000,
       });
-    } 
+    }
   };
 
   useEffect(() => {
-   
-    
-    
     if (action === "edit" && id) {
       getData();
     }
@@ -194,7 +218,7 @@ const BranchUserAdd = ({ action }) => {
       <Topbar />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-orange-global">
-          Add User Details
+          {action === "edit" ? "Edit" : "Add"} User Details
         </h1>
       </div>
       <div className="flex items-center justify-center">
@@ -270,7 +294,7 @@ const BranchUserAdd = ({ action }) => {
               onChange={(e) => handleFormChange(e, setFormData)}
               placeholder="Enter Address"
             />
-            
+
             <InputField
               label="Password"
               type="password"
