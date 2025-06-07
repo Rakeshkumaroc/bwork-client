@@ -1,4 +1,3 @@
-// src/SignupForm.jsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -10,54 +9,63 @@ const baseUrl = import.meta.env.VITE_APP_URL;
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
-    email: "",
     phone: "",
-    password: "",
-    agreeTerms: false,
+    otp: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showOtp, setShowOtp] = useState(false); // Toggle OTP input and submit
   const navigate = useNavigate();
 
-  // Define validation schema
+  // Define validation schema for phone and OTP
   const validationSchema = {
-    requiredFields: ["email", "phone", "password", "agreeTerms"],
-    email: (value) =>
-      !/\S+@\S+\.\S+/.test(value) ? "Please enter a valid email address" : null,
+    requiredFields: ["phone", ...(showOtp ? ["otp"] : [])],
     phone: (value) =>
       !/^\d{10}$/.test(value) ? "Please enter a valid 10-digit phone number" : null,
-    password: (value) =>
-      value.length < 6 ? "Password must be at least 6 characters long" : null,
-    agreeTerms: (value) =>
-      !value ? "You must agree to the terms and conditions" : null,
+    otp: (value) =>
+      showOtp && !/^\d{6}$/.test(value) ? "Please enter a valid 6-digit OTP" : null,
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    navigate("/profile");
 
-    // Validate form using validateForm function
-    const errors = validateForm(formData, validationSchema);
+    // // Validate form using validateForm function
+    // const errors = validateForm(formData, validationSchema);
 
-    if (errors.length > 0) {
-      toast.error(errors[0]);
-      return;
-    }
+    // if (errors.length > 0) {
+    //   toast.error(errors[0]);
+    //   return;
+    // }
 
-    // Prepare payload
-    const payload = {
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-    };
+    // setIsLoading(true);
 
-    // Submit form using submitForm function
-    await submitForm({
-      url: `${baseUrl}/user/sign-up`,
-      payload,
-      setIsLoading,
-      navigate,
-      successMessage: "Signup successful!",
-      successRedirect: "/login",
-    });
+    // // Prepare payload
+    // const payload = { phone: formData.phone, otp: formData.otp };
+
+    // try {
+    //   let url = `${baseUrl}/user/sign-up`;
+    //   if (!showOtp) {
+    //     // Simulate OTP request on initial "Sign Up" click
+    //     await new Promise((resolve) => setTimeout(resolve, 1000)); // Mock delay
+    //     setShowOtp(true);
+    //     toast.success("OTP sent to your phone!");
+    //     setIsLoading(false);
+    //     return;
+    //   }
+
+    //   // Submit form to verify OTP and sign up
+    //   await submitForm({
+    //     url,
+    //     payload,
+    //     setIsLoading,
+    //     navigate,
+    //     successMessage: "Signup successful!",
+    //     successRedirect: "/login",
+    //   });
+    // } catch (error) {
+    //   toast.error("An error occurred. Please try again.");
+    //   setIsLoading(false);
+    // }
   };
 
   return (
@@ -69,14 +77,6 @@ const SignupForm = () => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
           <Input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={(e) => handleFormChange(e, setFormData)}
-            placeholder="Enter e-mail"
-            required
-          />
-          <Input
             type="tel"
             name="phone"
             value={formData.phone}
@@ -84,40 +84,39 @@ const SignupForm = () => {
             placeholder="Your Phone"
             required
           />
-          <Input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={(e) => handleFormChange(e, setFormData)}
-            placeholder="Password"
-            required
-          />
-          <label className="text-xs sm:text-sm flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="agreeTerms"
-              checked={formData.agreeTerms}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              className="accent-orange-global"
-            />
-            I agree to{" "}
-            <Link
-              to="/terms"
-              className="text-orange-global underline cursor-pointer"
+          {!showOtp ? (
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              terms & conditions
-            </Link>{" "}
-            on Man Power
-          </label>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
-              isLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {isLoading ? "Signing Up..." : "Sign Up"}
-          </button>
+              {isLoading ? "Signing Up..." : "Sign Up"}
+            </button>
+          ) : (
+            <>
+              <Input
+                type="text"
+                name="otp"
+                value={formData.otp}
+                onChange={(e) => handleFormChange(e, setFormData)}
+                placeholder="Enter OTP"
+                required
+              />
+              <button
+
+                type="submit"
+                disabled={isLoading}
+                className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                {isLoading ? "Verifying..." : "Submit OTP"}
+              </button>
+            </>
+          )}
+
           <div className="text-center text-gray-500 font-medium text-xs sm:text-sm">
             OR
           </div>

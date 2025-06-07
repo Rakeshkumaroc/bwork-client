@@ -16,7 +16,7 @@ const Dashboard = () => {
     const localData = localStorage.getItem("authToken");
     if (!localData) {
       toast.error("You are not logged in. Please log in to continue.");
-      navigate("/login");
+      navigate("/employers-login");
       return;
     }
 

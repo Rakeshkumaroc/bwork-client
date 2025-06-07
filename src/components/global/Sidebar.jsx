@@ -88,7 +88,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     // Example: dispatch({ type: 'RESET_STATE' });
 
     // Navigate to login page or home page
-    navigate("/login"); // Adjust the path as needed
+    navigate("/employers-login"); // Adjust the path as needed
     toggleSidebar(); // Close sidebar after logout
   };
 

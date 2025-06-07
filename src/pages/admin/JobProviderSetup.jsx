@@ -1,32 +1,30 @@
-// src/OrgSetup.jsx
+// src/jobProviderSetup.jsx
 import { useState, useEffect } from "react";
 import Input from "../../components/common/Input";
-import TakeImage from "../../components/common/TakeImage";
-import Dropdown from "../../components/common/Dropdown";
+import TakeImage from "../../components/common/TakeImage"; 
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { handleFormChange, validateForm, submitForm } from "../../utils/form";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
-const OrgSetup = () => {
+const JobProviderSetup = () => {
   const [formData, setFormData] = useState({
-    orgName: "",
+    jobProviderName: "",
     email: "",
     phone: "", 
     userId: "",
-    orgLogo: "",
-    isMultiBranch: "",
-    branchCount: 1,
+    jobProviderLogo: "",
+ 
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();  
 
   // Define validation schema
   const validationSchema = {
-    requiredFields: ["orgName", "email", "phone", "userId", "isMultiBranch"],
-    orgName: (value) =>
-      value.length < 3 ? "Organization name must be at least 3 characters long" : null,
+    requiredFields: ["jobProviderName", "email", "phone", "userId" ],
+    jobProviderName: (value) =>
+      value.length < 3 ? "Job provider name must be at least 3 characters long" : null,
     email: (value) =>
       !/\S+@\S+\.\S+/.test(value) ? "Please enter a valid email address" : null,
     phone: (value) =>
@@ -34,7 +32,7 @@ const OrgSetup = () => {
     
     userId: (value) =>
       !value ? "User ID is required" : null,
-    orgLogo: (value) => {
+    jobProviderLogo: (value) => {
       if (!value) return null; // Optional
       if (!(value instanceof File)) return "Invalid file format";
       if (!["image/png", "image/jpeg"].includes(value.type)) {
@@ -45,12 +43,7 @@ const OrgSetup = () => {
       }
       return null;
     },
-    isMultiBranch: (value) =>
-      !["Yes", "No"].includes(value) ? "Please select whether the organization has multiple branches" : null,
-    branchCount: (value, formData) =>
-      formData.isMultiBranch === "Yes" && (value < 1 || isNaN(value))
-        ? "Number of branches must be at least 1"
-        : null,
+    
   };
 
   useEffect(() => {
@@ -83,7 +76,7 @@ const OrgSetup = () => {
   const handleImageChange = (image) => {
     setFormData((prev) => ({
       ...prev,
-      orgLogo: image || "", // Store image data (base64, URL, or File)
+      jobProviderLogo: image || "", // Store image data (base64, URL, or File)
     }));
   };
 
@@ -92,8 +85,7 @@ const OrgSetup = () => {
 
     // Validate form using validateForm function
     const errors = validateForm(formData, {
-      ...validationSchema,
-      branchCount: (value) => validationSchema.branchCount(value, formData),
+      ...validationSchema, 
     });
 
     if (errors.length > 0) {
@@ -103,13 +95,11 @@ const OrgSetup = () => {
 
     // Prepare payload
     const payload = {
-      orgName: formData.orgName,
+      jobProviderName: formData.jobProviderName,
       email: formData.email,
       phone: formData.phone, 
       userId: formData.userId,
-      orgLogo: formData.orgLogo || "",
-      isMultiBranch: formData.isMultiBranch === "Yes",
-      branchCount: formData.isMultiBranch === "Yes" ? parseInt(formData.branchCount) : 1,
+      jobProviderLogo: formData.jobProviderLogo || "", 
     };
 
     // Submit form using submitForm function
@@ -119,15 +109,15 @@ const OrgSetup = () => {
         payload,
         setIsLoading,
         navigate,
-        successMessage: "Organization created successfully!",
+        successMessage: "Job provider created successfully!",
         successRedirect: "/dashboard",
-        formDataFields: formData.orgLogo instanceof File ? ["orgLogo"] : [],
-        localStorageKey: "organizationData",
+        formDataFields: formData.jobProviderLogo instanceof File ? ["jobProviderLogo"] : [],
+        localStorageKey: "jobProviderData",
         localStorageData: payload,
       });
       console.log(data);
       
-       localStorage.setItem("organizationData", JSON.stringify(data.resData.organization));
+       localStorage.setItem("jobProviderData", JSON.stringify(data.resData.jobProvider));
     } catch (error) {
       // Error is already handled by submitForm via toast.error
       return;
@@ -137,15 +127,15 @@ const OrgSetup = () => {
   return (
     <form onSubmit={handleSubmit} className="p-10 bg-cream min-h-screen">
       <h2 className="text-3xl md:text-4xl font-bold text-orange-global mb-8">
-        Organization Setup
+        Job Provider Setup
       </h2>
 
       <div className="gap-6">
         <div className="space-y-4">
           <Input
-            placeholder="Organization Name"
-            name="orgName"
-            value={formData.orgName}
+            placeholder="Job Provider Name"
+            name="jobProviderName"
+            value={formData.jobProviderName}
             onChange={(e) => handleFormChange(e, setFormData)}
             required
           />
@@ -168,27 +158,7 @@ const OrgSetup = () => {
    
           
           <TakeImage onChange={handleImageChange} />
-          <Dropdown
-            label="Does organization have multiple branches?"
-            name="isMultiBranch"
-            value={formData.isMultiBranch}
-            onChange={(e) => handleFormChange(e, setFormData)}
-            options={[
-              { label: "Yes", value: "Yes" },
-              { label: "No", value: "No" },
-            ]}
-            required
-          />
-          {formData.isMultiBranch === "Yes" && (
-            <Input
-              placeholder="No. of Branches"
-              name="branchCount"
-              type="number"
-              value={formData.branchCount}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              required
-            />
-          )}
+         
           <div className="mt-10 text-center">
             <button
               type="submit"
@@ -206,4 +176,6 @@ const OrgSetup = () => {
   );
 };
 
-export default OrgSetup;
+export default JobProviderSetup;
+
+ 
