@@ -29,6 +29,8 @@ const BranchUserAdd = ({ action }) => {
     address: "",
     password: "",
   });
+  console.log('formData',formData);
+  
   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -180,32 +182,40 @@ const BranchUserAdd = ({ action }) => {
 
  
 
-  const getData = async () => {
-    if (!id) {
-      toast.error("Invalid user ID.", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      return;
-    }
+const getData = async () => {
+  if (!id) {
+    toast.error("Invalid user ID.", {
+      position: "top-right",
+      autoClose: 3000,
+    });
+    return;
+  }
 
-    try {
-      const res = await fetch(`${baseUrl}/user/get-user-by-id/${id}`);
-      const data = await res.json();
-      console.log("Fetched user data:", data);
-      if (res.ok && data.resData) {
-        setFormData(data.resData);
-      } else {
-        throw new Error(data.message || "Failed to fetch user data.");
-      }
-    } catch (err) {
-      console.error("Error fetching user:", err);
-      toast.error(err.message || "Error fetching user data.", {
-        position: "top-right",
-        autoClose: 3000,
+  try {
+    const res = await fetch(`${baseUrl}/user/get-user-by-id/${id}`);
+    const data = await res.json();
+    console.log("Fetched user data:", data);
+    if (res.ok && data.resData) {
+      // Map userBranchId to branch in formData
+      setFormData({
+        userName: data.resData.userName || "",
+        phone: data.resData.phone || "",
+        email: data.resData.email || "",
+        branch: data.resData.userBranchId || "", // Set branch to userBranchId
+        address: data.resData.address || "",
+        password: data.resData.password, // Password is typically not fetched for security reasons
       });
+    } else {
+      throw new Error(data.message || "Failed to fetch user data.");
     }
-  };
+  } catch (err) {
+    console.error("Error fetching user:", err);
+    toast.error(err.message || "Error fetching user data.", {
+      position: "top-right",
+      autoClose: 3000,
+    });
+  }
+};
 
   useEffect(() => {
     if (action === "edit" && id) {
