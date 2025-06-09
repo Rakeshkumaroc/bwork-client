@@ -78,9 +78,9 @@ const AddJobDetails = () => {
       return;
     }
 
-    // Retrieve organizationData from localStorage
-    const organizationData = JSON.parse(localStorage.getItem("organizationData") || "{}");
-    const orgId = organizationData._id;
+    // Retrieve authToken from localStorage
+    const authToken = JSON.parse(localStorage.getItem("authToken") || "{}");
+    const orgId = authToken.orgId;
 
     if (!orgId) {
       toast.error("Organization ID not found. Please set up an organization first.", {
@@ -116,10 +116,10 @@ const AddJobDetails = () => {
 
 
    useEffect(() => {
-      const organizationData = JSON.parse(
-        localStorage.getItem("organizationData") || "{}"
+      const authToken = JSON.parse(
+        localStorage.getItem("authToken") || "{}"
       );
-      const orgId = organizationData._id; // Assuming userId is orgId; adjust if different
+      const orgId = authToken.orgId; // Assuming userId is orgId; adjust if different
       fetchData(
         `${baseUrl}/branch/get-branch-by-org-id/${orgId}`,
         setBranches,

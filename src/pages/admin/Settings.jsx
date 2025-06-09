@@ -27,10 +27,11 @@ const Settings = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const organizationData = JSON.parse(
-      localStorage.getItem("organizationData") || "{}"
+    const authToken = JSON.parse(
+      localStorage.getItem("authToken") || "{}"
     );
-    const orgId = organizationData._id;
+     
+    const orgId = authToken.orgId;
     console.log("formData.orgId:", orgId);
     fetchData(
       `${baseUrl}/org/get-org-by-id/${orgId}`,
@@ -55,8 +56,9 @@ const Settings = () => {
       address: formData.address,
       phone: formData.phone,
     };
-    const organizationData = JSON.parse(localStorage.getItem("organizationData") || "{}");
-    const orgId = organizationData._id;
+    const authToken = JSON.parse(localStorage.getItem("authToken") || "{}");
+    const orgId = authToken.orgId;
+ 
     try {
       const result = await fetch(`${baseUrl}/org/update-org-by-id/${orgId}`, {
         method: "PUT",

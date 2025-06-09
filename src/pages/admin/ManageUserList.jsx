@@ -4,6 +4,7 @@ import Topbar from "../../components/admin/Topbar";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchData } from "../../utils/api"; 
 import DataTable from "../../components/common/admin/DataTable";
+import { deleteForm } from "../../utils/form";
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 const ManageUserList = () => {
@@ -15,10 +16,10 @@ const ManageUserList = () => {
  
   useEffect(() => {
      
-     const organizationData = JSON.parse(
-        localStorage.getItem("organizationData") || "{}"
+     const authToken = JSON.parse(
+        localStorage.getItem("authToken") || "{}"
       );
-      const orgId = organizationData._id; // Assuming userId is orgId; adjust if different
+      const orgId = authToken.orgId; // Assuming userId is orgId; adjust if different
     fetchData(`${baseUrl}/user/get-user-by-org-id/${orgId}`, setUsers, setLoading, setError);
   }, []);
 
@@ -51,6 +52,8 @@ const ManageUserList = () => {
   };
 
   const handleDelete = async(user) => {
+    console.log('user._id',user._id);
+    
  if (window.confirm(`Are you sure you want to delete ${user.userName}?`)) {
       try {
         await deleteForm({

@@ -15,10 +15,10 @@ const ManageBranchesList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const organizationData = JSON.parse(
-      localStorage.getItem("organizationData") || "{}"
+    const authToken = JSON.parse(
+      localStorage.getItem("authToken") || "{}"
     );
-    const orgId = organizationData._id;
+    const orgId = authToken.orgId;
     fetchData(
       `${baseUrl}/branch/get-branch-by-org-id/${orgId}`,
       setBranches,

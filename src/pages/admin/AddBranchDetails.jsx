@@ -104,8 +104,8 @@ const AddBranchDetails = ({ action }) => {
     }
 
     // Retrieve organization ID
-    const organizationData = JSON.parse(localStorage.getItem("organizationData") || "{}");
-    const orgId = organizationData._id;
+    const authToken = JSON.parse(localStorage.getItem("authToken") || "{}");
+    const orgId = authToken.orgId;
 
     if (!orgId) {
       toast.error("Organization ID not found. Please set up an organization first.", {

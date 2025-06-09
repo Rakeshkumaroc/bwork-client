@@ -99,7 +99,7 @@ const BranchUserAdd = ({ action }) => {
       phone: formData.phone,
       email: formData.email,
       branchId: formData.branch, // Send branch _id
-      orgId: JSON.parse(localStorage.getItem("organizationData") || "{}")._id,
+      orgId: JSON.parse(localStorage.getItem("authToken") || "{}").orgId,
       address: formData.address,
       password: formData.password,
       image: image ? "" : "", // Placeholder, actual image sent via FormData if present
@@ -159,10 +159,10 @@ const BranchUserAdd = ({ action }) => {
   };
 
   useEffect(() => {
-    const organizationData = JSON.parse(
-      localStorage.getItem("organizationData") || "{}"
+    const authToken = JSON.parse(
+      localStorage.getItem("authToken") || "{}"
     );
-    const orgId = organizationData._id; // Assuming userId is orgId; adjust if different
+    const orgId = authToken.orgId; // Assuming userId is orgId; adjust if different
     fetchData(
       `${baseUrl}/branch/get-branch-by-org-id/${orgId}`,
       setBranches,

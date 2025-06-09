@@ -57,10 +57,10 @@ const ManageJobsList = () => {
   useEffect(() => {
     // Simulate fetching data with dummy data
     try {
-      const organizationData = JSON.parse(
-        localStorage.getItem("organizationData") || "{}"
+      const authToken = JSON.parse(
+        localStorage.getItem("authToken") || "{}"
       );
-      const orgId = organizationData._id;
+      const orgId = authToken.orgId;
 
       if (!orgId) {
         setError("Organization ID not found.");
