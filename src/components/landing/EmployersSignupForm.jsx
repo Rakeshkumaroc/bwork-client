@@ -56,7 +56,7 @@ const EmployersSignupForm = () => {
       setIsLoading,
       navigate,
       successMessage: "Signup successful!",
-      successRedirect: "/login",
+      successRedirect: "/employers-login",
     });
   };
 
