@@ -52,16 +52,16 @@ const ManageApplicants = () => {
     }
   };
 
-  // Handle Bulk Accept
-  const handleBulkAccept = () => {
+  // Handle Bulk Approved
+  const handleBulkApproved = () => {
     if (selectedApplicants.size === 0) {
-      console.log("No applicants selected for bulk accept.");
+      console.log("No applicants selected for bulk Approved.");
       return;
     }
     const selectedNames = Array.from(selectedApplicants).map(
       (index) => applicants[index].name
     );
-    console.log("Bulk Accept:", selectedNames);
+    console.log("Bulk Approved:", selectedNames);
     // Optionally clear selection after action
     setSelectedApplicants(new Set());
   };
@@ -96,11 +96,11 @@ const ManageApplicants = () => {
             </span>
           </button>
           <button
-            onClick={handleBulkAccept}
+            onClick={handleBulkApproved}
             className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-full text-lg sm:text-sm flex items-center justify-center transition-colors duration-200 shadow-md"
           >
             <span className="mr-2">+</span>
-            <span className="hidden sm:block">Bulk Accept</span>
+            <span className="hidden sm:block">Bulk Approved</span>
           </button>
           <button
             onClick={handleBulkReject}
@@ -148,7 +148,7 @@ const ManageApplicants = () => {
             </span>
             <div className="flex flex-wrap gap-2">
               <button className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded-md font-semibold transition-colors duration-200">
-                ACCEPT
+                 APPROVED
               </button>
               <button className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1 rounded-md font-semibold transition-colors duration-200">
                 REJECT

@@ -9,6 +9,7 @@ import {
   LogOut,
   ChevronDown,
   ChevronRight,
+  UserPlus,
 } from "lucide-react";
 import NavItem from "../common/NavItem";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -22,7 +23,7 @@ const navItems = [
   },
   {
     icon: <Building size={20} />,
-    label: "Manage Branch",
+    label: "Manage Branches",
     children: [
       { label: "Branch List", path: "./manage-branch/list" },
       { label: "Add Branch", path: "./manage-branch/add" },
@@ -30,25 +31,40 @@ const navItems = [
   },
   {
     icon: <Users size={20} />,
-    label: "Branch User",
+    label: "Manage Internal Users",
     children: [
       { label: "User List", path: "./branch-user/list" },
       { label: "Add User", path: "./branch-user/add" },
     ],
   },
   {
+    icon: <UserPlus size={20} />,
+    label: "Manage Job Providers",
+    children: [
+      { label: "Provider List", path: "./manage-job-providers/list" },
+    ],
+  },
+  {
+    icon: <UserPlus size={20} />,
+    label: "Manage Job Seekers",
+    children: [
+      { label: "Seeker List", path: "./manage-job-seekers/list" },
+    ],
+  },
+  {
     icon: <Briefcase size={20} />,
     label: "Manage Jobs",
-     children: [
+    children: [
       { label: "Job List", path: "./manage-job/list" },
-      { label: "Add Job", path: "./manage-job/add" },
+      { label: "Create Job", path: "./manage-job/add" },
     ],
-    
   },
   {
     icon: <UserCheck size={20} />,
-    label: "Manage Applicants",
-    path: "./manage-applicants",
+    label: "Manage Job Applications",
+    children: [
+      { label: "Application List", path: "./manage-applicants/list" },
+    ],
   },
   {
     icon: <Palette size={20} />,
@@ -76,7 +92,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }));
   };
 
-    const handleLogout = () => {
+  const handleLogout = () => {
     // Clear localStorage and sessionStorage
     localStorage.clear();
     sessionStorage.clear();
@@ -84,17 +100,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     // Reset component state
     setOpenSections({});
 
-    // Optional: If using Redux or Context, dispatch a reset action here
-    // Example: dispatch({ type: 'RESET_STATE' });
-
-    // Navigate to login page or home page
-    navigate("/employers-login"); // Adjust the path as needed
+    // Navigate to login page
+    navigate("/employers-login");
     toggleSidebar(); // Close sidebar after logout
   };
 
   return (
     <div
-      className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-cream flex flex-col overflow-y-auto justify-between py-6 px-4 shadow-[3px_3px_20.5px_2px_#FF6F2080] md:rounded-3xl rounded-r-3xl transition-transform duration-300 transform ${
+      className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-cream flex flex-col overflow-y-auto justify-between py-6 px-4 shadow-[3px_3px_20.5px_2px_#FF6F2080] md:rounded-3xl rounded-r-3xl transition-transform duration-300 transform ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0 h-full`}
     >

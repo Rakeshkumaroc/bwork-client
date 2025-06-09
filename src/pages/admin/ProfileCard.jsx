@@ -75,7 +75,7 @@ const ProfileCard = () => {
 
         <div className="flex flex-wrap gap-4 justify-center">
           <button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-medium">
-            <FaCheckCircle /> ACCEPT
+            <FaCheckCircle /> Approved
           </button>
           <button className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md font-medium">
             <FaTimesCircle /> REJECT

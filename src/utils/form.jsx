@@ -58,6 +58,8 @@ export const submitForm = async ({
   page
 }) => {
   setIsLoading(true);
+console.log("payload", payload);
+
   try {
     let response;
     // Use FormData if there are file fields

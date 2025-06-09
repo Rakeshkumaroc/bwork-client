@@ -72,12 +72,14 @@ const DataTable = ({
                   >
                     <Eye className="w-4 h-4 text-blue-600" />
                   </Link>
-                  <button
-                    onClick={() => onEdit(item)}
-                    className="p-2 bg-yellow-100 hover:bg-yellow-200 rounded-full"
-                  >
-                    <Pencil className="w-4 h-4 text-yellow-600" />
-                  </button>
+                  {onEdit && (
+                    <button
+                      onClick={() => onEdit(item)}
+                      className="p-2 bg-yellow-100 hover:bg-yellow-200 rounded-full"
+                    >
+                      <Pencil className="w-4 h-4 text-yellow-600" />
+                    </button>
+                  )}
                   <button
                     onClick={() => onDelete(item)}
                     className="p-2 bg-red-100 hover:bg-red-200 rounded-full"

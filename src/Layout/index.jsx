@@ -30,6 +30,7 @@ import MyJobs from "../components/jobseekerprofile/MyJobs";
 import MyReviews from "../components/jobseekerprofile/MyReviews";
 import JobSeekerSettings from "../components/jobseekerprofile/JobSeekerSettings";
 import SearchHistory from "../components/jobseekerprofile/SearchHistory";
+import ManageProviderList from "../pages/admin/ManageProviderList";
 
 const index = () => {
   return (
@@ -64,9 +65,10 @@ const index = () => {
           <Route path="manage-job/add" element={<AddJobDetails />} />
           <Route path="manage-job/list" element={<ManageJobsList />} />
           <Route path="manage-branch/list/:id" element={<ViewBranch />} />
-          <Route path="manage-applicants" element={<ManageApplicants />} />
+          <Route path="manage-job-providers/list" element={<ManageProviderList />} />
+          <Route path="manage-applicants/list" element={<ManageApplicants />} />
           <Route
-            path="manage-applicants/view-profile"
+            path="manage-applicants/list/:view-profile"
             element={<ProfileCard />}
           />
           <Route path="branch-user/list" element={<ManageUserList />} />
