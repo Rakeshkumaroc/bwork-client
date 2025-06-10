@@ -1,54 +1,42 @@
 // components/admin/ManageProviderList.jsx
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Topbar from "../../components/admin/Topbar";
 import DataTable from "../../components/common/admin/DataTable";
+import { fetchData } from "../../utils/api";
+import { deleteForm } from "../../utils/form";
+import { toast } from "react-toastify";
 
-const dummyProviders = [
-  {
-    _id: "68466bf909acd436587735f1",
-    providerName: "Priyanshu",
-    jobProviderPic: "https://www.shareicon.net/data/128x128/2016/09/15/829466_man_512x512.png",
-    isActive: true,
-    isDeleted: false,
-    address: "123 Ashta Laxmi Layout, JP Nagar, Bengaluru, Karnataka 560078",
-    createdAt: "2025-06-09T10:47:05.571Z",
-    updatedAt: "2025-06-09T10:47:05.573Z",
-    __v: 0,
-  },
-  {
-    _id: "68466bf909acd436587735f2",
-    providerName: "Amit Sharma",
-    jobProviderPic: "https://www.shareicon.net/data/128x128/2016/09/15/829466_man_512x512.png",
-    isActive: false,
-    isDeleted: false,
-    address: "456 MG Road, Bengaluru, Karnataka 560001",
-    createdAt: "2025-06-09T10:48:00.000Z",
-    updatedAt: "2025-06-09T10:48:00.000Z",
-    __v: 0,
-  },
-  {
-    _id: "68466bf909acd436587735f3",
-    providerName: "Sneha Patel",
-    jobProviderPic: "https://www.shareicon.net/data/128x128/2016/09/15/829466_man_512x512.png",
-    isActive: true,
-    isDeleted: false,
-    address: "789 Koramangala, Bengaluru, Karnataka 560034",
-    createdAt: "2025-06-09T10:49:00.000Z",
-    updatedAt: "2025-06-09T10:49:00.000Z",
-    __v: 0,
-  },
-];
+const baseUrl = import.meta.env.VITE_APP_URL;
 
 const ManageProviderList = () => {
   const [search, setSearch] = useState("");
-  const [providers, setProviders] = useState(dummyProviders);
-  const [loading, setLoading] = useState(false);
+  const [providers, setProviders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedProviders, setSelectedProviders] = useState([]);
 
+  // Fetch job providers on component mount
+  useEffect(() => {
+    fetchData(
+      `${baseUrl}/job-providers/get-all-job-providers`,
+      (data) => {
+        // Add a unique identifier (e.g., email) as a fallback for _id
+        const formattedProviders = data.map((provider, index) => ({
+          ...provider,
+          _id: provider.email, // Using email as a unique identifier
+          isActive: provider.isActive ?? true, // Assume active unless specified
+        }));
+        setProviders(formattedProviders);
+      },
+      setLoading,
+      setError
+    );
+  }, []);
+
   // Filter providers based on search input
   const filteredProviders = providers.filter((provider) =>
-    provider.providerName?.toLowerCase().includes(search.toLowerCase())
+    provider.providerName?.toLowerCase().includes(search.toLowerCase()) ||
+    provider.email?.toLowerCase().includes(search.toLowerCase())
   );
 
   const columns = [
@@ -80,21 +68,17 @@ const ManageProviderList = () => {
         />
       ),
     },
-    { header: "Provider ID", accessor: "_id" },
+    { header: "Email", accessor: "email" },
     {
       header: "Provider Name",
       render: (provider) => (
         <div className="flex items-center">
-          <img
-            src={provider.jobProviderPic}
-            alt={provider.providerName}
-            className="w-8 h-8 rounded-full mr-2"
-          />
-          {provider.providerName}
+          
+          {provider.providerName || "N/A"}
         </div>
       ),
     },
-    { header: "Address", accessor: "address" },
+    { header: "Phone", accessor: "phone" },
     {
       header: "Status",
       render: (provider) => (
@@ -109,26 +93,42 @@ const ManageProviderList = () => {
     },
   ];
 
-  const handleDelete = (provider) => {
-    if (window.confirm(`Are you sure you want to delete ${provider.providerName}?`)) {
+  const handleDelete = async (provider) => {
+    if (window.confirm(`Are you sure you want to delete ${provider.providerName || provider.email}?`)) {
       try {
+        await deleteForm({
+          url: `${baseUrl}/job-providers/delete-job-provider/${provider._id}`,
+          setIsLoading: setLoading,
+          successMessage: "Job provider deleted successfully!",
+        });
         setProviders(providers.filter((p) => p._id !== provider._id));
         setSelectedProviders(selectedProviders.filter((id) => id !== provider._id));
-        console.log("Job provider deleted successfully!");
+        toast.success("Job provider deleted successfully!");
       } catch (err) {
         console.error("Error deleting provider:", err);
-        setError(err.message);
+        setError("Failed to delete job provider.");
+        toast.error("Failed to delete job provider.");
       }
     }
   };
 
-  const handleBulkApprove = () => {
+  const handleBulkApprove = async () => {
     if (selectedProviders.length === 0) {
-      alert("Please select at least one provider to approve.");
+      toast.error("Please select at least one provider to approve.");
       return;
     }
     if (window.confirm(`Are you sure you want to approve ${selectedProviders.length} provider(s)?`)) {
       try {
+        await fetch(`${baseUrl}/job-providers/update-status`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            providerIds: selectedProviders,
+            isActive: true,
+          }),
+        });
         setProviders((prev) =>
           prev.map((provider) =>
             selectedProviders.includes(provider._id)
@@ -137,21 +137,32 @@ const ManageProviderList = () => {
           )
         );
         setSelectedProviders([]);
-        console.log("Selected providers approved successfully!");
+        toast.success("Selected providers approved successfully!");
       } catch (err) {
         console.error("Error approving providers:", err);
-        setError(err.message);
+        setError("Failed to approve providers.");
+        toast.error("Failed to approve providers.");
       }
     }
   };
 
-  const handleBulkReject = () => {
+  const handleBulkReject = async () => {
     if (selectedProviders.length === 0) {
-      alert("Please select at least one provider to reject.");
+      toast.error("Please select at least one provider to reject.");
       return;
     }
     if (window.confirm(`Are you sure you want to reject ${selectedProviders.length} provider(s)?`)) {
       try {
+        await fetch(`${baseUrl}/job-providers/update-status`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            providerIds: selectedProviders,
+            isActive: false,
+          }),
+        });
         setProviders((prev) =>
           prev.map((provider) =>
             selectedProviders.includes(provider._id)
@@ -160,10 +171,11 @@ const ManageProviderList = () => {
           )
         );
         setSelectedProviders([]);
-        console.log("Selected providers rejected successfully!");
+        toast.success("Selected providers rejected successfully!");
       } catch (err) {
         console.error("Error rejecting providers:", err);
-        setError(err.message);
+        setError("Failed to reject providers.");
+        toast.error("Failed to reject providers.");
       }
     }
   };
@@ -189,14 +201,14 @@ const ManageProviderList = () => {
               className="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-full text-sm"
               disabled={selectedProviders.length === 0}
             >
-               Approve
+              Approve
             </button>
             <button
               onClick={handleBulkReject}
               className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-full text-sm"
               disabled={selectedProviders.length === 0}
             >
-               Reject
+              Reject
             </button>
           </div>
         </div>

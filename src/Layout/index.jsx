@@ -32,6 +32,7 @@ import JobSeekerSettings from "../components/jobseekerprofile/JobSeekerSettings"
 import SearchHistory from "../components/jobseekerprofile/SearchHistory";
 import ManageProviderList from "../pages/admin/ManageProviderList";
 import ViewJob from "../pages/admin/ViewJob";
+import JobSeekerSetup from "../pages/admin/JobSeekerSetup";
 
 const index = () => {
   return (
@@ -48,6 +49,7 @@ const index = () => {
         <Route path="/employers-login" element={<EmployersLogin />} />
         <Route path="/org-setup" element={<OrgSetup />} />
         <Route path="/job-provider-setup" element={<JobProviderSetup />} />
+        <Route path="/job-seeker-setup" element={<JobSeekerSetup />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/my-job" element={<MyJobs />} />
         <Route path="/profile/my-review" element={<MyReviews />} />

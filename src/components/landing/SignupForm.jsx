@@ -29,7 +29,7 @@ const SignupForm = () => {
     e.preventDefault();
     navigate("/profile");
 
-    // // Validate form using validateForm function
+    // Validate form using validateForm function
     // const errors = validateForm(formData, validationSchema);
 
     // if (errors.length > 0) {
