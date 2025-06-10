@@ -1,19 +1,28 @@
 // components/admin/AddJobDetails.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Topbar from "../../components/admin/Topbar";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import InputField from "../../components/common/admin/InputField";
 import SelectField from "../../components/common/admin/SelectField";
-import { handleFormChange, validateForm, submitForm, resetForm } from "../../utils/form";
+import {
+  handleFormChange,
+  validateForm,
+  submitForm,
+  resetForm,
+  updateForm,
+} from "../../utils/form";
+const baseUrl = import.meta.env.VITE_APP_URL;
 
-const AddJobDetails = () => {
+const AddJobDetails = ({ action }) => {
   const initialFormData = {
     title: "",
     workMode: "",
     jobType: "",
     description: "",
   };
+  const { id } = useParams();
+
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -37,7 +46,9 @@ const AddJobDetails = () => {
   const validationSchema = {
     requiredFields: ["title", "workMode", "jobType", "description"],
     title: (value) =>
-      value.trim().length < 3 ? "Title must be at least 3 characters long" : null,
+      value.trim().length < 3
+        ? "Title must be at least 3 characters long"
+        : null,
     workMode: (value) =>
       !workModeOptions.some((option) => option.value === value)
         ? "Please select a valid work mode"
@@ -47,10 +58,64 @@ const AddJobDetails = () => {
         ? "Please select a valid job type"
         : null,
     description: (value) =>
-      value.trim().length < 10 ? "Description must be at least 10 characters long" : null,
+      value.trim().length < 10
+        ? "Description must be at least 10 characters long"
+        : null,
   };
 
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   // Validate form
+  //   const errors = validateForm(formData, validationSchema);
+  //   if (errors.length > 0) {
+  //     toast.error(errors[0], { position: "top-right", autoClose: 3000 });
+  //     return;
+  //   }
+
+  //   // Retrieve authToken from localStorage
+  //   const authToken = JSON.parse(localStorage.getItem("authToken") || "{}");
+  //   console.log("Auth Token:", authToken); // Debug: Check token structure
+  //   const userId = authToken.userId; // Adjust based on actual token structure
+
+  //   if (!userId) {
+  //     toast.error("User ID not found. Please log in again.", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //     });
+  //     navigate("/employers-login");
+  //     return;
+  //   }
+
+  //   // Prepare payload
+  //   const payload = {
+  //     ...formData,
+  //     userId,
+  //   };
+  //   console.log("Submitting Payload:", payload); // Debug: Check payload
+
+  //   // Submit form
+  //   try {
+  //     await submitForm({
+  //       url: `${baseUrl}/job-posts/create-job-post`,
+  //       payload,
+  //       setIsLoading: setLoading, // Match submitForm's expected prop
+  //       navigate,
+  //       successMessage: "Job created successfully!",
+  //       successRedirect: "/dashboard/manage-job/list",
+  //       resetForm: () => resetForm(setFormData, initialFormData),
+  //       formDataFields: [], // No file fields
+  //     });
+  //   } catch (error) {
+  //     console.error("Submission Error:", error); // Debug: Log error details
+  //     // Error is already handled by submitForm via toast.error
+  //   }
+  // };
+
+
+
+
+   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form
@@ -62,11 +127,11 @@ const AddJobDetails = () => {
 
     // Retrieve authToken from localStorage
     const authToken = JSON.parse(localStorage.getItem("authToken") || "{}");
-    console.log("Auth Token:", authToken); // Debug: Check token structure
-    const userId = authToken.userId; // Adjust based on actual token structure
+    const userId = authToken.userId;
+    const orgId = authToken.orgId; // Added for consistency with ManageJobsList and AddBranchDetails
 
-    if (!userId) {
-      toast.error("User ID not found. Please log in again.", {
+    if (!userId || !orgId) {
+      toast.error("User or Organization ID not found. Please log in again.", {
         position: "top-right",
         autoClose: 3000,
       });
@@ -75,29 +140,83 @@ const AddJobDetails = () => {
     }
 
     // Prepare payload
-    const payload = {
-      ...formData,
-      userId,
-    };
-    console.log("Submitting Payload:", payload); // Debug: Check payload
+    const payload = { ...formData, userId, orgId };
 
-    // Submit form
+    // Handle create or update
+    const apiUrl =
+      action === "edit"
+        ? `${baseUrl}/job-posts/update-job-post/${id}`
+        : `${baseUrl}/job-posts/create-job-post`;
+
     try {
-      await submitForm({
-        url: `http://localhost:5000/api/v1/job-posts/create-job-post`,
-        payload,
-        setIsLoading: setLoading, // Match submitForm's expected prop
-        navigate,
-        successMessage: "Job created successfully!",
-        successRedirect: "/dashboard/manage-job/list",
-        resetForm: () => resetForm(setFormData, initialFormData),
-        formDataFields: [], // No file fields
-      });
+      if (action === "edit") {
+        await updateForm({
+          url: apiUrl,
+          payload,
+           setIsLoading: setLoading,
+          navigate,
+          successMessage: "Job updated successfully!",
+          successRedirect: "/dashboard/manage-job/list",
+          resetForm: () => resetForm(setFormData, initialFormData),
+        });
+      } else {
+        await submitForm({
+          url: apiUrl,
+          payload,
+           setIsLoading: setLoading,
+          navigate,
+          successMessage: "Job created successfully!",
+          successRedirect: "/dashboard/manage-job/list",
+          resetForm: () => resetForm(setFormData, initialFormData),
+          formDataFields: [], // No file fields
+        });
+      }
     } catch (error) {
-      console.error("Submission Error:", error); // Debug: Log error details
-      // Error is already handled by submitForm via toast.error
+      // Errors handled by submitForm/updateForm via toast.error
+      console.error("Submission Error:", error);
     }
   };
+
+
+
+
+  const getData = async () => {
+    if (!id) {
+      toast.error("Invalid user ID.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    try {
+      const res = await fetch(`${baseUrl}/job-posts/get-job-post-by-id/${id}`);
+      const data = await res.json();
+      console.log("Fetched user data:", data);
+      if (res.ok && data.resData) {
+        // Map userBranchId to branch in formData
+        setFormData({
+          title: data.resData.title || "",
+          workMode: data.resData.workMode || "",
+          jobType: data.resData.jobType || "",
+          description: data.resData.description || "",
+        });
+      } else {
+        throw new Error(data.message || "Failed to fetch user data.");
+      }
+    } catch (err) {
+      console.error("Error fetching user:", err);
+      toast.error(err.message || "Error fetching user data.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
+  useEffect(() => {
+    if (action === "edit" && id) {
+      getData();
+    }
+  }, [action, id]);
 
   return (
     <div className="min-h-screen bg-light-cream p-8">

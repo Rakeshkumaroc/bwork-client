@@ -189,14 +189,14 @@ const ManageProviderList = () => {
               className="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-full text-sm"
               disabled={selectedProviders.length === 0}
             >
-              Bulk Approve
+               Approve
             </button>
             <button
               onClick={handleBulkReject}
               className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-full text-sm"
               disabled={selectedProviders.length === 0}
             >
-              Bulk Reject
+               Reject
             </button>
           </div>
         </div>

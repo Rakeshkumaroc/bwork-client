@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Topbar from "../../components/admin/Topbar";
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 const ViewBranchUser = () => {
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) return;
@@ -22,6 +23,9 @@ const ViewBranchUser = () => {
   if (!userData) {
     return <div className="text-center mt-10">Loading user data...</div>;
   }
+  const handleEdit = () => {
+    navigate(`/dashboard/branch-user/${id}`);
+  };
 
   return (
     <div className="min-h-screen bg-light-cream p-8">
@@ -48,7 +52,7 @@ const ViewBranchUser = () => {
                 </h2>
                 <p className="text-sm text-gray-500">Bihar, India</p>
               </div>
-              <button className="flex items-center bg-orange-500 text-white px-4 py-1 rounded cursor-default">
+              <button onClick={handleEdit} className="flex items-center bg-orange-500 text-white px-4 py-1 rounded cursor-default">
                 <img
                   src="https://img.icons8.com/ios-glyphs/20/ffffff/edit.png"
                   alt="Edit"

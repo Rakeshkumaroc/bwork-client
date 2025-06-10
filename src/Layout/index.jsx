@@ -31,6 +31,7 @@ import MyReviews from "../components/jobseekerprofile/MyReviews";
 import JobSeekerSettings from "../components/jobseekerprofile/JobSeekerSettings";
 import SearchHistory from "../components/jobseekerprofile/SearchHistory";
 import ManageProviderList from "../pages/admin/ManageProviderList";
+import ViewJob from "../pages/admin/ViewJob";
 
 const index = () => {
   return (
@@ -63,6 +64,8 @@ const index = () => {
             element={<AddBranchDetails action={"edit"} />}
           />
           <Route path="manage-job/add" element={<AddJobDetails />} />
+          <Route path="manage-job/:id" element={<AddJobDetails action={"edit"} />} />
+          <Route path="manage-job/list/:id" element={<ViewJob />} />
           <Route path="manage-job/list" element={<ManageJobsList />} />
           <Route path="manage-branch/list/:id" element={<ViewBranch />} />
           <Route path="manage-job-providers/list" element={<ManageProviderList />} />

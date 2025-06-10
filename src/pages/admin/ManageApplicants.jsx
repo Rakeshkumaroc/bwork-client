@@ -61,7 +61,7 @@ const ManageApplicants = () => {
     const selectedNames = Array.from(selectedApplicants).map(
       (index) => applicants[index].name
     );
-    console.log("Bulk Approved:", selectedNames);
+    console.log("Approved:", selectedNames);
     // Optionally clear selection after action
     setSelectedApplicants(new Set());
   };
@@ -75,7 +75,7 @@ const ManageApplicants = () => {
     const selectedNames = Array.from(selectedApplicants).map(
       (index) => applicants[index].name
     );
-    console.log("Bulk Reject:", selectedNames);
+    console.log("Reject:", selectedNames);
     // Optionally clear selection after action
     setSelectedApplicants(new Set());
   };
@@ -100,14 +100,14 @@ const ManageApplicants = () => {
             className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-full text-lg sm:text-sm flex items-center justify-center transition-colors duration-200 shadow-md"
           >
             <span className="mr-2">+</span>
-            <span className="hidden sm:block">Bulk Approved</span>
+            <span className="hidden sm:block">Approved</span>
           </button>
           <button
             onClick={handleBulkReject}
             className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-full text-lg sm:text-sm flex items-center justify-center transition-colors duration-200 shadow-md"
           >
             <span className="mr-2">+</span>
-            <span className="hidden sm:block">Bulk Reject</span>
+            <span className="hidden sm:block">Reject</span>
           </button>
         </div>
       </div>
