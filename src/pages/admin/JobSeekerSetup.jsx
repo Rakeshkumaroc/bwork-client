@@ -4,58 +4,21 @@ import Input from "../../components/common/Input";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { handleFormChange, validateForm, submitForm } from "../../utils/form";
-
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 const JobSeekerSetup = () => {
   const [formData, setFormData] = useState({
-    full_name: "",
+    userName: "",
+    userProfilePic: "",
     gender: "",
-    maritalStatus: "",
     dob: "",
     address: "",
-    userId: "",
+    phone: "",
+    email: "",
+    jobSeekerId: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  // Define validation schema
-  const validationSchema = {
-    requiredFields: [
-      "full_name",
-      "gender",
-      "maritalStatus",
-      "dob",
-      "address",
-      "userId",
-    ],
-    full_name: (value) =>
-      value.length < 3 ? "Full name must be at least 3 characters long" : null,
-    gender: (value) =>
-      !["male", "female", "other"].includes(value.toLowerCase())
-        ? "Please select a valid gender"
-        : null,
-    maritalStatus: (value) =>
-      !["Single / unmarried", "Married", "Divorced", "Widowed"].includes(value)
-        ? "Please select a valid marital status"
-        : null,
-    dob: (value) => {
-      const dobDate = new Date(value);
-      const today = new Date();
-      const age = today.getFullYear() - dobDate.getFullYear();
-      const monthDiff = today.getMonth() - dobDate.getMonth();
-      if (
-        monthDiff < 0 ||
-        (monthDiff === 0 && today.getDate() < dobDate.getDate())
-      ) {
-        return age - 1;
-      }
-      return age < 18 ? "You must be at least 18 years old" : null;
-    },
-    address: (value) =>
-      value.length < 5 ? "Address must be at least 5 characters long" : null,
-    userId: (value) => (!value ? "User ID is required" : null),
-  };
 
   useEffect(() => {
     // Retrieve authToken from localStorage
@@ -68,10 +31,11 @@ const JobSeekerSetup = () => {
 
     // Parse authToken and populate formData
     try {
-      const { userId } = JSON.parse(authToken);
+      const { _id, phone } = JSON.parse(authToken);
       setFormData((prev) => ({
         ...prev,
-        userId: userId || "",
+        jobSeekerId: _id || "",
+        phone: phone || "",
       }));
     } catch (error) {
       console.error("Failed to parse authToken:", error);
@@ -82,49 +46,40 @@ const JobSeekerSetup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/profile");
-
-    // Validate form using validateForm function
-    const errors = validateForm(formData, validationSchema);
-
-    if (errors.length > 0) {
-      toast.error(errors[0]);
-      return;
-    }
 
     // Prepare payload
     const payload = {
-      full_name: formData.full_name,
+      userName: formData.userName,
+      userProfilePic: formData.userProfilePic,
       gender: formData.gender,
-      maritalStatus: formData.maritalStatus,
       dob: formData.dob,
       address: formData.address,
-      userId: formData.userId,
+      phone: formData.phone,
+      email: formData.email,
+      jobSeekerId: formData.jobSeekerId,
     };
+    console.log("payload", payload);
 
     // Submit form using submitForm function
     try {
       const data = await submitForm({
-        url: `${baseUrl}/job-seekers/create-job-seeker-details`,
+        url: `${baseUrl}/job-seekers-basic-details/create-job-seeker-basic-details`,
         payload,
         setIsLoading,
         navigate,
         successMessage: "Job seeker profile created successfully!",
-        successRedirect: "/dashboard",
-        formDataFields: [],
-        localStorageKey: "jobSeekerData",
-        localStorageData: payload,
+        successRedirect: "/profile",
       });
       console.log(data);
-
-      localStorage.setItem(
-        "jobSeekerData",
-        JSON.stringify(data.resData.jobSeeker)
-      );
     } catch (error) {
       // Error is already handled by submitForm via toast.error
+      console.log("error", error);
       return;
     }
+  };
+
+  const handleSkillClick = () => {
+    navigate("/profile");
   };
 
   return (
@@ -137,18 +92,32 @@ const JobSeekerSetup = () => {
         <div className="space-y-4">
           <div>
             <label
-              htmlFor="full_name"
+              htmlFor="userName"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Full Name
+              Username
             </label>
             <Input
-              id="full_name"
-              placeholder="Full Name"
-              name="full_name"
-              value={formData.full_name}
+              id="userName"
+              placeholder="Username"
+              name="userName"
+              value={formData.userName}
               onChange={(e) => handleFormChange(e, setFormData)}
-              required
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="userProfilePic"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Profile Picture URL
+            </label>
+            <Input
+              id="userProfilePic"
+              placeholder="Profile Picture URL"
+              name="userProfilePic"
+              value={formData.userProfilePic}
+              onChange={(e) => handleFormChange(e, setFormData)}
             />
           </div>
           <div>
@@ -164,34 +133,11 @@ const JobSeekerSetup = () => {
               value={formData.gender}
               onChange={(e) => handleFormChange(e, setFormData)}
               className="w-full p-3 border rounded-lg"
-              required
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="maritalStatus"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Marital Status
-            </label>
-            <select
-              id="maritalStatus"
-              name="maritalStatus"
-              value={formData.maritalStatus}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              className="w-full p-3 border rounded-lg"
-              required
-            >
-              <option value="">Select Marital Status</option>
-              <option value="Single / unmarried">Single / Unmarried</option>
-              <option value="Married">Married</option>
-              <option value="Divorced">Divorced</option>
-              <option value="Widowed">Widowed</option>
             </select>
           </div>
           <div>
@@ -208,7 +154,6 @@ const JobSeekerSetup = () => {
               name="dob"
               value={formData.dob}
               onChange={(e) => handleFormChange(e, setFormData)}
-              required
             />
           </div>
           <div>
@@ -224,10 +169,25 @@ const JobSeekerSetup = () => {
               name="address"
               value={formData.address}
               onChange={(e) => handleFormChange(e, setFormData)}
-              required
             />
           </div>
-          <div className="mt-10 text-center">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Email
+            </label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={formData.email}
+              onChange={(e) => handleFormChange(e, setFormData)}
+            />
+          </div>
+          <div className="mt-10 text-center flex justify-center gap-4">
             <button
               type="submit"
               disabled={isLoading}
@@ -236,6 +196,13 @@ const JobSeekerSetup = () => {
               }`}
             >
               {isLoading ? "Submitting..." : "Submit"}
+            </button>
+            <button
+              type="button"
+              onClick={handleSkillClick}
+              className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold hover:bg-blue-600"
+            >
+              Skip
             </button>
           </div>
         </div>
