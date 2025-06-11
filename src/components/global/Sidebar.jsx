@@ -13,13 +13,14 @@ import {
 } from "lucide-react";
 import NavItem from "../common/NavItem";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navItems = [
   {
     icon: <LayoutDashboard size={20} />,
     label: "Dashboard",
     path: "/dashboard",
+    roles: ["admin", "jobProvider"], // Accessible to both roles
   },
   {
     icon: <Building size={20} />,
@@ -28,6 +29,7 @@ const navItems = [
       { label: "Branch List", path: "./manage-branch/list" },
       { label: "Add Branch", path: "./manage-branch/add" },
     ],
+    roles: ["admin", "jobProvider"], // Admin only
   },
   {
     icon: <Users size={20} />,
@@ -36,6 +38,7 @@ const navItems = [
       { label: "User List", path: "./branch-user/list" },
       { label: "Add User", path: "./branch-user/add" },
     ],
+    roles: ["admin", "jobProvider"], // Admin only
   },
   {
     icon: <UserPlus size={20} />,
@@ -43,6 +46,7 @@ const navItems = [
     children: [
       { label: "Provider List", path: "./manage-job-providers/list" },
     ],
+    roles: ["admin"], // Admin only
   },
   {
     icon: <UserPlus size={20} />,
@@ -50,6 +54,7 @@ const navItems = [
     children: [
       { label: "Seeker List", path: "./manage-job-seekers/list" },
     ],
+    roles: ["admin"], // Admin only
   },
   {
     icon: <Briefcase size={20} />,
@@ -58,6 +63,7 @@ const navItems = [
       { label: "Job List", path: "./manage-job/list" },
       { label: "Create Job", path: "./manage-job/add" },
     ],
+    roles: ["admin", "jobProvider"], // Accessible to both roles
   },
   {
     icon: <UserCheck size={20} />,
@@ -65,44 +71,57 @@ const navItems = [
     children: [
       { label: "Application List", path: "./manage-applicants/list" },
     ],
+    roles: ["admin", "jobProvider"], // Accessible to both roles
   },
   {
     icon: <Palette size={20} />,
     label: "Manage Theme",
     path: "./manage-theme",
+    roles: ["admin"], // Admin only
   },
   {
     icon: <Settings size={20} />,
     label: "Settings",
     path: "./settings",
+    roles: ["admin", "jobProvider"], // Admin only
   },
 ];
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [openSections, setOpenSections] = useState({}); // State to track open sections
+  const [openSections, setOpenSections] = useState({});
+  const [userRole, setUserRole] = useState(null);
+  const [filteredNavItems, setFilteredNavItems] = useState([]);
+
+  // Fetch user role from localStorage on component mount
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData")); // Adjust key as per your storage
+    const role = userData?.role || "jobProvider"; // Default to jobProvider if no role
+    setUserRole(role);
+
+    // Filter navItems based on user role
+    const filteredItems = navItems.filter((item) =>
+      item.roles.includes(role)
+    );
+    setFilteredNavItems(filteredItems);
+  }, []);
 
   const isActive = (path) => location.pathname === path;
 
   const toggleSection = (label) => {
     setOpenSections((prev) => ({
       ...prev,
-      [label]: !prev[label], // Toggle the open state for the clicked section
+      [label]: !prev[label],
     }));
   };
 
   const handleLogout = () => {
-    // Clear localStorage and sessionStorage
     localStorage.clear();
     sessionStorage.clear();
-
-    // Reset component state
     setOpenSections({});
-
-    // Navigate to login page
     navigate("/employers-login");
-    toggleSidebar(); // Close sidebar after logout
+    toggleSidebar();
   };
 
   return (
@@ -113,12 +132,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     >
       <div>
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-orange-global">Man Power</h1>
+          <h1 className="text-2xl font-bold text-orange-global">BWork</h1>
           <p className="text-xs text-gray-500 -mt-1">Business made easy</p>
         </div>
 
         <nav className="space-y-4">
-          {navItems.map((item, index) => (
+          {filteredNavItems.map((item, index) => (
             <div key={index}>
               {item.path ? (
                 <Link to={item.path} onClick={toggleSidebar}>

@@ -105,7 +105,9 @@ console.log("url", url);
     }
 
     toast.success(successMessage || "Request successful!");
-    if (data.resData && data.resData.role && page === "employers-login") {
+    console.log('data.resData && data.resData.role && page === "employers-login"',data.resData.route);
+    
+    if (data.resData && data.resData.role && page === "employers-login" && data.resData.route) {
       navigate(`${data.resData.route}`);
     } else {
       if (successRedirect) {

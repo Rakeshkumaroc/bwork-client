@@ -107,7 +107,7 @@ const EmployersSignupForm = () => {
             >
               terms & conditions
             </Link>{" "}
-            on Man Power
+            on BWork
           </label>
           <button
             type="submit"

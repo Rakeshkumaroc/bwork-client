@@ -59,7 +59,7 @@ const JobSeekerSetup = () => {
 
   useEffect(() => {
     // Retrieve authToken from localStorage
-    const authToken = localStorage.getItem("authToken");
+    const authToken = localStorage.getItem("userData");
     if (!authToken) {
       toast.error("You are not logged in. Please log in to continue.");
       navigate("/login");

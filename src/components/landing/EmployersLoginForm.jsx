@@ -56,7 +56,7 @@ const EmployersLoginForm = () => {
         successMessage: "Login successful!",
         successRedirect: "/org-setup",
         localStorageKey: "authToken",
-        page:"employers-login",
+        page: "employers-login",
       });
 
       // Store resData in localStorage
@@ -71,7 +71,7 @@ const EmployersLoginForm = () => {
     <div className="flex items-center justify-center bg-light-cream py-6 px-4 sm:px-6 lg:px-8 md:h-screen">
       <div className="bg-light-cream w-full max-w-md sm:max-w-lg lg:max-w-xl p-6 sm:p-8">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-global mb-4 sm:mb-6 text-center leading-tight tracking-wide">
-          Login to Man Power
+          Login to BWork
         </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
@@ -91,7 +91,7 @@ const EmployersLoginForm = () => {
             placeholder="Password"
             required
           />
-          <label className="text-xs sm:text-sm flex items-center gap-2">
+          <label className="flex items-center gap-2 sm:gap-3 text-xs xs:text-sm md:text-base leading-relaxed flex-wrap">
             <input
               type="checkbox"
               name="agreeTerms"
@@ -99,11 +99,16 @@ const EmployersLoginForm = () => {
               onChange={(e) => handleFormChange(e, setFormData)}
               className="accent-orange-global"
             />
-            I agree to{" "}
-            <Link to="/terms" className="text-orange-global underline cursor-pointer">
-              terms & conditions
-            </Link>{" "}
-            on Man Power
+            <span className="text-gray-700">
+              I agree to{" "}
+              <Link
+                to="/terms"
+                className="text-orange-global underline hover:text-orange-700 transition-colors duration-200"
+              >
+                terms & conditions
+              </Link>{" "}
+              on BWork
+            </span>
           </label>
           <button
             type="submit"
@@ -136,4 +141,4 @@ const EmployersLoginForm = () => {
   );
 };
 
-export default EmployersLoginForm; 
+export default EmployersLoginForm;

@@ -26,7 +26,7 @@ const Navbar = ({ isActive }) => {
 
   return (
     <header className="flex justify-between items-center mb-12 py-4 relative">
-      <div className="text-2xl font-bold text-orange-global">Man Power</div>
+      <div className="text-2xl font-bold text-orange-global">BWork</div>
 
       {/* Desktop Menu */}
       <nav className="hidden lg:flex text-gray-700 font-medium lg:text-lg items-center gap-10">

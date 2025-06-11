@@ -13,7 +13,7 @@ const Hero = () => {
             <br /> Scale Faster
           </h1>
           <p className="text-gray-700 text-base sm:text-lg">
-            Man Power is your all-in-one business management system designed to
+            BWork is your all-in-one business management system designed to
             centralize, automate, and simplify operations across teams, brands,
             and branches—whether you're a startup or an enterprise.
           </p>

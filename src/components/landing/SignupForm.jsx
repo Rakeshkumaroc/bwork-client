@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FcGoogle } from "react-icons/fc";
 import Input from "../common/Input";
 import { handleFormChange, validateForm, submitForm } from "../../utils/form";
 
@@ -13,10 +12,10 @@ const SignupForm = () => {
     otp: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [showOtp, setShowOtp] = useState(false); // Toggle OTP input and submit
+  const [showOtp, setShowOtp] = useState(false);
   const navigate = useNavigate();
 
-  // Define validation schema for phone and OTP
+  // Validation schema for phone and OTP
   const validationSchema = {
     requiredFields: ["phone", ...(showOtp ? ["otp"] : [])],
     phone: (value) =>
@@ -27,45 +26,78 @@ const SignupForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/profile");
 
-    // Validate form using validateForm function
-    // const errors = validateForm(formData, validationSchema);
+    // Validate form
+    const errors = validateForm(formData, validationSchema);
+    if (errors.length > 0) {
+      toast.error(errors[0]);
+      return;
+    }
 
-    // if (errors.length > 0) {
-    //   toast.error(errors[0]);
-    //   return;
-    // }
+    const payload = showOtp
+      ? { phone: formData.phone, otp: formData.otp }
+      : { phone: formData.phone };
+console.log('payload',payload);
 
-    // setIsLoading(true);
+    try {
+      if (!showOtp) {
+        // Step 1: Request OTP
+        const url = `${baseUrl}/job-seekers/send-otp`;
+        const data = await submitForm({
+          url,
+          payload,
+          setIsLoading,
+          successMessage: "OTP sent to your phone!",
+        });
+        if (data.statusCode === 200) {
+          setShowOtp(true);
+        }
+      } else {
+        // Step 2: Verify OTP and sign up
+        const url = `${baseUrl}/job-seekers/job-seeker-signup`;
+        await submitForm({
+          url,
+          payload,
+          setIsLoading,
+          navigate,
+          successMessage: "Signup successful! Check your phone for login credentials.",
+          successRedirect: "/login",
+        });
+      }
+    } catch (error) {
+      // Error is already handled by submitForm via toast.error
+      console.error("Submission error:", error);
+    }
+  };
 
-    // // Prepare payload
-    // const payload = { phone: formData.phone, otp: formData.otp };
+  const handleResendOtp = async () => {
+    if (!formData.phone) {
+      toast.error("Please enter a phone number.");
+      return;
+    }
 
-    // try {
-    //   let url = `${baseUrl}/user/sign-up`;
-    //   if (!showOtp) {
-    //     // Simulate OTP request on initial "Sign Up" click
-    //     await new Promise((resolve) => setTimeout(resolve, 1000)); // Mock delay
-    //     setShowOtp(true);
-    //     toast.success("OTP sent to your phone!");
-    //     setIsLoading(false);
-    //     return;
-    //   }
+    const errors = validateForm(
+      { phone: formData.phone },
+      { requiredFields: ["phone"], phone: validationSchema.phone }
+    );
+    if (errors.length > 0) {
+      toast.error(errors[0]);
+      return;
+    }
 
-    //   // Submit form to verify OTP and sign up
-    //   await submitForm({
-    //     url,
-    //     payload,
-    //     setIsLoading,
-    //     navigate,
-    //     successMessage: "Signup successful!",
-    //     successRedirect: "/login",
-    //   });
-    // } catch (error) {
-    //   toast.error("An error occurred. Please try again.");
-    //   setIsLoading(false);
-    // }
+    const payload = { phone: formData.phone };
+    try {
+      const url = `${baseUrl}/job-seekers/send-otp`;
+      await submitForm({
+        url,
+        payload,
+        setIsLoading,
+        successMessage: "OTP resent to your phone!",
+      });
+    } catch (error) {
+      // Error is already handled by submitForm via toast.error
+      console.error("Resend OTP error:", error);
+    }
   };
 
   return (
@@ -84,48 +116,41 @@ const SignupForm = () => {
             placeholder="Your Phone"
             required
           />
-          {!showOtp ? (
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              {isLoading ? "Signing Up..." : "Sign Up"}
-            </button>
-          ) : (
-            <>
-              <Input
-                type="text"
-                name="otp"
-                value={formData.otp}
-                onChange={(e) => handleFormChange(e, setFormData)}
-                placeholder="Enter OTP"
-                required
-              />
-              <button
-
-                type="submit"
-                disabled={isLoading}
-                className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
-                  isLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                {isLoading ? "Verifying..." : "Submit OTP"}
-              </button>
-            </>
+          {showOtp && (
+            <Input
+              type="text"
+              name="otp"
+              value={formData.otp}
+              onChange={(e) => handleFormChange(e, setFormData)}
+              placeholder="Enter OTP"
+              required
+            />
           )}
-
-          <div className="text-center text-gray-500 font-medium text-xs sm:text-sm">
-            OR
-          </div>
           <button
-            type="button"
-            className="flex items-center justify-center gap-2 sm:gap-3 bg-black opacity-50 text-white py-2 sm:py-3 rounded-md font-semibold text-sm sm:text-base"
+            type="submit"
+            disabled={isLoading}
+            className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            <FcGoogle className="text-xl sm:text-2xl" /> Sign Up with Google
+            {isLoading
+              ? showOtp
+                ? "Verifying..."
+                : "Sending OTP..."
+              : showOtp
+              ? "Submit OTP"
+              : "Sign Up"}
           </button>
+          {showOtp && (
+            <button
+              type="button"
+              onClick={handleResendOtp}
+              disabled={isLoading}
+              className="text-orange-global underline text-sm sm:text-base text-center"
+            >
+              Resend OTP
+            </button>
+          )}
         </form>
 
         <p className="mt-4 text-center text-gray-600 text-xs sm:text-sm">
