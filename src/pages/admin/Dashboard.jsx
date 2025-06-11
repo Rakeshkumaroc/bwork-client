@@ -3,48 +3,23 @@ import Topbar from "../../components/admin/Topbar";
 import StatCard from "../../components/admin/StatCard";
 import ChartCard from "../../components/admin/ChartCard";
 import MiniCard from "../../components/admin/MiniCard";
-import { useEffect, useState } from "react"; // Added useState
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const [orgName, setOrgName] = useState(""); // State for orgName
 
-  useEffect(() => {
-    // Check for authToken
-    const localData = localStorage.getItem("authToken");
-    if (!localData) {
-      toast.error("You are not logged in. Please log in to continue.");
-      navigate("/employers-login");
-      return;
-    }
-
-    // Retrieve organizationData and set orgName
-    const orgData = localStorage.getItem("organizationData");
-    if (orgData) {
-      try {
-        const parsedData = JSON.parse(orgData);
-        setOrgName(parsedData.orgName || "");
-      } catch (error) {
-        console.error("Failed to parse organizationData:", error);
-        toast.error("Failed to load organization data.");
-      }
-    }
-  }, [navigate]);
 
   return (
     <div className="flex-1 bg-light-cream pl-8 pr-4 py-4 overflow-auto">
       {/* Topbar */}
       <Topbar />
        {/* Welcome Message */}
-      {orgName && (
+      {/* {orgName && (
         <div className="mb-6  md:px-20 text-center">
           <h2 className="lg:text-2xl  sm:text-xl text-lg font-bold text-orange-global">
             Welcome to {orgName}!
           </h2>
         </div>
-      )}
+      )} */}
 
 
       {/* Stats Summary */}

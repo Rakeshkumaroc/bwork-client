@@ -1,14 +1,25 @@
-import { Outlet } from 'react-router-dom';
-import Sidebar from '../../components/global/Sidebar';
-import { useState } from 'react';
-
+import { Outlet } from "react-router-dom";
+import Sidebar from "../../components/global/Sidebar";
+import { useEffect, useState } from "react"; // Added useState
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const Admin = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  useEffect(() => {
+    // Check for authToken
+    const localData = localStorage.getItem("authToken");
+    if (!localData) {
+      toast.error("You are not logged in. Please log in to continue.");
+      navigate("/employers-login");
+      return;
+    }
+  }, [navigate]);
   return (
     <div className="bg-light-cream flex w-full  h-screen lg:px-5 lg:py-3 overflow-x-hidden">
       {/* Sidebar */}

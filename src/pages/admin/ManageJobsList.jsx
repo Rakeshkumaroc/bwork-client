@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Topbar from "../../components/admin/Topbar";
 import { Link, useNavigate } from "react-router-dom";
-
 import DataTable from "../../components/common/admin/DataTable";
 import { deleteForm } from "../../utils/form";
 import { fetchData } from "../../utils/api";
@@ -27,7 +26,7 @@ const ManageJobsList = () => {
 
     // Fetch jobs for the organization
     fetchData(
-      `${baseUrl}/job-posts/get-all-job-posts-by-user-id/${userId}`, // Assumed endpoint for listing jobs
+      `${baseUrl}/job-posts/get-all-job-posts-by-user-id/${userId}`,
       setJobs,
       setLoading,
       setError
@@ -43,10 +42,7 @@ const ManageJobsList = () => {
     { header: "Work Mode", accessor: "workMode" },
     { header: "Job Type", accessor: "jobType" },
     { header: "Description", accessor: "description" },
-    {
-      header: "Branch",
-      accessor: (job) => job.branchId?.branchName || "N/A", // Display branch name if available
-    },
+    { header: "Status", accessor: "status" }, // Added Status column
   ];
 
   const handleEdit = (job) => {
@@ -57,7 +53,7 @@ const ManageJobsList = () => {
     if (window.confirm(`Are you sure you want to delete ${job.title}?`)) {
       try {
         await deleteForm({
-          url: `${baseUrl}/job-posts/delete-job-post/${job._id}`, // Updated to use the specified delete endpoint
+          url: `${baseUrl}/job-posts/delete-job-post/${job._id}`,
           setIsLoading: setLoading,
           successMessage: "Job deleted successfully!",
         });
@@ -69,6 +65,7 @@ const ManageJobsList = () => {
       }
     }
   };
+
   return (
     <div className="min-h-screen bg-light-cream p-4 sm:p-8">
       <Topbar />

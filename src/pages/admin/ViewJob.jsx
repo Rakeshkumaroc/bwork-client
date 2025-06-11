@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Topbar from "../../components/admin/Topbar";
 import { fetchData } from "../../utils/api";
+import { updateForm } from "../../utils/form";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
@@ -12,21 +13,22 @@ const ViewJob = () => {
   const [jobData, setJobData] = useState(null);
   const [fetchLoading, setFetchLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
+  const [updateLoading, setUpdateLoading] = useState(false);
 
-  useEffect(() => {
+  // Function to fetch job data
+  const fetchJobData = () => {
     if (!id) {
       toast.error("Invalid job ID.", {
         position: "top-right",
         autoClose: 3000,
       });
+      setFetchLoading(false);
       return;
     }
-    console.log(`${baseUrl}/job-posts/get-job-post-by-id/${id}`);
 
     fetchData(
       `${baseUrl}/job-posts/get-job-post-by-id/${id}`,
       (data) => {
-        console.log("data.resData", data);
         if (data) {
           setJobData(data);
         } else {
@@ -36,10 +38,37 @@ const ViewJob = () => {
       setFetchLoading,
       setFetchError
     );
+  };
+
+  useEffect(() => {
+    fetchJobData();
   }, [id]);
 
   const handleEdit = () => {
     navigate(`/dashboard/manage-job/${id}`);
+  };
+
+  // Function to handle status update
+  const handleStatusUpdate = async (status) => {
+    try {
+      const response = await updateForm({
+        url: `${baseUrl}/job-posts/update-job-post-status/${id}`,
+        payload: { status },
+        setIsLoading: setUpdateLoading,
+        successMessage: `Job status updated to ${status}.`,
+      });
+
+      // Check if response.data contains valid job data
+      if (response?.data && Object.keys(response.data).length > 0) {
+        setJobData(response.data); // Update with new data if available
+      } else {
+        // Refetch job data if response.data is incomplete
+        fetchJobData();
+      }
+    } catch (error) {
+      console.error("Status update failed:", error);
+      // Error is handled by updateForm via toast
+    }
   };
 
   if (fetchLoading) {
@@ -70,7 +99,7 @@ const ViewJob = () => {
     <div className="min-h-screen bg-light-cream p-4 sm:p-8">
       <ToastContainer />
       <Topbar />
-      <div className="bg-cream rounded-xl shadow-lg p-6 w-full   mx-auto flex items-start space-x-6">
+      <div className="bg-cream rounded-xl shadow-lg p-6 w-full mx-auto flex items-start space-x-6">
         {/* Right Section - Info */}
         <div className="flex-1">
           <div className="flex justify-between items-start">
@@ -80,7 +109,10 @@ const ViewJob = () => {
               </h2>
               <p className="text-sm text-gray-500">{jobData.description}</p>
             </div>
-            <button  onClick={handleEdit} className="flex items-center bg-orange-500 text-white px-4 py-1 rounded cursor-default">
+            <button
+              onClick={handleEdit}
+              className="flex items-center bg-orange-500 text-white px-4 py-1 rounded hover:bg-orange-600"
+            >
               <img
                 src="https://img.icons8.com/ios-glyphs/20/ffffff/edit.png"
                 alt="Edit"
@@ -170,21 +202,40 @@ const ViewJob = () => {
               <div className="flex items-center space-x-2">
                 <span
                   className={`text-sm font-semibold ${
-                    jobData.isActive ? "text-green-600" : "text-red-500"
+                    jobData.status === "Approved"
+                      ? "text-green-600"
+                      : jobData.status === "Reject"
+                      ? "text-red-500"
+                      : "text-yellow-500"
                   }`}
                 >
-                  {jobData.isActive ? "Active" : "Inactive"}
+                  {jobData.status}
                 </span>
-                <div className="w-10 h-5 bg-gray-300 rounded-full shadow-inner relative">
-                  <div
-                    className={`w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${
-                      jobData.isActive
-                        ? "bg-green-500 translate-x-5"
-                        : "bg-red-500 translate-x-0"
-                    }`}
-                  ></div>
-                </div>
               </div>
+            </div>
+            <div className="md:col-span-3 flex space-x-4 mt-4">
+              <button
+                onClick={() => handleStatusUpdate("Approved")}
+                disabled={updateLoading || jobData.status === "Approved"}
+                className={`flex items-center px-4 py-2 rounded text-white ${
+                  jobData.status === "Approved"
+                    ? "bg-green-300 cursor-not-allowed"
+                    : "bg-green-500 hover:bg-green-600"
+                }`}
+              >
+                {updateLoading ? "Updating..." : "Approve"}
+              </button>
+              <button
+                onClick={() => handleStatusUpdate("Reject")}
+                disabled={updateLoading || jobData.status === "Reject"}
+                className={`flex items-center px-4 py-2 rounded text-white ${
+                  jobData.status === "Reject"
+                    ? "bg-red-300 cursor-not-allowed"
+                    : "bg-red-500 hover:bg-red-600"
+                }`}
+              >
+                {updateLoading ? "Updating..." : "Reject"}
+              </button>
             </div>
           </div>
         </div>
