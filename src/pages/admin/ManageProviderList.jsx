@@ -13,18 +13,15 @@ const ManageProviderList = () => {
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedProviders, setSelectedProviders] = useState([]);
 
   // Fetch job providers on component mount
   useEffect(() => {
     fetchData(
       `${baseUrl}/job-providers/get-all-job-providers`,
       (data) => {
-        // Add a unique identifier (e.g., email) as a fallback for _id
-        const formattedProviders = data.map((provider, index) => ({
+        // Use _id from response as the unique identifier
+        const formattedProviders = data.map((provider) => ({
           ...provider,
-          _id: provider.email, // Using email as a unique identifier
-          isActive: provider.isActive ?? true, // Assume active unless specified
         }));
         setProviders(formattedProviders);
       },
@@ -35,63 +32,34 @@ const ManageProviderList = () => {
 
   // Filter providers based on search input
   const filteredProviders = providers.filter((provider) =>
-    provider.providerName?.toLowerCase().includes(search.toLowerCase()) ||
-    provider.email?.toLowerCase().includes(search.toLowerCase())
+    (provider.providerName?.toLowerCase() || "").includes(search.toLowerCase()) ||
+    (provider.email?.toLowerCase() || "").includes(search.toLowerCase())
   );
 
   const columns = [
-    {
-      header: (
-        <input
-          type="checkbox"
-          onChange={(e) => {
-            if (e.target.checked) {
-              setSelectedProviders(filteredProviders.map((p) => p._id));
-            } else {
-              setSelectedProviders([]);
-            }
-          }}
-          checked={selectedProviders.length === filteredProviders.length && filteredProviders.length > 0}
-        />
-      ),
-      render: (provider) => (
-        <input
-          type="checkbox"
-          checked={selectedProviders.includes(provider._id)}
-          onChange={() => {
-            setSelectedProviders((prev) =>
-              prev.includes(provider._id)
-                ? prev.filter((id) => id !== provider._id)
-                : [...prev, provider._id]
-            );
-          }}
-        />
-      ),
-    },
-    { header: "Email", accessor: "email" },
-    {
-      header: "Provider Name",
-      render: (provider) => (
-        <div className="flex items-center">
-          
-          {provider.providerName || "N/A"}
-        </div>
-      ),
-    },
-    { header: "Phone", accessor: "phone" },
-    {
-      header: "Status",
-      render: (provider) => (
-        <span
-          className={`inline-block px-2 py-1 text-xs rounded-full ${
-            provider.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-          }`}
+  { header: "Email", accessor: "email" },
+  {
+    header: "Provider Name",
+    render: (provider) => provider.providerName || "N/A",
+  },
+  { header: "Phone", accessor: "phone" },
+  {
+    header: "Website",
+    render: (provider) =>
+      provider.website ? (
+        <a
+          href={provider.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-orange-global hover:underline"
         >
-          {provider.isActive ? "Active" : "Inactive"}
-        </span>
+          {provider.website}
+        </a>
+      ) : (
+        "N/A"
       ),
-    },
-  ];
+  },
+];
 
   const handleDelete = async (provider) => {
     if (window.confirm(`Are you sure you want to delete ${provider.providerName || provider.email}?`)) {
@@ -102,7 +70,6 @@ const ManageProviderList = () => {
           successMessage: "Job provider deleted successfully!",
         });
         setProviders(providers.filter((p) => p._id !== provider._id));
-        setSelectedProviders(selectedProviders.filter((id) => id !== provider._id));
         toast.success("Job provider deleted successfully!");
       } catch (err) {
         console.error("Error deleting provider:", err);
@@ -112,105 +79,21 @@ const ManageProviderList = () => {
     }
   };
 
-  const handleBulkApprove = async () => {
-    if (selectedProviders.length === 0) {
-      toast.error("Please select at least one provider to approve.");
-      return;
-    }
-    if (window.confirm(`Are you sure you want to approve ${selectedProviders.length} provider(s)?`)) {
-      try {
-        await fetch(`${baseUrl}/job-providers/update-status`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            providerIds: selectedProviders,
-            isActive: true,
-          }),
-        });
-        setProviders((prev) =>
-          prev.map((provider) =>
-            selectedProviders.includes(provider._id)
-              ? { ...provider, isActive: true }
-              : provider
-          )
-        );
-        setSelectedProviders([]);
-        toast.success("Selected providers approved successfully!");
-      } catch (err) {
-        console.error("Error approving providers:", err);
-        setError("Failed to approve providers.");
-        toast.error("Failed to approve providers.");
-      }
-    }
-  };
-
-  const handleBulkReject = async () => {
-    if (selectedProviders.length === 0) {
-      toast.error("Please select at least one provider to reject.");
-      return;
-    }
-    if (window.confirm(`Are you sure you want to reject ${selectedProviders.length} provider(s)?`)) {
-      try {
-        await fetch(`${baseUrl}/job-providers/update-status`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            providerIds: selectedProviders,
-            isActive: false,
-          }),
-        });
-        setProviders((prev) =>
-          prev.map((provider) =>
-            selectedProviders.includes(provider._id)
-              ? { ...provider, isActive: false }
-              : provider
-          )
-        );
-        setSelectedProviders([]);
-        toast.success("Selected providers rejected successfully!");
-      } catch (err) {
-        console.error("Error rejecting providers:", err);
-        setError("Failed to reject providers.");
-        toast.error("Failed to reject providers.");
-      }
-    }
-  };
-
   return (
     <div className="min-h-screen bg-light-cream p-8">
       <Topbar />
       <div className="flex justify-between flex-wrap items-center mb-6">
-        <h1 className="lg:text-3xl text-xl font-bold text-orange-global">
+        <h1 className="text-xl lg:text-3xl font-bold text-orange-global">
           Manage Job Providers
         </h1>
-        <div className="mt-6 flex justify-between w-full md:w-auto md:justify-end gap-5">
+        <div className="mt-6 w-full md:w-auto">
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search by name or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border border-orange-400 rounded-full w-full md:w-auto px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
+            className="border border-orange rounded-full w-full md:w-64 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
           />
-          <div className="flex gap-3">
-            <button
-              onClick={handleBulkApprove}
-              className="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-full text-sm"
-              disabled={selectedProviders.length === 0}
-            >
-              Approve
-            </button>
-            <button
-              onClick={handleBulkReject}
-              className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-full text-sm"
-              disabled={selectedProviders.length === 0}
-            >
-              Reject
-            </button>
-          </div>
         </div>
       </div>
 

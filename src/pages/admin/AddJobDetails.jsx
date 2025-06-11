@@ -127,10 +127,9 @@ const AddJobDetails = ({ action }) => {
 
     // Retrieve authToken from localStorage
     const authToken = JSON.parse(localStorage.getItem("authToken") || "{}");
-    const userId = authToken.userId;
-    const orgId = authToken.orgId; // Added for consistency with ManageJobsList and AddBranchDetails
+    const userId = authToken.userId; 
 
-    if (!userId || !orgId) {
+    if (!userId) {
       toast.error("User or Organization ID not found. Please log in again.", {
         position: "top-right",
         autoClose: 3000,
@@ -140,7 +139,7 @@ const AddJobDetails = ({ action }) => {
     }
 
     // Prepare payload
-    const payload = { ...formData, userId, orgId };
+    const payload = { ...formData, userId };
 
     // Handle create or update
     const apiUrl =

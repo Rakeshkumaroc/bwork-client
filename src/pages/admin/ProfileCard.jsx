@@ -5,13 +5,13 @@ import {
   FaTimesCircle,
 } from "react-icons/fa";
 import { IoMdTime } from "react-icons/io";
+import { MdHourglassEmpty } from "react-icons/md"; // Added for "In Process"
 import Topbar from "../../components/admin/Topbar";
 
 const ProfileCard = () => {
   return (
     <div className="min-h-screen bg-light-cream p-8">
       <Topbar />
-     
       <div className="w-full mx-auto p-6 bg-cream rounded-xl shadow-md space-y-6 text-[#333]">
         <div className="flex flex-wrap gap-5 items-start justify-between">
           <div className="flex gap-4 items-center">
@@ -31,7 +31,7 @@ const ProfileCard = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4  ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h4 className="font-semibold mb-1">Contact Info</h4>
             <div className="flex items-center gap-2 text-gray-700 mb-1">
@@ -73,16 +73,21 @@ const ProfileCard = () => {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-4 justify-center">
-          <button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-medium">
-            <FaCheckCircle /> Approved
+       <div className="flex flex-wrap gap-2 sm:gap-4 justify-center">
+          <button className="flex items-center gap-1.5 sm:gap-2 border border-gray-400 px-4 sm:px-6 py-1.5 sm:py-2 rounded-md font-medium text-gray-700 text-xs sm:text-sm hover:bg-gray-100">
+            <IoMdTime className="text-sm sm:text-base" /> Pending
           </button>
-          <button className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md font-medium">
-            <FaTimesCircle /> REJECT
+          <button className="flex items-center gap-1.5 sm:gap-2 bg-yellow-500 text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-md font-medium text-xs sm:text-sm hover:bg-yellow-600">
+            <MdHourglassEmpty className="text-sm sm:text-base" /> In Process
           </button>
-          <button className="flex items-center gap-2 border border-gray-400 px-6 py-2 rounded-md font-medium text-gray-700">
-            <IoMdTime /> PENDING
+          <button className="flex items-center gap-1.5 sm:gap-2 bg-red-600 text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-md font-medium text-xs sm:text-sm hover:bg-red-700">
+            <FaTimesCircle className="text-sm sm:text-base" /> Reject
           </button>
+         
+          <button className="flex items-center gap-1.5 sm:gap-2 bg-green-600 text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-md font-medium text-xs sm:text-sm hover:bg-green-700">
+            <FaCheckCircle className="text-sm sm:text-base" /> Approved
+          </button>
+          
         </div>
       </div>
     </div>

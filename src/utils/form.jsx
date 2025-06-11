@@ -58,7 +58,7 @@ export const submitForm = async ({
   page
 }) => {
   setIsLoading(true);
-console.log("payload", payload);
+console.log("url", url);
 
   try {
     let response;
