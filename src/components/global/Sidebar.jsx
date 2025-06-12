@@ -43,17 +43,13 @@ const navItems = [
   {
     icon: <UserPlus size={20} />,
     label: "Manage Job Providers",
-    children: [
-      { label: "Provider List", path: "./manage-job-providers/list" },
-    ],
+    children: [{ label: "Provider List", path: "./manage-job-providers/list" }],
     roles: ["admin"], // Admin only
   },
   {
     icon: <UserPlus size={20} />,
     label: "Manage Job Seekers",
-    children: [
-      { label: "Seeker List", path: "./manage-job-seekers/list" },
-    ],
+    children: [{ label: "Seeker List", path: "./manage-job-seekers/list" }],
     roles: ["admin"], // Admin only
   },
   {
@@ -68,9 +64,7 @@ const navItems = [
   {
     icon: <UserCheck size={20} />,
     label: "Manage Job Applications",
-    children: [
-      { label: "Application List", path: "./manage-applicants/list" },
-    ],
+    children: [{ label: "Application List", path: "./manage-applicants/list" }],
     roles: ["admin", "jobProvider"], // Accessible to both roles
   },
   {
@@ -96,14 +90,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   // Fetch user role from localStorage on component mount
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("userData")); // Adjust key as per your storage
-    const role = userData?.role || "jobProvider"; // Default to jobProvider if no role
+    const userData = JSON.parse(localStorage.getItem("authToken")); // Adjust key as per your storage
+    const role = userData?.role   // Default to jobProvider if no role
     setUserRole(role);
+    console.log('role',role);
 
     // Filter navItems based on user role
-    const filteredItems = navItems.filter((item) =>
-      item.roles.includes(role)
-    );
+    const filteredItems = navItems.filter((item) => item.roles.includes(role));
     setFilteredNavItems(filteredItems);
   }, []);
 
