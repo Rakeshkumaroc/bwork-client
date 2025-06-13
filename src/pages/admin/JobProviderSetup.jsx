@@ -183,7 +183,7 @@ const JobProviderSetup = () => {
 
   return (
     <form onSubmit={handleSubmit} className="p-10 bg-cream min-h-screen">
-      <h2 className="text-3xl md:text-4xl font-bold text-orange-global mb-8">
+      <h2 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-8">
         Job Provider Setup
       </h2>
 
@@ -221,7 +221,7 @@ const JobProviderSetup = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`bg-orange-global text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold w-full ${
+            className={`bg-yellow-400 text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold w-full ${
               isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-orange-600"
             }`}
           >

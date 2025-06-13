@@ -63,7 +63,7 @@ const EmployersSignupForm = () => {
   return (
     <div className="flex items-center justify-center bg-light-cream py-6 px-4 sm:px-6 lg:px-8 md:h-screen">
       <div className="bg-light-cream w-full max-w-md sm:max-w-lg lg:max-w-xl p-6 sm:p-8">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-global mb-4 sm:mb-6 text-center leading-tight tracking-wide">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-4 sm:mb-6 text-center leading-tight tracking-wide">
           Create Account
         </h2>
 
@@ -98,12 +98,12 @@ const EmployersSignupForm = () => {
               name="agreeTerms"
               checked={formData.agreeTerms}
               onChange={(e) => handleFormChange(e, setFormData)}
-              className="accent-orange-global"
+              className="accent-yellow-400"
             />
             I agree to{" "}
             <Link
               to="/terms"
-              className="text-orange-global underline cursor-pointer"
+              className="text-yellow-400 underline cursor-pointer"
             >
               terms & conditions
             </Link>{" "}
@@ -112,7 +112,7 @@ const EmployersSignupForm = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
+            className={`bg-yellow-400 text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
               isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -131,7 +131,7 @@ const EmployersSignupForm = () => {
 
         <p className="mt-4 text-center text-gray-600 text-xs sm:text-sm">
           Already have an account?{" "}
-          <Link to="/employers-login" className="text-orange-global underline">
+          <Link to="/employers-login" className="text-yellow-400 underline">
             Login
           </Link>
         </p>

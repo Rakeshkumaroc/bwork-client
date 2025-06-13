@@ -74,7 +74,7 @@ const ViewJob = () => {
   if (fetchLoading) {
     return (
       <div className="min-h-screen bg-light-cream p-4 sm:p-8 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-orange-global"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-yellow-400"></div>
       </div>
     );
   }

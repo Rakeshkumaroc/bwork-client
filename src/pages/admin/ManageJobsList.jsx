@@ -70,7 +70,7 @@ const ManageJobsList = () => {
     <div className="min-h-screen bg-light-cream p-4 sm:p-8">
       <Topbar />
       <div className="flex justify-between flex-wrap items-center mb-6">
-        <h1 className="text-xl lg:text-3xl font-bold text-orange-global">
+        <h1 className="text-xl lg:text-3xl font-bold text-yellow-400">
           Manage Jobs
         </h1>
         <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row justify-between w-full sm:w-auto sm:justify-end gap-4 sm:gap-5">
@@ -83,7 +83,7 @@ const ManageJobsList = () => {
           />
           <Link
             to="/dashboard/manage-jobs/add"
-            className="bg-orange-500 hover:bg-orange-global text-white font-semibold px-4 py-2 rounded-full flex items-center gap-1 text-lg sm:text-sm transition"
+            className="bg-orange-500 hover:bg-yellow-400 text-white font-semibold px-4 py-2 rounded-full flex items-center gap-1 text-lg sm:text-sm transition"
           >
             <span>+</span>
             <span className="hidden sm:block">Add Job</span>

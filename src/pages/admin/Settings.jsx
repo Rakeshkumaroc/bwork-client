@@ -111,7 +111,7 @@ const Settings = () => {
       <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         {/* Sidebar */}
         <div className="w-full md:w-64 bg-cream rounded-xl shadow-lg p-5 border border-blue-300">
-          <h3 className="text-orange-global font-semibold mb-4">Settings</h3>
+          <h3 className="text-yellow-400 font-semibold mb-4">Settings</h3>
           <ul className="space-y-2">
             {["Basics", "Password", "Account", "Notification", "Payment"].map(
               (tab) => (
@@ -120,7 +120,7 @@ const Settings = () => {
                   onClick={() => setActiveTab(tab)}
                   className={`flex justify-between items-center px-3 py-2 rounded cursor-pointer ${
                     activeTab === tab
-                      ? "bg-orange-global text-white"
+                      ? "bg-yellow-400 text-white"
                       : "text-black hover:bg-orange-100"
                   }`}
                 >
@@ -135,14 +135,14 @@ const Settings = () => {
         {/* Main Content */}
         <div className="flex-1 bg-cream rounded-lg shadow-lg p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-            <h2 className="text-lg font-semibold text-orange-global">
+            <h2 className="text-lg font-semibold text-yellow-400">
               {activeTab === "Basics"
                 ? "Organization Registration"
                 : "Update Password"}
             </h2>
             <button
               onClick={() => toggleEditMode(activeTab)}
-              className="w-full sm:w-auto bg-orange-global hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md shadow-md flex items-center justify-center transition text-lg sm:text-base"
+              className="w-full sm:w-auto bg-yellow-400 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md shadow-md flex items-center justify-center transition text-lg sm:text-base"
             >
               <FaEdit className="mr-2" />
               <span className="hidden sm:block">
@@ -221,7 +221,7 @@ const Settings = () => {
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-orange-global hover:bg-orange-600 text-white font-semibold py-2 px-4 sm:px-6 rounded-md shadow-md flex items-center justify-center transition text-lg sm:text-base"
+                  className="w-full sm:w-auto bg-yellow-400 hover:bg-orange-600 text-white font-semibold py-2 px-4 sm:px-6 rounded-md shadow-md flex items-center justify-center transition text-lg sm:text-base"
                 >
                   <span>+</span>
                   <span className="hidden sm:block">SAVE</span>
@@ -297,7 +297,7 @@ const Settings = () => {
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-orange-global hover:bg-orange-600 text-white font-semibold py-2 px-4 sm:px-6 rounded-md shadow-md flex items-center justify-center transition text-lg sm:text-base"
+                  className="w-full sm:w-auto bg-yellow-400 hover:bg-orange-600 text-white font-semibold py-2 px-4 sm:px-6 rounded-md shadow-md flex items-center justify-center transition text-lg sm:text-base"
                 >
                   <span>+</span>
                   <span className="hidden sm:block">SAVE</span>

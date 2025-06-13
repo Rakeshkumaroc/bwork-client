@@ -1,7 +1,7 @@
-// src/components/KeySkills.jsx
 import { useContext, useState, useEffect } from "react";
 import { FaPen, FaTimes, FaPlus } from "react-icons/fa";
 import { MyContext } from "../../App";
+import KeySkillSkel from "../skeleton/jobseeker/KeySkillSkel";
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 const KeySkills = () => {
@@ -14,17 +14,17 @@ const KeySkills = () => {
     experience: "",
   });
   const [error, setError] = useState(null);
-  const [editSkillId, setEditSkillId] = useState(null); // Track skill being edited
-
+  const [editSkillId, setEditSkillId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Added for skeleton loading
   const levels = ["beginner", "intermediate", "advanced", "expert"];
 
-  // Get jobSeekerId from localStorage
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const jobSeekerId = userData._id || null;
 
   useEffect(() => {
     if (!jobSeekerId) {
       setError("User ID not found. Please log in again.");
+      setIsLoading(false);
       return;
     }
 
@@ -36,8 +36,6 @@ const KeySkills = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              // Add authorization header if needed
-              // "Authorization": `Bearer ${token}`,
             },
           }
         );
@@ -56,6 +54,8 @@ const KeySkills = () => {
       } catch (err) {
         console.error("Error fetching skills:", err);
         setError(err.message);
+      } finally {
+        setIsLoading(false); // Stop loading after fetch
       }
     };
 
@@ -64,7 +64,7 @@ const KeySkills = () => {
 
   const handleFormToggle = () => {
     setFormData({ skill: "", level: "", experience: "" });
-    setEditSkillId(null); // Reset for adding new skill
+    setEditSkillId(null);
     setIsFormVisible(true);
   };
 
@@ -102,8 +102,6 @@ const KeySkills = () => {
         throw new Error(errorData.message || "Failed to add skill");
       }
       const addedSkill = await response.json();
-      console.log("addedSkill", addedSkill);
-
       setSkills([...skills, addedSkill]);
       setIsFormVisible(false);
       setFormData({ skill: "", level: "", experience: "" });
@@ -136,13 +134,12 @@ const KeySkills = () => {
       experience: Number(formData.experience) || 0,
       jobSeekerId,
     };
-    console.log("editSkillId", editSkillId);
 
     try {
       const response = await fetch(
         `${baseUrl}/job-seeker-skills/update-skill/${editSkillId}`,
         {
-          method: "put",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -177,17 +174,24 @@ const KeySkills = () => {
     setError(null);
   };
 
+  if (isLoading) {
+    return (
+      <KeySkillSkel/>
+    );
+  }
+
   return (
-    <div className="bg-cream p-6 rounded-xl shadow border" ref={keySkillsRef}>
+    <div className="bg-white rounded-md shadow-md p-6" ref={keySkillsRef}>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-800">Key Skills</h2>
+        <h2 className="text-2xl font-semibold text-gray-800">Key Skills</h2>
         {!isFormVisible && (
-          <FaPlus
-            className="text-gray-400 hover:text-gray-600 cursor-pointer"
-            size={14}
+          <button
+            className="p-2 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition"
             onClick={handleFormToggle}
             title="Add Skill"
-          />
+          >
+            <FaPlus className="text-lg" />
+          </button>
         )}
       </div>
       {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
@@ -195,24 +199,26 @@ const KeySkills = () => {
         {skills.map((skill) => (
           <div
             key={skill._id}
-            className="flex items-center px-4 py-1 text-sm border border-gray-300 rounded-full text-gray-700 bg-white hover:bg-gray-50 transition"
+            className="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-full text-gray-700 bg-white hover:bg-gray-50 transition"
           >
             <span>{`${skill.skill} (${skill.level}, ${skill.experience} yrs)`}</span>
-            <FaPen
-              className="ml-2 text-gray-600 hover:text-gray-800 cursor-pointer"
-              size={12}
+            <button
+              className="ml-2 text-gray-500 hover:text-yellow-400"
               onClick={() => handleEdit(skill)}
               title="Edit"
-            />
-            <FaTimes
-              className="ml-2 text-gray-300 cursor-not-allowed"
-              size={12}
+            >
+              <FaPen size={12} />
+            </button>
+            <button
+              className="ml-2 text-gray-500 hover:text-red-600 cursor-not-allowed"
               title="Delete (Disabled)"
-            />
+            >
+              <FaTimes size={12} />
+            </button>
           </div>
         ))}
         {isFormVisible && (
-          <div className="flex items-center px-4 py-1 text-sm border border-gray-300 rounded-full bg-white">
+          <div className="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-full bg-white">
             <form
               onSubmit={editSkillId ? handleUpdate : handleSubmit}
               className="flex items-center gap-2"
@@ -222,7 +228,7 @@ const KeySkills = () => {
                 name="skill"
                 value={formData.skill}
                 onChange={handleFormChange}
-                className="p-1 text-sm border rounded w-24"
+                className="p-1 text-sm border border-gray-300 rounded focus:border-yellow-400 outline-none w-24"
                 placeholder="Skill"
                 required
               />
@@ -230,7 +236,7 @@ const KeySkills = () => {
                 name="level"
                 value={formData.level}
                 onChange={handleFormChange}
-                className="p-1 text-sm border rounded w-28"
+                className="p-1 text-sm border border-gray-300 rounded focus:border-yellow-400 outline-none w-28"
                 required
               >
                 <option value="">Level</option>
@@ -245,14 +251,14 @@ const KeySkills = () => {
                 name="experience"
                 value={formData.experience}
                 onChange={handleFormChange}
-                className="p-1 text-sm border rounded w-16"
+                className="p-1 text-sm border border-gray-300 rounded focus:border-yellow-400 outline-none w-16"
                 placeholder="Yrs"
                 min="0"
                 required
               />
               <button
                 type="submit"
-                className="text-green-600 hover:text-green-800"
+                className="text-yellow-400 hover:text-yellow-600"
                 title="Save"
               >
                 <FaPen size={12} />

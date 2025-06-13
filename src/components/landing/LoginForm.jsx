@@ -18,7 +18,9 @@ const LoginForm = () => {
   const validationSchema = {
     requiredFields: ["phone", "password"],
     phone: (value) =>
-      !/^\d{10}$/.test(value) ? "Please enter a valid 10-digit phone number" : null,
+      !/^\d{10}$/.test(value)
+        ? "Please enter a valid 10-digit phone number"
+        : null,
     password: (value) =>
       value.length < 6 ? "Password must be at least 6 characters long" : null,
   };
@@ -46,12 +48,13 @@ const LoginForm = () => {
         setIsLoading,
         navigate,
         successMessage: "Login successful!",
-        successRedirect: "/job-seeker-setup", 
       });
-
-      // Store user data in localStorage (adjust based on backend response)
-      localStorage.setItem("userData", JSON.stringify(responseData.resData));
-         
+      if (responseData.success) {
+        const { routes } = responseData.resData;
+        // Store user data in localStorage (adjust based on backend response)
+        localStorage.setItem("userData", JSON.stringify(responseData.resData));
+        navigate(routes);
+      }
     } catch (error) {
       // Error is handled by submitForm via toast.error
       console.error("Login error:", error);
@@ -61,7 +64,7 @@ const LoginForm = () => {
   return (
     <div className="flex items-center justify-center bg-light-cream py-6 px-4 sm:px-6 lg:px-8 md:h-screen">
       <div className="bg-light-cream w-full max-w-md sm:max-w-lg lg:max-w-xl p-6 sm:p-8">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-global mb-4 sm:mb-6 text-center leading-tight tracking-wide">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-4 sm:mb-6 text-center leading-tight tracking-wide">
           Login to BWork
         </h2>
 
@@ -85,7 +88,7 @@ const LoginForm = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
+            className={`bg-yellow-400 text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
               isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -95,7 +98,7 @@ const LoginForm = () => {
 
         <p className="mt-4 text-center text-gray-600 text-xs sm:text-sm">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-orange-global underline">
+          <Link to="/signup" className="text-yellow-400 underline">
             Signup
           </Link>
         </p>

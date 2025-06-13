@@ -1,8 +1,8 @@
  const LeftTestimonials = () => {
   return (
-    <div className="flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-6">
+    <div className="flex flex-col justify-center pr-4 sm:pr-6 lg:pr-8 py-6">
      
-      <h1 className="text-3xl hidden md:block sm:text-4xl md:text-5xl lg:text-6xl font-bold text-orange-global mb-4 sm:mb-6 leading-tight tracking-wide">
+      <h1 className="text-3xl hidden md:block sm:text-4xl md:text-5xl lg:text-6xl font-bold text-yellow-400 mb-4 sm:mb-6 leading-tight tracking-wide">
         Choose BWork
         <br />
         Business Made

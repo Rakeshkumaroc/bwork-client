@@ -7,7 +7,7 @@ const Checkbox = ({ label, name, checked, onChange }) => {
         name={name}
         checked={checked}
         onChange={onChange}
-        className="accent-orange-global w-4 h-4"
+        className="accent-yellow-400 w-4 h-4"
       />
       {label}
     </label>

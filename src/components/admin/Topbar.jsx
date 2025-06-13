@@ -12,7 +12,7 @@ const Topbar = () => {
         onClick={toggleSidebar}
         aria-label="Toggle Sidebar"
       >
-        <Menu size={24} className="text-orange-global" />
+        <Menu size={24} className="text-yellow-400" />
       </button>
 
       {/* Search Input */}
@@ -42,10 +42,10 @@ const Topbar = () => {
       {/* Icons */}
       <div className="flex items-center space-x-4 ml-4">
         <button className="w-8 h-8 flex items-center justify-center border border-orange-300 rounded-full hover:bg-orange-100 transition">
-          <Bell size={16} className="text-orange-global" />
+          <Bell size={16} className="text-yellow-400" />
         </button>
         <button className="w-8 h-8 flex items-center justify-center border border-orange-300 rounded-full hover:bg-orange-100 transition">
-          <UserCircle size={16} className="text-orange-global" />
+          <UserCircle size={16} className="text-yellow-400" />
         </button>
 
         {/* Profile Picture */}

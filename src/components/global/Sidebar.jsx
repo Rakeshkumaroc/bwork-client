@@ -125,7 +125,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     >
       <div>
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-orange-global">BWork</h1>
+          <h1 className="text-2xl font-bold text-yellow-400">BWork</h1>
           <p className="text-xs text-gray-500 -mt-1">Business made easy</p>
         </div>
 
@@ -164,7 +164,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                         <Link key={i} to={child.path} onClick={toggleSidebar}>
                           <NavItem
                             icon={
-                              <div className="w-2 h-2 bg-orange-global rounded-full" />
+                              <div className="w-2 h-2 bg-yellow-400 rounded-full" />
                             }
                             label={child.label}
                             active={isActive(child.path)}

@@ -51,7 +51,7 @@ const ManageProviderList = () => {
           href={provider.website}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-orange-global hover:underline"
+          className="text-yellow-400 hover:underline"
         >
           {provider.website}
         </a>
@@ -83,7 +83,7 @@ const ManageProviderList = () => {
     <div className="min-h-screen bg-light-cream p-8">
       <Topbar />
       <div className="flex justify-between flex-wrap items-center mb-6">
-        <h1 className="text-xl lg:text-3xl font-bold text-orange-global">
+        <h1 className="text-xl lg:text-3xl font-bold text-yellow-400">
           Manage Job Providers
         </h1>
         <div className="mt-6 w-full md:w-auto">

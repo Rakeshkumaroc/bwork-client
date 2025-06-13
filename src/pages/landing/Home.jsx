@@ -1,13 +1,23 @@
+import Footer from "../../components/global/Footer";
 import Navbar from "../../components/global/Navbar";
-import Hero from "../../components/landing/Hero";
+import ClientLogos from "../../components/landing/home/ClientLogos";
+import Hero from "../../components/landing/home/Hero";
+import HowItWorks from "../../components/landing/home/HowItWorks";
+import JobCategories from "../../components/landing/home/JobCategories";
+import RegisterNow from "../../components/landing/home/RegisterNow";
+import TestimonialSection from "../../components/landing/home/TestimonialSection";
 
 const Home = () => {
   return (
     <>
-      <Navbar isActive="Home" />
-      <div className="px-4  sm:px-10 xl:px-24 bg-light-cream min-h-screen">
-        <Hero />
-      </div>
+      <Navbar isActive="Home" /> 
+      <Hero />
+      <ClientLogos />
+      <HowItWorks />
+      <JobCategories />
+      <RegisterNow />
+      <TestimonialSection />
+      <Footer />
     </>
   );
 };

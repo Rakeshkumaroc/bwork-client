@@ -17,7 +17,7 @@ const ManageTheme = () => {
         <div className="bg-cream rounded-xl shadow-xl p-4 sm:p-6 w-full border flex flex-col justify-center border-orange-200">
           {/* New Theme Button */}
           <div className="border-dotted border-2 border-gray-400 p-2 rounded-md mb-4 flex items-center justify-center">
-            <button className="flex items-center text-orange-global font-bold text-lg sm:text-xl">
+            <button className="flex items-center text-yellow-400 font-bold text-lg sm:text-xl">
               <span className="text-xl sm:text-2xl mr-2">+</span>
               <span className="hidden sm:block">New Theme</span>
             </button>
@@ -37,13 +37,13 @@ const ManageTheme = () => {
             {/* Dropdowns and Preset Colors */}
             <div className="space-y-4 w-full">
               {/* Dropdowns */}
-              <select className="w-full border border-orange-300 rounded-md px-4 py-2 text-orange-global">
+              <select className="w-full border border-orange-300 rounded-md px-4 py-2 text-yellow-400">
                 <option>Heading</option>
               </select>
-              <select className="w-full border border-orange-300 rounded-md px-4 py-2 text-orange-global">
+              <select className="w-full border border-orange-300 rounded-md px-4 py-2 text-yellow-400">
                 <option>Subheading</option>
               </select>
-              <select className="w-full border border-orange-300 rounded-md px-4 py-2 text-orange-global">
+              <select className="w-full border border-orange-300 rounded-md px-4 py-2 text-yellow-400">
                 <option>Body</option>
               </select>
 
@@ -77,7 +77,7 @@ const ManageTheme = () => {
           </div>
           {/* SAVE Button */}
           <button
-            className="mt-4 mx-auto w-full sm:w-52 bg-orange-global hover:bg-orange-600 text-white font-semibold py-2 px-6 sm:px-12 rounded-md shadow-md"
+            className="mt-4 mx-auto w-full sm:w-52 bg-yellow-400 hover:bg-orange-600 text-white font-semibold py-2 px-6 sm:px-12 rounded-md shadow-md"
           >
             SAVE
           </button>

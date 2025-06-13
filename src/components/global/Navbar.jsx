@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   FaBars,
@@ -8,14 +8,62 @@ import {
   FaBuilding,
   FaBriefcase,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 import Logo from "../../assets/logo.png";
+import { fetchData } from "../../utils/api";
+
+const baseUrl = import.meta.env.VITE_APP_URL;
 
 const Navbar = ({ isActive }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null); // 'hire' | 'jobs' | null
+  const [profileData, setProfileData] = useState({
+    userName: "Job Seeker",
+    jobTitle: "Not provided",
+    userProfilePic:
+      "https://www.shareicon.net/data/128x128/2016/09/15/829466_man_512x512.png",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const userData = JSON.parse(localStorage.getItem("userData"));
   const isLoggedIn = userData && userData._id;
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+
+    const fetchProfileData = async () => {
+      try {
+        const { _id } = userData;
+        await fetchData(
+          `${baseUrl}/job-seekers-basic-details/get-job-seeker-basic-by-id/${_id}`,
+          (data) => {
+            const resData = Array.isArray(data) ? data[0] : data;
+            if (resData) {
+              setProfileData({
+                userName: resData.userName || "Job Seeker",
+                jobTitle: resData.jobTitle || "Not provided",
+                userProfilePic:
+                  resData.userProfilePic ||
+                  "https://www.shareicon.net/data/128x128/2016/09/15/829466_man_512x512.png",
+              });
+            }
+          },
+          setIsLoading,
+          setError
+        );
+
+        if (error) {
+          throw new Error(error);
+        }
+      } catch (err) {
+        console.error("Error fetching profile data:", err);
+        toast.error("Failed to load profile details.");
+      }
+    };
+
+    fetchProfileData();
+  }, [isLoggedIn, error]);
 
   const toggleDropdown = (type) => {
     setDropdownOpen(dropdownOpen === type ? null : type);
@@ -33,7 +81,7 @@ const Navbar = ({ isActive }) => {
 
   return (
     <header className="flex justify-between items-center md:px-[50px] px-4 py-3 bg-black text-white relative z-50">
-      <img src={Logo} alt="logo" className="md:w-[70px] w-[50px]" />
+      <img src={Logo} alt="bwork logo" className="md:w-[70px] w-[50px]" />
 
       {/* Desktop Nav */}
       <nav className="hidden lg:flex items-center gap-6">
@@ -109,7 +157,7 @@ const Navbar = ({ isActive }) => {
             className="flex items-center px-4 py-2 bg-yellow-400 text-black rounded-md font-semibold text-sm hover:bg-yellow-500"
           >
             <FaBriefcase className="mr-2" />
-            {isLoggedIn ? "Hi Job Seeker" : "Look for Jobs"}
+            {isLoggedIn ? `Hi ${profileData.userName}` : "Look for Jobs"}
             {dropdownOpen === "jobs" ? (
               <FaChevronUp className="ml-2 text-xs" />
             ) : (
@@ -121,12 +169,14 @@ const Navbar = ({ isActive }) => {
               {isLoggedIn ? (
                 <>
                   <div className="flex items-center px-4 py-3 border-b">
-                    <div className="w-9 h-9 bg-yellow-200 text-black rounded-full flex items-center justify-center font-bold mr-3">
-                      {userData?.phone?.slice(-2)}
-                    </div>
+                    <img
+                      src={profileData.userProfilePic}
+                      alt="Profile"
+                      className="w-9 h-9 rounded-full object-cover mr-3"
+                    />
                     <div>
-                      <div className="font-semibold">Hi Job Seeker</div>
-                      <div className="text-sm text-gray-500">Logged in</div>
+                      <div className="font-semibold">{`Hi ${profileData.userName}`}</div>
+                      <div className="text-sm text-gray-500">{profileData.jobTitle}</div>
                     </div>
                   </div>
                   <Link to="/profile" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Profile</Link>
@@ -191,7 +241,7 @@ const Navbar = ({ isActive }) => {
               className="flex items-center w-full text-sm mt-2 hover:text-yellow-400"
             >
               <FaBriefcase className="mr-2" />
-              {isLoggedIn ? "Hi Job Seeker" : "Look for Jobs"}
+              {isLoggedIn ? `Hi ${profileData.userName}` : "Look for Jobs"}
               {dropdownOpen === "jobs" ? (
                 <FaChevronUp className="ml-1 text-xs" />
               ) : (
@@ -202,6 +252,17 @@ const Navbar = ({ isActive }) => {
               <div className="flex flex-col mt-2 text-sm pl-4">
                 {isLoggedIn ? (
                   <>
+                    <div className="flex items-center px-4 py-3 border-b">
+                      <img
+                        src={profileData.userProfilePic}
+                        alt="Profile"
+                        className="w-9 h-9 rounded-full object-cover mr-3"
+                      />
+                      <div>
+                        <div className="font-semibold">{`Hi ${profileData.userName}`}</div>
+                        <div className="text-sm text-gray-500">{profileData.jobTitle}</div>
+                      </div>
+                    </div>
                     <Link to="/profile" onClick={closeAll} className="py-1 hover:text-yellow-400">Profile</Link>
                     <Link to="/search-history" onClick={closeAll} className="py-1 hover:text-yellow-400">Search History</Link>
                     <Link to="/my-jobs" onClick={closeAll} className="py-1 hover:text-yellow-400">My Jobs</Link>

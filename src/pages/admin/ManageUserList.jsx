@@ -73,7 +73,7 @@ const ManageUserList = () => {
     <div className="min-h-screen bg-light-cream p-8">
       <Topbar />
       <div className="flex justify-between flex-wrap items-center mb-6">
-        <h1 className="lg:text-3xl text-xl font-bold text-orange-global">
+        <h1 className="lg:text-3xl text-xl font-bold text-yellow-400">
           Manage Users
         </h1>
         <div className="mt-6 flex justify-between w-full md:w-auto md:justify-end gap-5">
@@ -86,7 +86,7 @@ const ManageUserList = () => {
           />
           <Link
             to={"/dashboard/branch-user/add"}
-            className="bg-orange-500 flex gap-1 hover:bg-orange-global text-white font-semibold px-4 py-2 rounded-full text-2xl md:text-sm"
+            className="bg-orange-500 flex gap-1 hover:bg-yellow-400 text-white font-semibold px-4 py-2 rounded-full text-2xl md:text-sm"
           >
             + <span className="hidden md:block">Add User</span>
           </Link>

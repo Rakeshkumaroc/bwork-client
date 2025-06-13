@@ -70,7 +70,7 @@ const EmployersLoginForm = () => {
   return (
     <div className="flex items-center justify-center bg-light-cream py-6 px-4 sm:px-6 lg:px-8 md:h-screen">
       <div className="bg-light-cream w-full max-w-md sm:max-w-lg lg:max-w-xl p-6 sm:p-8">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-global mb-4 sm:mb-6 text-center leading-tight tracking-wide">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-400 mb-4 sm:mb-6 text-center leading-tight tracking-wide">
           Login to BWork
         </h2>
 
@@ -97,13 +97,13 @@ const EmployersLoginForm = () => {
               name="agreeTerms"
               checked={formData.agreeTerms}
               onChange={(e) => handleFormChange(e, setFormData)}
-              className="accent-orange-global"
+              className="accent-yellow-400"
             />
             <span className="text-gray-700">
               I agree to{" "}
               <Link
                 to="/terms"
-                className="text-orange-global underline hover:text-orange-700 transition-colors duration-200"
+                className="text-yellow-400 underline hover:text-orange-700 transition-colors duration-200"
               >
                 terms & conditions
               </Link>{" "}
@@ -113,7 +113,7 @@ const EmployersLoginForm = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`bg-orange-global text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
+            className={`bg-yellow-400 text-white py-2 sm:py-3 rounded-md shadow-md font-semibold text-sm sm:text-base ${
               isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -132,7 +132,7 @@ const EmployersLoginForm = () => {
 
         <p className="mt-4 text-center text-gray-600 text-xs sm:text-sm">
           Don't have an account?{" "}
-          <Link to="/employers-signup" className="text-orange-global underline">
+          <Link to="/employers-signup" className="text-yellow-400 underline">
             Signup
           </Link>
         </p>

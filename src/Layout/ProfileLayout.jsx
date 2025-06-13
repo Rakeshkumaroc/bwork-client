@@ -1,17 +1,20 @@
+import Footer from "../components/global/Footer";
 import Navbar from "../components/global/Navbar";
 import ProfileSidebar from "../components/global/ProfileSidebar";
-import ProfileHeader from "../components/jobseekerprofile/ProfileHeader"; 
- 
+import ProfileHeader from "../components/jobseekerprofile/ProfileHeader";
 
 const ProfileLayout = ({ children }) => {
   return (
-    <div className="px-4 sm:px-10 lg:px-24 bg-light-cream min-h-screen">
+    <div className="  bg-gray-100 min-h-screen">
       <Navbar />
-      <ProfileHeader />
-      <div className="flex gap-6 bg-light-cream min-h-screen py-6">
-        <ProfileSidebar />
-        <div className="flex-1 space-y-6">{children}</div>
+      <div className="md:px-[50px] px-4 py-4">
+        <ProfileHeader />
+        <div className="flex gap-6 bg-gray-100 min-h-screen py-6">
+          <ProfileSidebar />
+          <div className="flex-1 space-y-6">{children}</div>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };

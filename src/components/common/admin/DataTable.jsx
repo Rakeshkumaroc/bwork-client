@@ -31,7 +31,7 @@ const DataTable = ({
             <tr>
               <td
                 colSpan={columns.length + 1}
-                className="text-center py-4 text-orange-global"
+                className="text-center py-4 text-yellow-400"
               >
                 Loading...
               </td>
@@ -40,7 +40,7 @@ const DataTable = ({
             <tr>
               <td
                 colSpan={columns.length + 1}
-                className="text-center py-4 text-orange-global"
+                className="text-center py-4 text-yellow-400"
               >
                 No data available
               </td>
@@ -49,7 +49,7 @@ const DataTable = ({
             <tr>
               <td
                 colSpan={columns.length + 1}
-                className="text-center py-4 text-orange-global"
+                className="text-center py-4 text-yellow-400"
               >
                 {emptyMessage}
               </td>

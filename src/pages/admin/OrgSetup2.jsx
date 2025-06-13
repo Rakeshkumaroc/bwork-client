@@ -14,7 +14,7 @@ const OrgSetup2 = () => {
   return (
     <form onSubmit={handleSubmit} className="p-10 bg-cream min-h-screen">
       {/* Heading */}
-      <h2 className="text-3xl md:text-4xl font-bold text-orange-global mb-8">
+      <h2 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-8">
         Organization Setup
       </h2>
 
@@ -63,7 +63,7 @@ const OrgSetup2 = () => {
       <div className="mt-10 text-center">
         <button
           type="submit"
-          className="bg-orange-global text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold"
+          className="bg-yellow-400 text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold"
         >
           Submit
         </button>

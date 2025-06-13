@@ -13,9 +13,14 @@ import {
 import { toast } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../App";
+import ProfileSidebarSkel from "../skeleton/jobseeker/ProfileSidebarSkel";
 
 const externalTabs = [
-  { label: "Search History", icon: <FiSearch />, path: "/profile/search-history" },
+  {
+    label: "Search History",
+    icon: <FiSearch />,
+    path: "/profile/search-history",
+  },
   { label: "My Job", icon: <FiBriefcase />, path: "/profile/my-job" },
   { label: "My Review", icon: <FiInfo />, path: "/profile/my-review" },
   { label: "Settings", icon: <FiSettings />, path: "/profile/settings" },
@@ -24,7 +29,12 @@ const externalTabs = [
 const internalTabs = [
   { label: "Resume", icon: <FiEdit />, action: "Update", id: "resume" },
   { label: "Key Skills", icon: <FiStar />, id: "key-skills" },
-  { label: "Employment", icon: <FiBriefcase />, action: "Add", id: "employment" },
+  {
+    label: "Employment",
+    icon: <FiBriefcase />,
+    action: "Add",
+    id: "employment",
+  },
   { label: "Education", icon: <FiBookOpen />, action: "Add", id: "education" },
   { label: "Personal Details", icon: <FiUser />, id: "personal-details" },
 ];
@@ -34,6 +44,7 @@ const ProfileSidebar = () => {
   const navigate = useNavigate();
   const { resumeRef, keySkillsRef, employmentRef, educationRef, personalRef } =
     useContext(MyContext);
+  const [isLoading, setIsLoading] = useState(true); // Added for skeleton loading
   const [activeInternalTab, setActiveInternalTab] = useState(null);
 
   // Map refs to internal tab IDs
@@ -44,6 +55,18 @@ const ProfileSidebar = () => {
     education: educationRef,
     "personal-details": personalRef,
   };
+
+  // Simulate data fetching (replace with actual API/auth check if needed)
+  useEffect(() => {
+    const fetchUserData = async () => {
+      // Simulate a delay for loading
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000); // Adjust delay as needed
+    };
+
+    fetchUserData();
+  }, []);
 
   // Scroll to section
   const scrollPage = (refElement) => {
@@ -89,10 +112,14 @@ const ProfileSidebar = () => {
     navigate("/login");
   };
 
+  if (isLoading) {
+    return <ProfileSidebarSkel />;
+  }
+
   return (
-    <div className="w-64 h-screen sticky top-0 py-6 rounded-lg bg-cream shadow border flex flex-col justify-between">
+    <div className="w-64 h-screen sticky top-0 bg-white rounded-md shadow-md p-6 flex flex-col justify-between">
       <div>
-        <h2 className="text-lg font-semibold mb-6 text-gray-900 px-6">
+        <h2 className="text-lg font-semibold text-gray-800 mb-6 px-4">
           Quick Links
         </h2>
 
@@ -101,16 +128,18 @@ const ProfileSidebar = () => {
           {internalTabs.map((item, index) => (
             <li
               key={index}
-              className={`flex justify-between items-center py-2 px-6 ${
-                activeInternalTab === item.id && location.pathname === "/profile"
-                  ? "text-orange-global font-semibold"
-                  : "text-gray-800"
-              }`}
+              className={`flex justify-between items-center py-2 px-4 ${
+                activeInternalTab === item.id &&
+                location.pathname === "/profile"
+                  ? "text-yellow-400 font-semibold bg-yellow-50"
+                  : "text-gray-800 hover:bg-gray-100"
+              } rounded-md transition`}
             >
               <Link
                 to="/profile"
                 onClick={() => scrollPage(refMap[item.id])}
-                className="flex items-center space-x-2 hover:underline w-full text-left"
+                className="flex items-center space-x-2 w-full text-sm"
+                title={`Go to ${item.label}`}
               >
                 <span className="text-lg">{item.icon}</span>
                 <span>{item.label}</span>
@@ -118,7 +147,8 @@ const ProfileSidebar = () => {
               {item.action && (
                 <button
                   onClick={() => scrollPage(refMap[item.id])}
-                  className="text-blue-600 hover:underline text-sm font-medium"
+                  className="text-sm text-yellow-400 hover:text-yellow-600 font-medium"
+                  title={`${item.action} ${item.label}`}
                 >
                   {item.action}
                 </button>
@@ -135,18 +165,16 @@ const ProfileSidebar = () => {
           {externalTabs.map((item, index) => (
             <li
               key={index}
-              className={`flex items-center py-2 px-6 ${
-                location.pathname === item.path ||
-                (location.pathname === "/profile" &&
-                  activeInternalTab &&
-                  item.path === "/profile")
-                  ? "text-orange-global font-semibold"
-                  : "text-gray-800"
-              }`}
+              className={`flex items-center py-2 px-4 ${
+                location.pathname === item.path
+                  ? "text-yellow-400 font-semibold bg-yellow-50"
+                  : "text-gray-800 hover:bg-gray-100"
+              } rounded-md transition`}
             >
               <Link
                 to={item.path}
-                className="flex items-center space-x-2 hover:underline"
+                className="flex items-center space-x-2 text-sm w-full"
+                title={`Go to ${item.label}`}
               >
                 <span className="text-lg">{item.icon}</span>
                 <span>{item.label}</span>
@@ -157,10 +185,11 @@ const ProfileSidebar = () => {
       </div>
 
       {/* Logout Button */}
-      <div className="px-6 mt-4">
+      <div className="px-4 mt-4">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center space-x-2 text-red-600 hover:underline py-2"
+          className="w-full flex items-center space-x-2 text-red-600 hover:text-red-700 text-sm py-2 hover:bg-gray-100 rounded-md transition"
+          title="Log Out"
         >
           <FiLogOut className="text-lg" />
           <span>Logout</span>

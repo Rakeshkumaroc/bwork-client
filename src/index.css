@@ -1,8 +1,9 @@
 @import "tailwindcss";
 @theme {
-  --color-orange-global: #ff7a30;
+  --color-orange-global: #FF6F20;
   --color-light-cream: #faf3e1;
   --color-cream: #f5e7c6;
+  --color-bgYellow: #FEC400;
 }
 
 body {
@@ -24,13 +25,13 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #ff7a30;
+  background: #FEC400;
   border-radius: 40px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff6e20;
+  background: #FEC390;
 }
 
 .thin-scrollbar::-webkit-scrollbar {

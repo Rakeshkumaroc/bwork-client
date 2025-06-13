@@ -15,7 +15,7 @@ const Dashboard = () => {
        {/* Welcome Message */}
       {/* {orgName && (
         <div className="mb-6  md:px-20 text-center">
-          <h2 className="lg:text-2xl  sm:text-xl text-lg font-bold text-orange-global">
+          <h2 className="lg:text-2xl  sm:text-xl text-lg font-bold text-yellow-400">
             Welcome to {orgName}!
           </h2>
         </div>

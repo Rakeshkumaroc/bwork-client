@@ -227,7 +227,7 @@ const getData = async () => {
     <div className="min-h-screen bg-light-cream p-8">
       <Topbar />
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-orange-global">
+        <h1 className="text-3xl font-bold text-yellow-400">
           {action === "edit" ? "Edit" : "Add"} User Details
         </h1>
       </div>
@@ -320,7 +320,7 @@ const getData = async () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`bg-orange-global hover:bg-orange-600 text-white font-semibold py-2 px-12 rounded-md shadow-md ${
+              className={`bg-yellow-400 hover:bg-orange-600 text-white font-semibold py-2 px-12 rounded-md shadow-md ${
                 isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
