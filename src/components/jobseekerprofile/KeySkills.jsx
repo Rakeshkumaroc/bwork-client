@@ -2,6 +2,10 @@ import { useContext, useState, useEffect } from "react";
 import { FaPen, FaTimes, FaPlus } from "react-icons/fa";
 import { MyContext } from "../../App";
 import KeySkillSkel from "../skeleton/jobseeker/KeySkillSkel";
+import { deleteForm, submitForm, updateForm } from "../../utils/form";
+import { fetchData } from "../../utils/api";
+import { toast } from "react-toastify";
+
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 const KeySkills = () => {
@@ -15,7 +19,7 @@ const KeySkills = () => {
   });
   const [error, setError] = useState(null);
   const [editSkillId, setEditSkillId] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Added for skeleton loading
+  const [isLoading, setIsLoading] = useState(true);
   const levels = ["beginner", "intermediate", "advanced", "expert"];
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -28,38 +32,13 @@ const KeySkills = () => {
       return;
     }
 
-    const fetchSkills = async () => {
-      try {
-        const response = await fetch(
-          `${baseUrl}/job-seeker-skills/get-skill-sets-by-job-seeker-id/${jobSeekerId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch skills");
-        }
-
-        const { success, resData } = await response.json();
-        if (success && resData) {
-          setSkills(resData);
-        } else {
-          setError("No skills found for this user.");
-        }
-      } catch (err) {
-        console.error("Error fetching skills:", err);
-        setError(err.message);
-      } finally {
-        setIsLoading(false); // Stop loading after fetch
-      }
-    };
-
-    fetchSkills();
+    // Use fetchData utility for initial skill retrieval
+    fetchData(
+      `${baseUrl}/job-seeker-skills/get-skill-sets-by-job-seeker-id/${jobSeekerId}`,
+      setSkills,
+      setIsLoading,
+      setError
+    );
   }, [jobSeekerId]);
 
   const handleFormToggle = () => {
@@ -79,7 +58,7 @@ const KeySkills = () => {
       return;
     }
 
-    const newSkill = {
+    const newSkillPayload = {
       skill: formData.skill,
       level: formData.level,
       experience: Number(formData.experience) || 0,
@@ -87,24 +66,30 @@ const KeySkills = () => {
     };
 
     try {
-      const response = await fetch(
-        `${baseUrl}/job-seeker-skills/add-job-seeker-skills`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newSkill),
-        }
-      );
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to add skill");
+      const data = await submitForm({
+        url: `${baseUrl}/job-seeker-skills/add-job-seeker-skills`,
+        payload: newSkillPayload,
+        setIsLoading,
+        successMessage: "Skill added successfully!",
+        resetForm: () => setFormData({ skill: "", level: "", experience: "" }),
+      });
+
+      // Crucial fix: Combine the submitted formData with the _id from the backend response.
+      // This ensures the new skill object has all properties (skill, level, experience, _id)
+      // immediately after creation, preventing "undefined" display issues.
+      if (data && data.resData && data.resData._id) {
+        setSkills((prevSkills) => [
+          ...prevSkills,
+          { ...newSkillPayload, _id: data.resData._id },
+        ]);
+      } else if (data && data.resData) {
+        // Fallback: If resData exists but no _id, assume resData is the full object (less common for "add").
+        setSkills((prevSkills) => [...prevSkills, data.resData]);
+      } else {
+        // If data.resData is entirely missing or null, inform the user about an incomplete response.
+        toast.error("Server response for adding skill was incomplete.");
       }
-      const addedSkill = await response.json();
-      setSkills([...skills, addedSkill]);
       setIsFormVisible(false);
-      setFormData({ skill: "", level: "", experience: "" });
       setError(null);
     } catch (err) {
       setError(err.message);
@@ -128,7 +113,7 @@ const KeySkills = () => {
       return;
     }
 
-    const updatedSkill = {
+    const updatedSkillPayload = {
       skill: formData.skill,
       level: formData.level,
       experience: Number(formData.experience) || 0,
@@ -136,34 +121,60 @@ const KeySkills = () => {
     };
 
     try {
-      const response = await fetch(
-        `${baseUrl}/job-seeker-skills/update-skill/${editSkillId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedSkill),
-        }
-      );
+      const data = await updateForm({
+        url: `${baseUrl}/job-seeker-skills/update-skill/${editSkillId}`,
+        payload: updatedSkillPayload,
+        setIsLoading,
+        successMessage: "Skill updated successfully!",
+        resetForm: () => setFormData({ skill: "", level: "", experience: "" }),
+      });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update skill");
+      if (data && data.resData) {
+        // For updates, the backend typically returns the full updated object.
+        // We merge the payload with the server response to be robust, ensuring all fields are present.
+        setSkills((prevSkills) =>
+          prevSkills.map((skill) =>
+            skill._id === editSkillId
+              ? { ...updatedSkillPayload, ...data.resData }
+              : skill
+          )
+        );
+      } else {
+        // If data.resData is missing for update, fall back to the local payload.
+        // This ensures the UI updates, but relies on client-side state for the full object.
+        setSkills((prevSkills) =>
+          prevSkills.map((skill) =>
+            skill._id === editSkillId
+              ? { ...updatedSkillPayload, _id: editSkillId } // Preserve the _id
+              : skill
+          )
+        );
+        toast.error("Incomplete response from server after updating skill.");
       }
-
-      const updatedSkillData = await response.json();
-      setSkills(
-        skills.map((skill) =>
-          skill._id === editSkillId ? updatedSkillData : skill
-        )
-      );
       setIsFormVisible(false);
-      setFormData({ skill: "", level: "", experience: "" });
       setEditSkillId(null);
       setError(null);
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const handleDelete = async (skillId) => {
+    setIsLoading(true);
+    try {
+      await deleteForm({
+        url: `${baseUrl}/job-seeker-skills/delete-skill/${skillId}`,
+        setIsLoading,
+        successMessage: "Skill deleted successfully!",
+        onSuccess: async () => {
+          setSkills(skills.filter((skill) => skill._id !== skillId));
+        },
+      });
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message || "Failed to delete skill.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -175,9 +186,7 @@ const KeySkills = () => {
   };
 
   if (isLoading) {
-    return (
-      <KeySkillSkel/>
-    );
+    return <KeySkillSkel />;
   }
 
   return (
@@ -186,11 +195,11 @@ const KeySkills = () => {
         <h2 className="text-2xl font-semibold text-gray-800">Key Skills</h2>
         {!isFormVisible && (
           <button
-            className="p-2 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition"
+            className="px-4 py-2 text-sm bg-yellow-400 text-black rounded-md hover:bg-yellow-500 transition"
             onClick={handleFormToggle}
-            title="Add Skill"
+            title="Add key skills"
           >
-            <FaPlus className="text-lg" />
+            Add key skills
           </button>
         )}
       </div>
@@ -210,8 +219,9 @@ const KeySkills = () => {
               <FaPen size={12} />
             </button>
             <button
-              className="ml-2 text-gray-500 hover:text-red-600 cursor-not-allowed"
-              title="Delete (Disabled)"
+              className="ml-2 text-gray-500 hover:text-red-600"
+              onClick={() => handleDelete(skill._id)}
+              title="Delete"
             >
               <FaTimes size={12} />
             </button>

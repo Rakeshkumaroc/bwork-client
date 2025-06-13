@@ -21,8 +21,8 @@ const externalTabs = [
     icon: <FiSearch />,
     path: "/profile/search-history",
   },
-  { label: "My Job", icon: <FiBriefcase />, path: "/profile/my-job" },
-  { label: "My Review", icon: <FiInfo />, path: "/profile/my-review" },
+  { label: "My Job", icon: <FiBriefcase />, path: "/profile/my-jobs" },
+  { label: "My Review", icon: <FiInfo />, path: "/profile/my-reviews" },
   { label: "Settings", icon: <FiSettings />, path: "/profile/settings" },
 ];
 

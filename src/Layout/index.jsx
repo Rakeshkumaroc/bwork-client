@@ -52,8 +52,8 @@ const index = () => {
         <Route path="/job-provider-setup" element={<JobProviderSetup />} />
         <Route path="/job-seeker-setup" element={<JobSeekerSetup />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/profile/my-job" element={<MyJobs />} />
-        <Route path="/profile/my-review" element={<MyReviews />} />
+        <Route path="/profile/my-jobs" element={<MyJobs />} />
+        <Route path="/profile/my-reviews" element={<MyReviews />} />
         <Route path="/profile/search-history" element={<SearchHistory />} />
         <Route path="/profile/settings" element={<JobSeekerSettings />} />
 

@@ -180,10 +180,10 @@ const Navbar = ({ isActive }) => {
                     </div>
                   </div>
                   <Link to="/profile" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Profile</Link>
-                  <Link to="/search-history" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Search History</Link>
-                  <Link to="/my-jobs" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">My Jobs</Link>
-                  <Link to="/my-reviews" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">My Reviews</Link>
-                  <Link to="/settings" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Settings</Link>
+                  <Link to="/profile/search-history" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Search History</Link>
+                  <Link to="/profile/my-jobs" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">My Jobs</Link>
+                  <Link to="/profile/my-reviews" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">My Reviews</Link>
+                  <Link to="/profile/settings" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Settings</Link>
                   <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-red-600 hover:bg-yellow-100 text-sm">Log out</button>
                 </>
               ) : (
@@ -264,10 +264,10 @@ const Navbar = ({ isActive }) => {
                       </div>
                     </div>
                     <Link to="/profile" onClick={closeAll} className="py-1 hover:text-yellow-400">Profile</Link>
-                    <Link to="/search-history" onClick={closeAll} className="py-1 hover:text-yellow-400">Search History</Link>
-                    <Link to="/my-jobs" onClick={closeAll} className="py-1 hover:text-yellow-400">My Jobs</Link>
-                    <Link to="/my-reviews" onClick={closeAll} className="py-1 hover:text-yellow-400">My Reviews</Link>
-                    <Link to="/settings" onClick={closeAll} className="py-1 hover:text-yellow-400">Settings</Link>
+                    <Link to="/profile/search-history" onClick={closeAll} className="py-1 hover:text-yellow-400">Search History</Link>
+                    <Link to="/profile/my-jobs" onClick={closeAll} className="py-1 hover:text-yellow-400">My Jobs</Link>
+                    <Link to="/profile/my-reviews" onClick={closeAll} className="py-1 hover:text-yellow-400">My Reviews</Link>
+                    <Link to="/profile/settings" onClick={closeAll} className="py-1 hover:text-yellow-400">Settings</Link>
                     <button onClick={handleLogout} className="text-left py-1 text-red-400 hover:text-yellow-400">Log out</button>
                   </>
                 ) : (
