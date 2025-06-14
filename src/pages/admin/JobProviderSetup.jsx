@@ -182,7 +182,7 @@ const JobProviderSetup = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-10 bg-cream min-h-screen">
+    <form onSubmit={handleSubmit} className="p-10 bg-gray-100 min-h-screen">
       <h2 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-8">
         Job Provider Setup
       </h2>
@@ -222,7 +222,7 @@ const JobProviderSetup = () => {
             type="submit"
             disabled={isLoading}
             className={`bg-yellow-400 text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold w-full ${
-              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-orange-600"
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-yellow-500"
             }`}
           >
             {isLoading ? "Submitting..." : existingProvider ? "Update Profile" : "Create Profile"}
@@ -232,8 +232,8 @@ const JobProviderSetup = () => {
               type="button"
               onClick={handleDelete}
               disabled={isLoading}
-              className={`bg-red-500 text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold w-full ${
-                isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
+              className={`bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold w-full ${
+                isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-yellow-600"
               }`}
             >
               {isLoading ? "Deleting..." : "Delete Profile"}

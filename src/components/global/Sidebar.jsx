@@ -13,6 +13,7 @@ import {
 import NavItem from "../common/NavItem";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Logo from "../../assets/logo.png";
 
 const navItems = [
   {
@@ -116,8 +117,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   >
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-gray-800">BWork</h1>
-        <p className="text-sm text-gray-700 -mt-1">Business made easy</p>
+  
+          <img src={Logo} alt="bwork logo" className="md:w-[70px] w-[50px]" />
+        <p className="text-sm text-gray-700 mt-1">Business made easy</p>
+
       </div>
 
       <nav className="space-y-2">

@@ -8,7 +8,7 @@ const NavItem = ({ icon, label, active, trailingIcon }) => (
   >
     <div className="flex items-center gap-3">
       <div className={active ? "text-black" : "text-gray-700 hover:text-yellow-400"}>{icon}</div>
-      <span className="text-sm font-medium">{label}</span>
+      <span className=" font-medium">{label}</span>
     </div>
     {trailingIcon && (
       <div className={active ? "text-black" : "text-gray-700 hover:text-yellow-400"}>{trailingIcon}</div>

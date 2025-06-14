@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Topbar from "../../components/admin/Topbar";
 import { fetchData } from "../../utils/api";
 import { updateForm } from "../../utils/form";
+import { Pencil } from "lucide-react";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
@@ -73,7 +74,7 @@ const ViewJob = () => {
 
   if (fetchLoading) {
     return (
-      <div className="min-h-screen bg-light-cream p-4 sm:p-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100  p-4 sm:p-8 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-yellow-400"></div>
       </div>
     );
@@ -81,7 +82,7 @@ const ViewJob = () => {
 
   if (fetchError) {
     return (
-      <div className="min-h-screen bg-light-cream p-4 sm:p-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100  p-4 sm:p-8 flex items-center justify-center">
         <p className="text-red-600">Error: {fetchError}</p>
       </div>
     );
@@ -89,7 +90,7 @@ const ViewJob = () => {
 
   if (!jobData) {
     return (
-      <div className="min-h-screen bg-light-cream p-4 sm:p-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100  p-4 sm:p-8 flex items-center justify-center">
         <p className="text-gray-600">No job data available.</p>
       </div>
     );
@@ -98,7 +99,7 @@ const ViewJob = () => {
  return (
   <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
     <Topbar />
-    <div className="max-w-5xl mx-auto bg-white rounded-md shadow-md p-6">
+    <div className=" mx-auto bg-white rounded-md shadow-md p-6">
       <div className="flex-1">
         <div className="flex justify-between items-start mb-6">
           <div>
