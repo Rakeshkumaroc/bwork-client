@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Topbar from "../../components/admin/Topbar";
-import { toast, ToastContainer } from "react-toastify"; 
+import { toast } from "react-toastify"; 
 import InputField from "../../components/common/admin/InputField";
 import {
   handleFormChange,
@@ -170,79 +170,86 @@ const AddBranchDetails = ({ action }) => {
   }
 
   return (
-    <div className="min-h-screen bg-light-cream p-8">
-      <Topbar />
+  <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <Topbar />
+    <div className=" mx-auto bg-white rounded-md shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-yellow-400">
-          {action==="edit"?"Edit":"Add"} Branch Details
+        <h1 className="text-2xl font-semibold text-gray-800">
+          {action === "edit" ? "Edit" : "Add"} Branch Details
         </h1>
       </div>
-      <div className="flex items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-cream p-8 rounded shadow-lg w-full space-y-6"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <InputField
-              label="Branch Name"
-              name="branchName"
-              value={formData.branchName}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Branch Name"
-            />
-            <InputField
-              label="Address"
-              name="address"
-              value={formData.address}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Address"
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <InputField
-              label="City"
-              name="city"
-              value={formData.city}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter City"
-            />
-            <InputField
-              label="State"
-              name="state"
-              value={formData.state}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter State"
-            />
-            <InputField
-              label="Country"
-              name="country"
-              value={formData.country}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Country"
-            />
-          </div>
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-md space-y-6"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
-            label="Zip Code"
-            name="zipCode"
-            value={formData.zipCode}
+            label="Branch Name"
+            name="branchName"
+            value={formData.branchName}
             onChange={(e) => handleFormChange(e, setFormData)}
-            placeholder="Enter Zip Code"
+            placeholder="Enter Branch Name"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
           />
-          <div className="pt-4 flex justify-center">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`bg-yellow-400 hover:bg-orange-600 text-white font-semibold py-2 px-12 rounded-md shadow-md ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              {isLoading ? "Submitting..." : "SUBMIT"}
-            </button>
-          </div>
-        </form>
-      </div>
+          <InputField
+            label="Address"
+            name="address"
+            value={formData.address}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Address"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputField
+            label="City"
+            name="city"
+            value={formData.city}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter City"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <InputField
+            label="State"
+            name="state"
+            value={formData.state}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter State"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <InputField
+            label="Country"
+            name="country"
+            value={formData.country}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Country"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+        </div>
+        <InputField
+          label="Zip Code"
+          name="zipCode"
+          value={formData.zipCode}
+          onChange={(e) => handleFormChange(e, setFormData)}
+          placeholder="Enter Zip Code"
+          className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+        />
+        <div className="pt-4 flex justify-center">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`bg-yellow-400 text-black font-semibold py-2 px-8 rounded-md hover:bg-yellow-500 transition ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            title="Submit Branch Details"
+          >
+            {isLoading ? "Submitting..." : "SUBMIT"}
+          </button>
+        </div>
+      </form>
     </div>
-  );
+  </div>
+);
 };
 
 export default AddBranchDetails;

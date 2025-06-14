@@ -3,8 +3,7 @@ import {
   Building,
   Users,
   Briefcase,
-  UserCheck,
-  Palette,
+  UserCheck, 
   Settings,
   LogOut,
   ChevronDown,
@@ -66,13 +65,7 @@ const navItems = [
     label: "Manage Job Applications",
     children: [{ label: "Application List", path: "./manage-applicants/list" }],
     roles: ["admin", "jobProvider"], // Accessible to both roles
-  },
-  {
-    icon: <Palette size={20} />,
-    label: "Manage Theme",
-    path: "./manage-theme",
-    roles: ["admin"], // Admin only
-  },
+  }, 
   {
     icon: <Settings size={20} />,
     label: "Settings",
@@ -84,16 +77,14 @@ const navItems = [
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [openSections, setOpenSections] = useState({});
-  const [userRole, setUserRole] = useState(null);
+  const [openSections, setOpenSections] = useState({}); 
   const [filteredNavItems, setFilteredNavItems] = useState([]);
 
   // Fetch user role from localStorage on component mount
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("authToken")); // Adjust key as per your storage
     const role = userData?.role   // Default to jobProvider if no role
-    setUserRole(role);
-    console.log('role',role);
+ 
 
     // Filter navItems based on user role
     const filteredItems = navItems.filter((item) => item.roles.includes(role));
@@ -117,76 +108,83 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     toggleSidebar();
   };
 
-  return (
-    <div
-      className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-cream flex flex-col overflow-y-auto justify-between py-6 px-4 shadow-[3px_3px_20.5px_2px_#FF6F2080] md:rounded-3xl rounded-r-3xl transition-transform duration-300 transform ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      } lg:translate-x-0 h-full`}
-    >
-      <div>
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-yellow-400">BWork</h1>
-          <p className="text-xs text-gray-500 -mt-1">Business made easy</p>
-        </div>
+ return (
+  <div
+    className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-white flex flex-col overflow-y-auto justify-between p-4 sm:p-6 shadow-md rounded-r-3xl transition-transform duration-300 transform ${
+      isOpen ? "translate-x-0" : "-translate-x-full"
+    } lg:translate-x-0 h-full`}
+  >
+    <div>
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold text-gray-800">BWork</h1>
+        <p className="text-sm text-gray-700 -mt-1">Business made easy</p>
+      </div>
 
-        <nav className="space-y-4">
-          {filteredNavItems.map((item, index) => (
-            <div key={index}>
-              {item.path ? (
-                <Link to={item.path} onClick={toggleSidebar}>
+      <nav className="space-y-2">
+        {filteredNavItems.map((item, index) => (
+          <div key={index}>
+            {item.path ? (
+              <Link to={item.path} onClick={toggleSidebar}>
+                <NavItem
+                  icon={item.icon}
+                  label={item.label}
+                  active={isActive(item.path)}
+                  className="text-gray-700 hover:bg-gray-100 hover:text-yellow-400"
+                />
+              </Link>
+            ) : (
+              <>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => toggleSection(item.label)}
+                >
                   <NavItem
                     icon={item.icon}
                     label={item.label}
-                    active={isActive(item.path)}
+                    rightIcon={
+                      openSections[item.label] ? (
+                        <ChevronDown size={20} className="text-gray-700" />
+                      ) : (
+                        <ChevronRight size={20} className="text-gray-700" />
+                      )
+                    }
+                    className="text-gray-700 hover:bg-gray-100 hover:text-yellow-400"
                   />
-                </Link>
-              ) : (
-                <>
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => toggleSection(item.label)}
-                  >
-                    <NavItem
-                      icon={item.icon}
-                      label={item.label}
-                      rightIcon={
-                        openSections[item.label] ? (
-                          <ChevronDown size={20} />
-                        ) : (
-                          <ChevronRight size={20} />
-                        )
-                      }
-                    />
+                </div>
+                {item.children && openSections[item.label] && (
+                  <div className="ml-8 space-y-1">
+                    {item.children.map((child, i) => (
+                      <Link key={i} to={child.path} onClick={toggleSidebar}>
+                        <NavItem
+                          icon={
+                            <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                          }
+                          label={child.label}
+                          active={isActive(child.path)}
+                          className="text-gray-700 hover:bg-gray-100 hover:text-yellow-400"
+                        />
+                      </Link>
+                    ))}
                   </div>
-                  {item.children && openSections[item.label] && (
-                    <div className="ml-8 space-y-2">
-                      {item.children.map((child, i) => (
-                        <Link key={i} to={child.path} onClick={toggleSidebar}>
-                          <NavItem
-                            icon={
-                              <div className="w-2 h-2 bg-yellow-400 rounded-full" />
-                            }
-                            label={child.label}
-                            active={isActive(child.path)}
-                          />
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
-        </nav>
-      </div>
-
-      <div className="pt-6 border-t border-orange-100">
-        <button onClick={handleLogout}>
-          <NavItem icon={<LogOut size={20} />} label="Logout" />
-        </button>
-      </div>
+                )}
+              </>
+            )}
+          </div>
+        ))}
+      </nav>
     </div>
-  );
+
+    <div className="pt-4 border-t border-gray-200">
+      <button onClick={handleLogout}>
+        <NavItem
+          icon={<LogOut size={20} className="text-gray-700" />}
+          label="Logout"
+          className="text-gray-700 hover:bg-gray-100 hover:text-yellow-400"
+        />
+      </button>
+    </div>
+  </div>
+);
 };
 
 export default Sidebar;

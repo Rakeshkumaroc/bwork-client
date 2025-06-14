@@ -224,113 +224,122 @@ const getData = async () => {
   }, [action, id]);
 
   return (
-    <div className="min-h-screen bg-light-cream p-8">
-      <Topbar />
+  <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <Topbar />
+    <div className=" mx-auto bg-white rounded-md shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-yellow-400">
+        <h1 className="text-2xl font-semibold text-gray-800">
           {action === "edit" ? "Edit" : "Add"} User Details
         </h1>
       </div>
-      <div className="flex items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-cream p-8 rounded-md shadow-lg w-full space-y-6"
-        >
-          {/* Image Upload */}
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Upload Image
-            </label>
-            <div className="relative w-14 h-14 mb-2">
-              <label htmlFor="image-upload" className="cursor-pointer">
-                <img
-                  src={
-                    image
-                      ? URL.createObjectURL(image)
-                      : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiCtHrojYqQUgCsuPh2CkP4FhadhGdDZLQKw&s"
-                  }
-                  alt="Profile Preview"
-                  className="rounded-full w-14 h-14 object-cover border border-orange-400"
-                />
-              </label>
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageChange}
-                aria-label="Upload user profile image"
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-md space-y-6"
+      >
+        {/* Image Upload */}
+        <div>
+          <label
+            htmlFor="image-upload"
+            className="block mb-2 text-sm font-medium text-gray-700"
+          >
+            Upload Image
+          </label>
+          <div className="relative w-20 h-20 mb-2">
+            <label htmlFor="image-upload" className="cursor-pointer">
+              <img
+                src={
+                  image
+                    ? URL.createObjectURL(image)
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiCtHrojYqQUgCsuPh2CkP4FhadhGdDZLQKw&s"
+                }
+                alt="User Profile Preview"
+                className="rounded-full w-20 h-20 object-cover border-2 border-gray-300"
               />
-            </div>
-          </div>
-
-          {/* Form Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <InputField
-              label="User Name"
-              name="userName"
-              value={formData.userName}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter User Name"
-            />
-            <InputField
-              label="Contact No"
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Contact Number"
-            />
-            <InputField
-              label="E-mail"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Email Address"
-            />
-            <SelectField
-              label="Branch"
-              name="branch"
-              value={formData.branch} // Stores branch _id
-              onChange={(e) => handleFormChange(e, setFormData)}
-              options={branchOptions}
-              placeholder="Select Branch"
-            />
-            <InputField
-              label="User Address"
-              name="address"
-              value={formData.address}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Address"
-            />
-
-            <InputField
-              label="Password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Password"
+            </label>
+            <input
+              id="image-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+              aria-label="Upload user profile image"
             />
           </div>
+        </div>
 
-          {/* Submit Button */}
-          <div className="pt-4 flex justify-center">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`bg-yellow-400 hover:bg-orange-600 text-white font-semibold py-2 px-12 rounded-md shadow-md ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              {isLoading ? "Submitting..." : "SUBMIT"}
-            </button>
-          </div>
-        </form>
-      </div>
+        {/* Form Fields */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <InputField
+            label="User Name"
+            name="userName"
+            value={formData.userName}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter User Name"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <InputField
+            label="Contact No"
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Contact Number"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <InputField
+            label="E-mail"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Email Address"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <SelectField
+            label="Branch"
+            name="branch"
+            value={formData.branch}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            options={branchOptions}
+            placeholder="Select Branch"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <InputField
+            label="User Address"
+            name="address"
+            value={formData.address}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Address"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <InputField
+            label="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Password"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div className="pt-4 flex justify-center">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`bg-yellow-400 text-black font-semibold py-2 px-8 rounded-md hover:bg-yellow-500 transition ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            title="Submit User Details"
+          >
+            {isLoading ? "Submitting..." : "SUBMIT"}
+          </button>
+        </div>
+      </form>
     </div>
-  );
+  </div>
+);
 };
 
 export default BranchUserAdd;

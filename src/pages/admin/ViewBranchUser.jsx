@@ -28,126 +28,127 @@ const ViewBranchUser = () => {
   };
 
   return (
-    <div className="min-h-screen bg-light-cream p-8">
-      <Topbar />
-      <div className="bg-cream rounded-xl shadow-lg p-6 w-full mx-auto flex items-start space-x-6">
-        {/* Left Section - Profile Image */}
-        <div className="flex flex-col items-center">
-          <img
-            src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"
-            alt="Profile"
-            className="rounded-full w-32 h-32 object-cover border-4 border-orange-400"
-          />
+  <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <Topbar />
+    <div className="max-w-5xl mx-auto bg-white rounded-md shadow-md p-6 flex flex-col sm:flex-row sm:gap-6">
+      {/* Left Section - Profile Image */}
+      <div className="flex flex-col items-center">
+        <img
+          src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"
+          alt="User Profile"
+          className="rounded-full w-24 h-24 object-cover border-2 border-gray-300"
+        />
+      </div>
 
-         
+      {/* Right Section - Info */}
+      <div className="flex-1">
+        <div className="flex justify-between items-start mb-6">
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-800 capitalize">
+              {userData.userName}
+            </h2>
+            <p className="text-sm text-gray-600">Bihar, India</p>
+          </div>
+          <button
+            onClick={handleEdit}
+            className="flex items-center bg-yellow-400 text-black font-semibold px-4 py-2 rounded-md hover:bg-yellow-500 transition focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            title="Edit User"
+          >
+            <Pencil className="w-5 h-5 mr-2" />
+            Edit
+          </button>
         </div>
 
-        {/* Right Section - Info */}
-        {
-          <div className="flex-1">
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-xl font-bold capitalize">
-                  {userData.userName}
-                </h2>
-                <p className="text-sm text-gray-500">Bihar, India</p>
-              </div>
-              <button onClick={handleEdit} className="flex items-center bg-orange-500 text-white px-4 py-1 rounded cursor-default">
-                <img
-                  src="https://img.icons8.com/ios-glyphs/20/ffffff/edit.png"
-                  alt="Edit"
-                  className="mr-2"
-                />
-                Edit
-              </button>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 mt-6">
-              <div>
-                <label className="block text-sm text-orange-600 font-semibold">
-                  User ID
-                </label>
-                <input
-                  className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                  type="text"
-                  value={userData._id}
-                  readOnly
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-orange-600 font-semibold">
-                  Phone
-                </label>
-                <input
-                  className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                  type="text"
-                  value={userData.phone}
-                  readOnly
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-orange-600 font-semibold">
-                  Email
-                </label>
-                <input
-                  className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                  type="text"
-                  value={userData.email}
-                  readOnly
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-orange-600 font-semibold">
-                  Created At
-                </label>
-                <input
-                  className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                  type="text"
-                  value={new Date(userData.createdAt).toLocaleDateString()}
-                  readOnly
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-orange-600 font-semibold">
-                  Updated At
-                </label>
-                <input
-                  className="border border-yellow-400 rounded px-2 py-1 w-full bg-gray-100"
-                  type="text"
-                  value={new Date(userData.updatedAt).toLocaleDateString()}
-                  readOnly
-                />
-              </div>
-            </div>
-
-            {/* Active Toggle */}
-            <div className="mt-4 flex items-center space-x-2">
-              <span
-                className={`text-sm font-semibold ${
-                  userData.isActive ? "text-green-600" : "text-red-500"
-                }`}
-              >
-                {userData.isActive ? "Active" : "Inactive"}
-              </span>
-              <div className="w-10 h-5 bg-gray-300 rounded-full shadow-inner relative">
-                <div
-                  className={`w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${
-                    userData.isActive
-                      ? "bg-green-500 translate-x-5"
-                      : "bg-red-500 translate-x-0"
-                  }`}
-                ></div>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              User ID
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={userData._id}
+              readOnly
+              aria-readonly="true"
+            />
           </div>
-        }
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Phone
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={userData.phone}
+              readOnly
+              aria-readonly="true"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={userData.email}
+              readOnly
+              aria-readonly="true"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Created At
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={new Date(userData.createdAt).toLocaleDateString()}
+              readOnly
+              aria-readonly="true"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Updated At
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={new Date(userData.updatedAt).toLocaleDateString()}
+              readOnly
+              aria-readonly="true"
+            />
+          </div>
+        </div>
+
+        {/* Active Toggle */}
+        <div className="mt-6 flex items-center gap-2">
+          <span
+            className={`text-sm font-medium ${
+              userData.isActive ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {userData.isActive ? "Active" : "Inactive"}
+          </span>
+          <div className="w-10 h-5 bg-gray-200 rounded-full shadow-inner relative">
+            <div
+              className={`w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${
+                userData.isActive
+                  ? "bg-green-600 translate-x-5"
+                  : "bg-red-600 translate-x-0"
+              }`}
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default ViewBranchUser;

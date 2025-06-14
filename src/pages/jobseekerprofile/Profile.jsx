@@ -2,8 +2,8 @@ import Resume from "../../components/jobseekerprofile/Resume";
 import KeySkills from "../../components/jobseekerprofile/KeySkills";
 import Employment from "../../components/jobseekerprofile/Employment";
 import Education from "../../components/jobseekerprofile/Education";
-import PersonalDetails from "../../components/jobseekerprofile/PersonalDetails";
 import ProfileLayout from "../../Layout/ProfileLayout";
+import LanguageDetails from "../../components/jobseekerprofile/LanguageDetails";
 
 const Profile = () => {
   return (
@@ -12,7 +12,7 @@ const Profile = () => {
       <KeySkills />
       <Employment />
       <Education />
-      <PersonalDetails />
+      <LanguageDetails />
     </ProfileLayout>
   );
 };

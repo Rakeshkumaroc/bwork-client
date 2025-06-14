@@ -77,7 +77,7 @@ const JobSeekerSettings = () => {
     });
   };
 
-  if (isLoading) { 
+  if (isLoading) {
     return (
       <ProfileLayout>
         <JobSeekerSettingsSkel />
@@ -100,29 +100,17 @@ const JobSeekerSettings = () => {
           <form onSubmit={handleSaveChanges} className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between">
               <span className="text-gray-600">Full Name</span>
-              <input
-                type="text"
-                value={settingsData.userName}
-                onChange={(e) =>
-                  setSettingsData({ ...settingsData, userName: e.target.value })
-                }
-                className="mt-2 sm:mt-0 border border-gray-300 px-3 py-1 rounded w-full sm:w-1/2 focus:border-yellow-400 outline-none"
-                placeholder="Enter full name"
-              />
+
+              <p className="mt-2 sm:mt-0 border border-gray-300 px-3 py-1 rounded w-full sm:w-1/2 focus:border-yellow-400 outline-none">
+                {settingsData.userName}
+              </p>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between">
               <span className="text-gray-600">Phone Number</span>
-              <input
-                type="tel"
-                value={settingsData.phone}
-                onChange={(e) =>
-                  setSettingsData({ ...settingsData, phone: e.target.value })
-                }
-                className="mt-2 sm:mt-0 border border-gray-300 px-3 py-1 rounded w-full sm:w-1/2 focus:border-yellow-400 outline-none"
-                placeholder="Enter phone number"
-                pattern="[0-9]{10}"
-                title="Please enter a valid 10-digit phone number"
-              />
+             
+               <p className="mt-2 sm:mt-0 border border-gray-300 px-3 py-1 rounded w-full sm:w-1/2 focus:border-yellow-400 outline-none">
+                {settingsData.phone}
+              </p>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between">
               <span className="text-gray-600">Password</span>

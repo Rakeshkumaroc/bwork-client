@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Topbar from "../../components/admin/Topbar";
 import { fetchData } from "../../utils/api";
 import { updateForm } from "../../utils/form";
@@ -95,189 +95,195 @@ const ViewJob = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-light-cream p-4 sm:p-8">
-      <ToastContainer />
-      <Topbar />
-      <div className="bg-cream rounded-xl shadow-lg p-6 w-full mx-auto flex items-start space-x-6">
-        {/* Right Section - Info */}
-        <div className="flex-1">
-          <div className="flex justify-between items-start">
-            <div>
-              <h2 className="text-xl lg:text-2xl font-bold capitalize">
-                {jobData.title}
-              </h2>
-              <p className="text-sm text-gray-500">{jobData.description}</p>
-            </div>
-            <button
-              onClick={handleEdit}
-              className="flex items-center bg-yellow-400 text-white px-4 py-1 rounded hover:bg-yellow-500"
-            >
-              <img
-                src="https://img.icons8.com/ios-glyphs/20/ffffff/edit.png"
-                alt="Edit"
-                className="mr-2"
-              />
-              Edit
-            </button>
+ return (
+  <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <Topbar />
+    <div className="max-w-5xl mx-auto bg-white rounded-md shadow-md p-6">
+      <div className="flex-1">
+        <div className="flex justify-between items-start mb-6">
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-800 capitalize">
+              {jobData.title}
+            </h2>
+            <p className="text-sm text-gray-600">{jobData.description}</p>
           </div>
+          <button
+            onClick={handleEdit}
+            className="flex items-center bg-yellow-400 text-black font-semibold px-4 py-2 rounded-md hover:bg-yellow-500 transition focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            title="Edit Job"
+          >
+            <Pencil className="w-5 h-5 mr-2" />
+            Edit
+          </button>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Job ID
-              </label>
-              <input
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                type="text"
-                value={jobData._id}
-                readOnly
-                aria-label="Job ID"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Work Mode
-              </label>
-              <input
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                type="text"
-                value={jobData.workMode}
-                readOnly
-                aria-label="Work Mode"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Job Type
-              </label>
-              <input
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                type="text"
-                value={jobData.jobType}
-                readOnly
-                aria-label="Job Type"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Salary
-              </label>
-              <input
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                type="text"
-                value={`$${jobData.salary.toLocaleString()}`}
-                readOnly
-                aria-label="Salary"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Years of Experience
-              </label>
-              <input
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                type="text"
-                value={jobData.yearsOfExperience}
-                readOnly
-                aria-label="Years of Experience"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Location
-              </label>
-              <input
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                type="text"
-                value={jobData.location}
-                readOnly
-                aria-label="Location"
-              />
-            </div>
-            <div className="md:col-span-3">
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Description
-              </label>
-              <textarea
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                value={jobData.description}
-                readOnly
-                aria-label="Description"
-                rows={4}
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Created At
-              </label>
-              <input
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                type="text"
-                value={new Date(jobData.createdAt).toLocaleDateString()}
-                readOnly
-                aria-label="Created At"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Updated At
-              </label>
-              <input
-                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
-                type="text"
-                value={new Date(jobData.updatedAt).toLocaleDateString()}
-                readOnly
-                aria-label="Updated At"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-yellow-500 font-semibold">
-                Status
-              </label>
-              <div className="flex items-center space-x-2">
-                <span
-                  className={`text-sm font-semibold ${
-                    jobData.status === "Approved"
-                      ? "text-green-600"
-                      : jobData.status === "Reject"
-                      ? "text-red-500"
-                      : "text-yellow-400"
-                  }`}
-                >
-                  {jobData.status}
-                </span>
-              </div>
-            </div>
-            <div className="md:col-span-3 flex space-x-4 mt-4">
-              <button
-                onClick={() => handleStatusUpdate("Approved")}
-                disabled={updateLoading || jobData.status === "Approved"}
-                className={`flex items-center px-4 py-2 rounded text-white ${
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Job ID
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={jobData._id}
+              readOnly
+              aria-label="Job ID"
+              aria-readonly="true"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Work Mode
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={jobData.workMode}
+              readOnly
+              aria-label="Work Mode"
+              aria-readonly="true"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Job Type
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={jobData.jobType}
+              readOnly
+              aria-label="Job Type"
+              aria-readonly="true"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Salary
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={`$${jobData.salary.toLocaleString()}`}
+              readOnly
+              aria-label="Salary"
+              aria-readonly="true"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Years of Experience
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={jobData.yearsOfExperience}
+              readOnly
+              aria-label="Years of Experience"
+              aria-readonly="true"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Location
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={jobData.location}
+              readOnly
+              aria-label="Location"
+              aria-readonly="true"
+            />
+          </div>
+          <div className="sm:col-span-3">
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              value={jobData.description}
+              readOnly
+              aria-label="Description"
+              rows={4}
+              aria-readonly="true"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Created At
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={new Date(jobData.createdAt).toLocaleDateString()}
+              readOnly
+              aria-label="Created At"
+              aria-readonly="true"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Updated At
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800 bg-gray-50 cursor-not-allowed"
+              type="text"
+              value={new Date(jobData.updatedAt).toLocaleDateString()}
+              readOnly
+              aria-label="Updated At"
+              aria-readonly="true"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Status
+            </label>
+            <div className="flex items-center gap-2">
+              <span
+                className={`text-sm font-medium ${
                   jobData.status === "Approved"
-                    ? "bg-green-300 cursor-not-allowed"
-                    : "bg-green-500 hover:bg-green-600"
+                    ? "text-green-600"
+                    : jobData.status === "Reject"
+                    ? "text-red-600"
+                    : "text-yellow-600"
                 }`}
               >
-                {updateLoading ? "Updating..." : "Approve"}
-              </button>
-              <button
-                onClick={() => handleStatusUpdate("Reject")}
-                disabled={updateLoading || jobData.status === "Reject"}
-                className={`flex items-center px-4 py-2 rounded text-white ${
-                  jobData.status === "Reject"
-                    ? "bg-red-300 cursor-not-allowed"
-                    : "bg-red-500 hover:bg-red-600"
-                }`}
-              >
-                {updateLoading ? "Updating..." : "Reject"}
-              </button>
+                {jobData.status}
+              </span>
             </div>
+          </div>
+          <div className="sm:col-span-3 flex gap-4 mt-4">
+            <button
+              onClick={() => handleStatusUpdate("Approved")}
+              disabled={updateLoading || jobData.status === "Approved"}
+              className={`flex items-center px-6 py-2 rounded-md font-semibold text-sm text-white ${
+                jobData.status === "Approved"
+                  ? "bg-green-300 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
+              title="Approve Job"
+            >
+              {updateLoading ? "Updating..." : "Approve"}
+            </button>
+            <button
+              onClick={() => handleStatusUpdate("Reject")}
+              disabled={updateLoading || jobData.status === "Reject"}
+              className={`flex items-center px-6 py-2 rounded-md font-semibold text-sm text-white ${
+                jobData.status === "Reject"
+                  ? "bg-red-300 cursor-not-allowed"
+                  : "bg-red-600 hover:bg-red-700"
+              }`}
+              title="Reject Job"
+            >
+              {updateLoading ? "Updating..." : "Reject"}
+            </button>
           </div>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default ViewJob;

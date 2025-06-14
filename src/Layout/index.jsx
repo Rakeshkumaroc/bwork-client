@@ -19,8 +19,7 @@ import ViewBranch from "../pages/admin/ViewBranch";
 import ViewBranchUser from "../pages/admin/ViewBranchUser";
 import Settings from "../pages/admin/Settings";
 import AddJobDetails from "../pages/admin/AddJobDetails";
-import ManageJobsList from "../pages/admin/ManageJobsList";
-import ManageTheme from "../pages/admin/ManageTheme";
+import ManageJobsList from "../pages/admin/ManageJobsList"; 
 import ProfileCard from "../pages/admin/ProfileCard";
 import JobProviderSetup from "../pages/admin/JobProviderSetup";
 import EmployersSignup from "../pages/auth/EmployersSignup";
@@ -61,31 +60,32 @@ const index = () => {
         <Route path="/dashboard" element={<Admin />}>
           <Route index element={<Dashboard />} />
           <Route path="manage-branch/list" element={<ManageBranchesList />} />
+          <Route path="manage-branch/list/:id" element={<ViewBranch />} />
           <Route path="manage-branch/add" element={<AddBranchDetails />} />
           <Route
             path="manage-branch/:id"
             element={<AddBranchDetails action={"edit"} />}
           />
-          <Route path="manage-job/add" element={<AddJobDetails />} />
-          <Route path="manage-job/:id" element={<AddJobDetails action={"edit"} />} />
-          <Route path="manage-job/list/:id" element={<ViewJob />} />
-          <Route path="manage-job/list" element={<ManageJobsList />} />
-          <Route path="manage-branch/list/:id" element={<ViewBranch />} />
-          <Route path="manage-job-providers/list" element={<ManageProviderList />} />
-          <Route path="manage-job-providers/list/:id" element={<ViewJobProvider />} />
-          <Route path="manage-applicants/list" element={<ManageApplicants />} />
-          <Route
-            path="manage-applicants/list/:view-profile"
-            element={<ProfileCard />}
-          />
-          <Route path="branch-user/list" element={<ManageUserList />} />
+             <Route path="branch-user/list" element={<ManageUserList />} />
           <Route path="branch-user/list/:id" element={<ViewBranchUser />} />
           <Route path="branch-user/add" element={<BranchUserAdd />} />
           <Route
             path="branch-user/:id"
             element={<BranchUserAdd action={"edit"} />}
           />
-          <Route path="manage-theme" element={<ManageTheme />} />
+           <Route path="manage-job-providers/list" element={<ManageProviderList />} />
+          <Route path="manage-job-providers/list/:id" element={<ViewJobProvider />} />
+          <Route path="manage-job/list" element={<ManageJobsList />} />
+          <Route path="manage-job/list/:id" element={<ViewJob />} />
+          <Route path="manage-job/add" element={<AddJobDetails />} />
+          <Route path="manage-job/:id" element={<AddJobDetails action={"edit"} />} />
+         
+          <Route path="manage-applicants/list" element={<ManageApplicants />} />
+          <Route
+            path="manage-applicants/list/:view-profile"
+            element={<ProfileCard />}
+          />
+        
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>

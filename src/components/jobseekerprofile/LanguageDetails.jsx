@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { FaPen } from "react-icons/fa";
-import PersonalDetailsSkel from "../skeleton/jobseeker/PersonalDetailsSkel";
+import LanguageDetailsSkel from "../skeleton/jobseeker/LanguageDetailsSkel";
 import { MyContext } from "../../Layout/ProfileLayout";
 
 const Tick = () => <span className="text-yellow-400 text-lg font-bold">✓</span>;
 
-const PersonalDetails = () => {
+const LanguageDetails = () => {
   const { languageRef } = useContext(MyContext);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -105,7 +105,7 @@ const PersonalDetails = () => {
   };
 
   if (isLoading) {
-    return <PersonalDetailsSkel />;
+    return <LanguageDetailsSkel />;
   }
 
  
@@ -271,5 +271,4 @@ const PersonalDetails = () => {
   );
 };
 
-export default PersonalDetails;
-
+export default LanguageDetails; 

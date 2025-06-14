@@ -67,27 +67,28 @@ const ManageJobsList = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-light-cream p-4 sm:p-8">
-      <Topbar />
+ 
+return (
+  <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <Topbar />
+    <div className="max-w-7xl mx-auto bg-white rounded-md shadow-md p-6">
       <div className="flex justify-between flex-wrap items-center mb-6">
-        <h1 className="text-xl lg:text-3xl font-bold text-yellow-400">
-          Manage Jobs
-        </h1>
-        <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row justify-between w-full sm:w-auto sm:justify-end gap-4 sm:gap-5">
+        <h1 className="text-2xl font-semibold text-gray-800">Manage Jobs</h1>
+        <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row w-full sm:w-auto sm:gap-4">
           <input
             type="text"
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border border-yellow-400 rounded-full w-full sm:w-64 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            className="border border-gray-300 rounded-md w-full sm:w-64 px-3 py-2 text-sm text-gray-800 placeholder-gray-600 focus:border-yellow-400 focus:ring-yellow-400 focus:outline-none"
           />
           <Link
-            to="/dashboard/manage-jobs/add"
-            className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-4 py-2 rounded-full flex items-center gap-1 text-lg sm:text-sm transition"
+            to="/dashboard/manage-job/add"
+            className="bg-yellow-400 text-black font-semibold px-4 py-2 rounded-md flex items-center gap-2 text-sm hover:bg-yellow-500 transition mt-4 sm:mt-0"
+            title="Add Job"
           >
             <span>+</span>
-            <span className="hidden sm:block">Add Job</span>
+            <span>Add Job</span>
           </Link>
         </div>
       </div>
@@ -101,9 +102,11 @@ const ManageJobsList = () => {
         basePath="./"
         onEdit={handleEdit}
         onDelete={handleDelete}
+        className="bg-white rounded-md shadow-md"
       />
     </div>
-  );
+  </div>
+);
 };
 
 export default ManageJobsList;

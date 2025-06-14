@@ -190,94 +190,103 @@ const AddJobDetails = ({ action }) => {
     }
   }, [action, id]);
 
-  return (
-    <div className="min-h-screen bg-light-cream p-8">
-      <Topbar />
+ 
+return (
+  <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <Topbar />
+    <div className="  mx-auto bg-white rounded-md shadow-md p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-yellow-400">
+        <h1 className="text-2xl font-semibold text-gray-800">
           {action === "edit" ? "Edit Job Details" : "Add Job Details"}
         </h1>
       </div>
-      <div className="flex items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-cream p-8 rounded shadow-lg w-full space-y-6"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <InputField
-              label="Title"
-              name="title"
-              value={formData.title}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Job Title"
-            />
-            <SelectField
-              label="Work Mode"
-              name="workMode"
-              value={formData.workMode}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              options={workModeOptions}
-              placeholder="Select Work Mode"
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <SelectField
-              label="Job Type"
-              name="jobType"
-              value={formData.jobType}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              options={jobTypeOptions}
-              placeholder="Select Job Type"
-            />
-            <InputField
-              label="Salary"
-              name="salary"
-              type="number"
-              value={formData.salary}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Salary (e.g., 50000)"
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <InputField
-              label="Years of Experience"
-              name="yearsOfExperience"
-              type="number"
-              value={formData.yearsOfExperience}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Years of Experience"
-            />
-            <InputField
-              label="Location"
-              name="location"
-              value={formData.location}
-              onChange={(e) => handleFormChange(e, setFormData)}
-              placeholder="Enter Location (e.g., New York, NY)"
-            />
-          </div>
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-md space-y-6"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
-            label="Description"
-            name="description"
-            value={formData.description}
+            label="Title"
+            name="title"
+            value={formData.title}
             onChange={(e) => handleFormChange(e, setFormData)}
-            placeholder="Enter Job Description"
-            type="textarea"
+            placeholder="Enter Job Title"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
           />
-          <div className="pt-4 flex justify-center">
-            <button
-              type="submit"
-              disabled={loading}
-              className={`bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-12 rounded-md shadow-md ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              {loading ? "Submitting..." : "SUBMIT"}
-            </button>
-          </div>
-        </form>
-      </div>
+          <SelectField
+            label="Work Mode"
+            name="workMode"
+            value={formData.workMode}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            options={workModeOptions}
+            placeholder="Select Work Mode"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <SelectField
+            label="Job Type"
+            name="jobType"
+            value={formData.jobType}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            options={jobTypeOptions}
+            placeholder="Select Job Type"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <InputField
+            label="Salary"
+            name="salary"
+            type="number"
+            value={formData.salary}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Salary (e.g., 50000)"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputField
+            label="Years of Experience"
+            name="yearsOfExperience"
+            type="number"
+            value={formData.yearsOfExperience}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Years of Experience"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+          <InputField
+            label="Location"
+            name="location"
+            value={formData.location}
+            onChange={(e) => handleFormChange(e, setFormData)}
+            placeholder="Enter Location (e.g., New York, NY)"
+            className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+          />
+        </div>
+        <InputField
+          label="Description"
+          name="description"
+          value={formData.description}
+          onChange={(e) => handleFormChange(e, setFormData)}
+          placeholder="Enter Job Description"
+          type="textarea"
+          className="border-gray-300 focus:border-yellow-400 rounded-md text-sm"
+        />
+        <div className="pt-4 flex justify-center">
+          <button
+            type="submit"
+            disabled={loading}
+            className={`bg-yellow-400 text-black font-semibold py-2 px-8 rounded-md hover:bg-yellow-500 transition ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            title="Submit Job Details"
+          >
+            {loading ? "Submitting..." : "SUBMIT"}
+          </button>
+        </div>
+      </form>
     </div>
-  );
+  </div>
+);
 };
 
 export default AddJobDetails;
