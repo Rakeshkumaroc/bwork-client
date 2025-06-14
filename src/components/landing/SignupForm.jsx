@@ -19,9 +19,13 @@ const SignupForm = () => {
   const validationSchema = {
     requiredFields: ["phone", ...(showOtp ? ["otp"] : [])],
     phone: (value) =>
-      !/^\d{10}$/.test(value) ? "Please enter a valid 10-digit phone number" : null,
+      !/^\d{10}$/.test(value)
+        ? "Please enter a valid 10-digit phone number"
+        : null,
     otp: (value) =>
-      showOtp && !/^\d{6}$/.test(value) ? "Please enter a valid 6-digit OTP" : null,
+      showOtp && !/^\d{6}$/.test(value)
+        ? "Please enter a valid 6-digit OTP"
+        : null,
   };
 
   const handleSubmit = async (e) => {
@@ -37,7 +41,6 @@ const SignupForm = () => {
     const payload = showOtp
       ? { phone: formData.phone, otp: formData.otp }
       : { phone: formData.phone };
-console.log('payload',payload);
 
     try {
       if (!showOtp) {
@@ -55,14 +58,21 @@ console.log('payload',payload);
       } else {
         // Step 2: Verify OTP and sign up
         const url = `${baseUrl}/job-seekers/job-seeker-signup`;
-        await submitForm({
+        const responseData = await submitForm({
           url,
           payload,
           setIsLoading,
           navigate,
-          successMessage: "Signup successful! Check your phone for login credentials.",
+          successMessage:
+            "Signup successful! Check your phone for login credentials.",
           successRedirect: "/login",
         });
+          if (responseData.success) {
+        const { routes } = responseData.resData;
+        // Store user data in localStorage (adjust based on backend response)
+        localStorage.setItem("userData", JSON.stringify(responseData.resData));
+        navigate(routes);
+      }
       }
     } catch (error) {
       // Error is already handled by submitForm via toast.error

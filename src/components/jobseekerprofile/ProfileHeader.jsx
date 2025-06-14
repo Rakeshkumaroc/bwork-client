@@ -100,7 +100,7 @@ const ProfileHeader = () => {
         }
       } catch (err) {
         console.error("Error fetching profile data:", err);
-        toast.error("Failed to load profile details.");
+         
       }
     };
 

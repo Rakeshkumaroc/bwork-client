@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect } from "react";
-import { FaPen, FaTimes, FaPlus } from "react-icons/fa";
-import { MyContext } from "../../App";
+import { FaPen, FaTimes, FaPlus } from "react-icons/fa"; 
 import KeySkillSkel from "../skeleton/jobseeker/KeySkillSkel";
 import { deleteForm, submitForm, updateForm } from "../../utils/form";
 import { fetchData } from "../../utils/api";
 import { toast } from "react-toastify";
+import { MyContext } from "../../Layout/ProfileLayout";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
@@ -203,7 +203,7 @@ const KeySkills = () => {
           </button>
         )}
       </div>
-      {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
+      {error && <p className="text-yellow-600 text-sm mb-4">Data not available</p>}
       <div className="flex flex-wrap gap-3">
         {skills.map((skill) => (
           <div

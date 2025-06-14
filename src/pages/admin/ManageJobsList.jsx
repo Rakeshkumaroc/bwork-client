@@ -40,9 +40,11 @@ const ManageJobsList = () => {
   const columns = [
     { header: "Title", accessor: "title" },
     { header: "Work Mode", accessor: "workMode" },
-    { header: "Job Type", accessor: "jobType" },
-    { header: "Description", accessor: "description" },
-    { header: "Status", accessor: "status" }, // Added Status column
+    { header: "Job Type", accessor: "jobType" }, 
+    { header: "Salary", accessor: "salary" },
+    { header: "Years of Experience", accessor: "yearsOfExperience" },
+    { header: "Location", accessor: "location" },
+    { header: "Status", accessor: "status" },
   ];
 
   const handleEdit = (job) => {
@@ -57,7 +59,6 @@ const ManageJobsList = () => {
           setIsLoading: setLoading,
           successMessage: "Job deleted successfully!",
         });
-        // Update jobs state after deletion
         setJobs(jobs.filter((j) => j._id !== job._id));
       } catch (err) {
         console.error("Error deleting job:", err);
@@ -79,11 +80,11 @@ const ManageJobsList = () => {
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border border-orange-400 rounded-full w-full sm:w-64 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
+            className="border border-yellow-400 rounded-full w-full sm:w-64 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300"
           />
           <Link
             to="/dashboard/manage-jobs/add"
-            className="bg-orange-500 hover:bg-yellow-400 text-white font-semibold px-4 py-2 rounded-full flex items-center gap-1 text-lg sm:text-sm transition"
+            className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-4 py-2 rounded-full flex items-center gap-1 text-lg sm:text-sm transition"
           >
             <span>+</span>
             <span className="hidden sm:block">Add Job</span>

@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from "react";
-import { FaPen, FaTimes, FaPlus } from "react-icons/fa"; // Import FaPlus icon
-import { MyContext } from "../../App";
+import { FaPen, FaTimes, FaPlus } from "react-icons/fa"; 
 import EmploymentSkel from "../skeleton/jobseeker/EmploymentSkel";
 import { submitForm, updateForm, deleteForm } from "../../utils/form";
 import { toast } from "react-toastify";
+import { MyContext } from "../../Layout/ProfileLayout";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
@@ -81,8 +81,7 @@ const Employment = () => {
         console.log("Processed employmentData for state:", processedData);
 
       } catch (err) {
-        setError(err.message || "Failed to fetch employment details.");
-        toast.error(err.message || "Failed to fetch employment details.");
+        setError(err.message || "Failed to fetch employment details."); 
       } finally {
         setIsLoading(false);
       }
@@ -463,7 +462,8 @@ const Employment = () => {
         </button>
       </div>
 
-      {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
+    
+      {error && <p className="text-yellow-600 text-sm mb-4">Data not available</p>}
 
       {showAddForm && renderForm(handleAddSubmit, "Add New Employment")}
 

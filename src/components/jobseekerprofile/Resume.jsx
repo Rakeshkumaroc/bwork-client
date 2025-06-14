@@ -1,6 +1,6 @@
-import { useContext, useState, useEffect } from "react";
-import { MyContext } from "../../App";
+import { useContext, useState, useEffect } from "react"; 
 import ResumeSkel from "../skeleton/jobseeker/ResumeSkel";
+import { MyContext } from "../../Layout/ProfileLayout";
 
 const Resume = () => {
   const { resumeRef } = useContext(MyContext);

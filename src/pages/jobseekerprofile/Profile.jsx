@@ -1,4 +1,3 @@
- 
 import Resume from "../../components/jobseekerprofile/Resume";
 import KeySkills from "../../components/jobseekerprofile/KeySkills";
 import Employment from "../../components/jobseekerprofile/Employment";

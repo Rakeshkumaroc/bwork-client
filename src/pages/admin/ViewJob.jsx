@@ -111,7 +111,7 @@ const ViewJob = () => {
             </div>
             <button
               onClick={handleEdit}
-              className="flex items-center bg-orange-500 text-white px-4 py-1 rounded hover:bg-orange-600"
+              className="flex items-center bg-yellow-400 text-white px-4 py-1 rounded hover:bg-yellow-500"
             >
               <img
                 src="https://img.icons8.com/ios-glyphs/20/ffffff/edit.png"
@@ -124,7 +124,7 @@ const ViewJob = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <div>
-              <label className="block text-sm text-orange-600 font-semibold">
+              <label className="block text-sm text-yellow-500 font-semibold">
                 Job ID
               </label>
               <input
@@ -136,7 +136,7 @@ const ViewJob = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-orange-600 font-semibold">
+              <label className="block text-sm text-yellow-500 font-semibold">
                 Work Mode
               </label>
               <input
@@ -148,7 +148,7 @@ const ViewJob = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-orange-600 font-semibold">
+              <label className="block text-sm text-yellow-500 font-semibold">
                 Job Type
               </label>
               <input
@@ -159,8 +159,44 @@ const ViewJob = () => {
                 aria-label="Job Type"
               />
             </div>
+            <div>
+              <label className="block text-sm text-yellow-500 font-semibold">
+                Salary
+              </label>
+              <input
+                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
+                type="text"
+                value={`$${jobData.salary.toLocaleString()}`}
+                readOnly
+                aria-label="Salary"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-yellow-500 font-semibold">
+                Years of Experience
+              </label>
+              <input
+                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
+                type="text"
+                value={jobData.yearsOfExperience}
+                readOnly
+                aria-label="Years of Experience"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-yellow-500 font-semibold">
+                Location
+              </label>
+              <input
+                className="border border-gray-300 rounded px-2 py-1 w-full bg-gray-100"
+                type="text"
+                value={jobData.location}
+                readOnly
+                aria-label="Location"
+              />
+            </div>
             <div className="md:col-span-3">
-              <label className="block text-sm text-orange-600 font-semibold">
+              <label className="block text-sm text-yellow-500 font-semibold">
                 Description
               </label>
               <textarea
@@ -172,7 +208,7 @@ const ViewJob = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-orange-600 font-semibold">
+              <label className="block text-sm text-yellow-500 font-semibold">
                 Created At
               </label>
               <input
@@ -184,7 +220,7 @@ const ViewJob = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-orange-600 font-semibold">
+              <label className="block text-sm text-yellow-500 font-semibold">
                 Updated At
               </label>
               <input
@@ -196,7 +232,7 @@ const ViewJob = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-orange-600 font-semibold">
+              <label className="block text-sm text-yellow-500 font-semibold">
                 Status
               </label>
               <div className="flex items-center space-x-2">
@@ -206,7 +242,7 @@ const ViewJob = () => {
                       ? "text-green-600"
                       : jobData.status === "Reject"
                       ? "text-red-500"
-                      : "text-yellow-500"
+                      : "text-yellow-400"
                   }`}
                 >
                   {jobData.status}

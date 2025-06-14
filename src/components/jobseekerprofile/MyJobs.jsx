@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ProfileLayout from "../../Layout/ProfileLayout";
 import MyJobsSkel from "../skeleton/jobseeker/MyJobsSkel";
 

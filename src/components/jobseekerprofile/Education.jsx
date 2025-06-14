@@ -1,11 +1,11 @@
 import { useContext, useState, useEffect } from "react";
 import { FaPen, FaTimes } from "react-icons/fa";
-import { MyContext } from "../../App";
 import EducationSkel from "../skeleton/jobseeker/EducationSkel";
 import { submitForm, updateForm, deleteForm } from "../../utils/form";
 import { toast } from "react-toastify";
 // Import the fetchData utility
 import { fetchData } from "../../utils/api"; // Ensure the path is correct based on your project structure
+import { MyContext } from "../../Layout/ProfileLayout";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
@@ -52,7 +52,13 @@ const Education = () => {
 
   const handleAddClick = () => {
     setEditingEducationId(null);
-    setFormData({ degree: "", institution: "", duration: "", mode: "", score: "" });
+    setFormData({
+      degree: "",
+      institution: "",
+      duration: "",
+      mode: "",
+      score: "",
+    });
     setShowAddForm(true);
   };
 
@@ -91,7 +97,14 @@ const Education = () => {
         payload: educationPayload,
         setIsLoading,
         successMessage: "Education added successfully!",
-        resetForm: () => setFormData({ degree: "", institution: "", duration: "", mode: "", score: "" }),
+        resetForm: () =>
+          setFormData({
+            degree: "",
+            institution: "",
+            duration: "",
+            mode: "",
+            score: "",
+          }),
       });
       if (data && data.resData) {
         setEducationData((prev) => [...prev, data.resData]);
@@ -122,7 +135,14 @@ const Education = () => {
         payload: educationPayload,
         setIsLoading,
         successMessage: "Education updated successfully!",
-        resetForm: () => setFormData({ degree: "", institution: "", duration: "", mode: "", score: "" }),
+        resetForm: () =>
+          setFormData({
+            degree: "",
+            institution: "",
+            duration: "",
+            mode: "",
+            score: "",
+          }),
       });
       if (data && data.resData) {
         setEducationData((prev) =>
@@ -148,7 +168,9 @@ const Education = () => {
         setIsLoading,
         successMessage: "Education deleted successfully!",
         onSuccess: async () => {
-          setEducationData((prev) => prev.filter((edu) => edu._id !== educationId));
+          setEducationData((prev) =>
+            prev.filter((edu) => edu._id !== educationId)
+          );
         },
       });
     } catch (err) {
@@ -162,7 +184,13 @@ const Education = () => {
   const handleCancel = () => {
     setShowAddForm(false);
     setEditingEducationId(null);
-    setFormData({ degree: "", institution: "", duration: "", mode: "", score: "" });
+    setFormData({
+      degree: "",
+      institution: "",
+      duration: "",
+      mode: "",
+      score: "",
+    });
     setError(null);
   };
 
@@ -175,7 +203,10 @@ const Education = () => {
       <h3 className="text-lg font-semibold text-gray-800 mb-4">{title}</h3>
       <form onSubmit={submitHandler} className="space-y-4">
         <div>
-          <label htmlFor="degree" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="degree"
+            className="block text-sm font-medium text-gray-700"
+          >
             Degree
           </label>
           <input
@@ -189,7 +220,10 @@ const Education = () => {
           />
         </div>
         <div>
-          <label htmlFor="institution" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="institution"
+            className="block text-sm font-medium text-gray-700"
+          >
             Institution
           </label>
           <input
@@ -203,7 +237,10 @@ const Education = () => {
           />
         </div>
         <div>
-          <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="duration"
+            className="block text-sm font-medium text-gray-700"
+          >
             Duration (e.g., 2020–2023)
           </label>
           <input
@@ -217,7 +254,10 @@ const Education = () => {
           />
         </div>
         <div>
-          <label htmlFor="mode" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="mode"
+            className="block text-sm font-medium text-gray-700"
+          >
             Mode (e.g., Full Time, Correspondence)
           </label>
           <input
@@ -230,7 +270,10 @@ const Education = () => {
           />
         </div>
         <div>
-          <label htmlFor="score" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="score"
+            className="block text-sm font-medium text-gray-700"
+          >
             Score (e.g., 85%, 3.8 GPA)
           </label>
           <input
@@ -274,11 +317,17 @@ const Education = () => {
         </button>
       </div>
 
-      {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
+      {error && (
+        <p className="text-yellow-600 text-sm mb-4">Data not available</p>
+      )}
 
       {showAddForm && renderForm(handleAddSubmit, "Add New Education")}
 
-      {console.log("educationData before map:", educationData, typeof educationData)}
+      {console.log(
+        "educationData before map:",
+        educationData,
+        typeof educationData
+      )}
 
       {educationData.map((edu) =>
         editingEducationId === edu._id ? (
@@ -286,7 +335,9 @@ const Education = () => {
         ) : (
           <div key={edu._id} className="mb-5">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-800">{edu.degree}</h3>
+              <h3 className="text-lg font-semibold text-gray-800">
+                {edu.degree}
+              </h3>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleEditClick(edu)}

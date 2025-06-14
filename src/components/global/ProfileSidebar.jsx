@@ -11,9 +11,9 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { toast } from "react-toastify";
-import { useContext, useEffect, useState } from "react";
-import { MyContext } from "../../App";
+import { useContext, useEffect, useState } from "react"; 
 import ProfileSidebarSkel from "../skeleton/jobseeker/ProfileSidebarSkel";
+import { MyContext } from "../../Layout/ProfileLayout";
 
 const externalTabs = [
   {
