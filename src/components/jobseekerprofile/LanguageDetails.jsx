@@ -1,7 +1,12 @@
 import { useState, useEffect, useContext } from "react";
-import { FaPen } from "react-icons/fa";
+import { FaPen, FaTimes } from "react-icons/fa"; // FaTimes added for delete button
 import LanguageDetailsSkel from "../skeleton/jobseeker/LanguageDetailsSkel";
 import { MyContext } from "../../Layout/ProfileLayout";
+import { submitForm, updateForm, deleteForm } from "../../utils/form"; // Import form utilities
+import { fetchData } from "../../utils/api"; // Import fetchData utility
+import { toast } from "react-toastify"; // Import toast for notifications
+
+const baseUrl = import.meta.env.VITE_APP_URL;
 
 const Tick = () => <span className="text-yellow-400 text-lg font-bold">✓</span>;
 
@@ -9,27 +14,11 @@ const LanguageDetails = () => {
   const { languageRef } = useContext(MyContext);
 
   const [isLoading, setIsLoading] = useState(true);
-  
-  const [languages, setLanguages] = useState([
-    {
-      name: "Hindi",
-      proficiency: "Expert",
-      read: true,
-      write: true,
-      speak: true,
-    },
-    {
-      name: "English",
-      proficiency: "Proficient",
-      read: true,
-      write: true,
-      speak: true,
-    },
-  ]);
- 
+  const [languages, setLanguages] = useState([]); // Initialize as empty array, data will be fetched
+  const [error, setError] = useState(null);
 
   const [showLanguageForm, setShowLanguageForm] = useState(false);
-  const [editingLanguageIndex, setEditingLanguageIndex] = useState(null);
+  const [editingLanguageId, setEditingLanguageId] = useState(null); // Use ID instead of index
   const [languageFormData, setLanguageFormData] = useState({
     name: "",
     proficiency: "",
@@ -38,35 +27,58 @@ const LanguageDetails = () => {
     speak: false,
   });
 
-  // Simulate data fetching
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const jobSeekerId = userData._id || null;
+
+  // --- Fetch Languages on Component Mount ---
   useEffect(() => {
-    const fetchLanguageData = async () => {
-      setTimeout(() => {
+    const getLanguageDetails = async () => {
+      if (!jobSeekerId) {
+        setError("User ID not found. Please log in again.");
         setIsLoading(false);
-      }, 1000);
+        return;
+      }
+
+      setError(null); // Clear previous errors
+      setIsLoading(true); // Set loading state before fetching
+
+      try {
+        // Use the fetchData utility to get language details
+        await fetchData(
+          `${baseUrl}/languages/get-languages-by-job-seeker-id/${jobSeekerId}`, // Assuming this GET endpoint
+          setLanguages, // Callback to set the fetched data
+          setIsLoading, // Callback to set loading state
+          setError // Callback to set error state
+        );
+      } catch (err) {
+        toast.error(err.message || "Failed to fetch languages.");
+      } finally {
+        setIsLoading(false); // Ensure loading is off even if fetchData fails
+      }
     };
 
-    fetchLanguageData();
-  }, []);
+    getLanguageDetails();
+  }, [jobSeekerId]); // Dependency on jobSeekerId
 
- 
-  // Handlers for Languages
+  // --- Handlers for Languages ---
   const handleAddLanguageClick = () => {
     setShowLanguageForm(true);
-    setEditingLanguageIndex(null); // Indicates adding new language
+    setEditingLanguageId(null); // Indicates adding new language
     setLanguageFormData({
       name: "",
       proficiency: "",
       read: false,
       write: false,
       speak: false,
-    }); // Clear form 
+    }); // Clear form
+    setError(null); // Clear previous errors
   };
 
-  const handleEditLanguageClick = (index) => {
+  const handleEditLanguageClick = (language) => { // Pass the full language object
     setShowLanguageForm(true);
-    setEditingLanguageIndex(index);
-    setLanguageFormData(languages[index]); // Load current language data into form 
+    setEditingLanguageId(language._id); // Set ID for editing
+    setLanguageFormData(language); // Load current language data into form
+    setError(null); // Clear previous errors
   };
 
   const handleLanguageFormChange = (e) => {
@@ -77,24 +89,108 @@ const LanguageDetails = () => {
     }));
   };
 
-  const handleAddLanguageSubmit = (e) => {
+  const handleAddLanguageSubmit = async (e) => {
     e.preventDefault();
-    setLanguages((prev) => [...prev, languageFormData]);
-    setShowLanguageForm(false);
+    if (!jobSeekerId) {
+      setError("User ID not found. Please log in again.");
+      toast.error("User ID not found. Please log in again.");
+      return;
+    }
+
+    const payload = {
+      ...languageFormData,
+      jobSeekerId,
+    };
+
+    try {
+      const data = await submitForm({
+        url: `${baseUrl}/languages/create-Language`, // Your POST endpoint
+        payload: payload,
+        setIsLoading,
+        successMessage: "Language added successfully!",
+        resetForm: () => setLanguageFormData({ name: "", proficiency: "", read: false, write: false, speak: false }),
+      });
+
+      if (data && data.resData && data.resData.languageDetails) {
+        setLanguages((prev) => [...prev, data.resData.languageDetails]); // Add the new language with its _id
+      } else {
+        toast.error("Failed to add language: Incomplete response from server.");
+      }
+      setShowLanguageForm(false);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message || "Failed to add language.");
+    }
   };
 
-  const handleUpdateLanguageSubmit = (e) => {
+  const handleUpdateLanguageSubmit = async (e) => {
     e.preventDefault();
-    const updatedLanguages = [...languages];
-    updatedLanguages[editingLanguageIndex] = languageFormData;
-    setLanguages(updatedLanguages);
-    setShowLanguageForm(false);
-    setEditingLanguageIndex(null);
+    if (!jobSeekerId) {
+      setError("User ID not found. Please log in again.");
+      toast.error("User ID not found. Please log in again.");
+      return;
+    }
+    if (!editingLanguageId) {
+      setError("No language selected for update.");
+      toast.error("No language selected for update.");
+      return;
+    }
+
+    const payload = {
+      ...languageFormData,
+      jobSeekerId, // Include jobSeekerId as per your backend controller
+    };
+
+    try {
+      const data = await updateForm({
+        url: `${baseUrl}/languages/update-language/${editingLanguageId}`, // Your PUT endpoint
+        payload: payload,
+        setIsLoading,
+        successMessage: "Language updated successfully!",
+        resetForm: () => setLanguageFormData({ name: "", proficiency: "", read: false, write: false, speak: false }),
+      });
+
+      if (data && data.resData) {
+        setLanguages((prev) =>
+          prev.map((lang) =>
+            lang._id === editingLanguageId ? data.resData : lang // Replace the updated language
+          )
+        );
+      } else {
+        toast.error("Failed to update language: Incomplete response from server.");
+      }
+      setShowLanguageForm(false);
+      setEditingLanguageId(null);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message || "Failed to update language.");
+    }
+  };
+
+  const handleDeleteLanguage = async (languageId) => {
+    setIsLoading(true); // Set loading while deleting
+    try {
+      await deleteForm({
+        url: `${baseUrl}/languages/delete-language/${languageId}`, // Your DELETE endpoint
+        setIsLoading,
+        successMessage: "Language deleted successfully!",
+        onSuccess: () => {
+          setLanguages((prev) => prev.filter((lang) => lang._id !== languageId)); // Filter out the deleted language
+        },
+      });
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message || "Failed to delete language.");
+    } finally {
+      setIsLoading(false); // Ensure loading is off after deletion attempt
+    }
   };
 
   const handleLanguageFormCancel = () => {
     setShowLanguageForm(false);
-    setEditingLanguageIndex(null);
+    setEditingLanguageId(null);
     setLanguageFormData({
       name: "",
       proficiency: "",
@@ -102,22 +198,21 @@ const LanguageDetails = () => {
       write: false,
       speak: false,
     }); // Clear form
+    setError(null); // Clear previous errors
   };
 
   if (isLoading) {
     return <LanguageDetailsSkel />;
   }
 
- 
-
   const renderLanguageForm = () => (
     <div className="mt-6 p-4 border border-gray-200 rounded-md">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">
-        {editingLanguageIndex !== null ? "Edit Language" : "Add New Language"}
+        {editingLanguageId !== null ? "Edit Language" : "Add New Language"}
       </h3>
       <form
         onSubmit={
-          editingLanguageIndex !== null
+          editingLanguageId !== null
             ? handleUpdateLanguageSubmit
             : handleAddLanguageSubmit
         }
@@ -158,7 +253,8 @@ const LanguageDetails = () => {
             <option value="">Select proficiency</option>
             <option value="Beginner">Beginner</option>
             <option value="Intermediate">Intermediate</option>
-            <option value="Expert">Expert</option>
+            <option value="Proficient">Proficient</option>
+            <option value="Expert">Expert</option> {/* Added Expert based on your KeySkills levels */}
           </select>
         </div>
         <div className="flex items-center space-x-4">
@@ -227,11 +323,15 @@ const LanguageDetails = () => {
         </button>
       </div>
 
-      { showLanguageForm ? null : (
+      {error && (
+        <p className="text-yellow-600 text-sm mb-4">Data not available</p>
+      )}
+
+      {showLanguageForm ? null : (
         <>
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm text-left">
-              <thead>
+            <table className=" w-full text-sm text-left">
+              <thead className="">
                 <tr className="text-gray-500 border-b border-gray-300">
                   <th className="py-2 pr-4">Languages</th>
                   <th className="py-2 pr-4">Proficiency</th>
@@ -242,8 +342,8 @@ const LanguageDetails = () => {
                 </tr>
               </thead>
               <tbody>
-                {languages.map((lang, idx) => (
-                  <tr key={idx} className="border-b border-gray-300">
+                {languages.map((lang) => (
+                  <tr key={lang._id} className="border-b border-gray-300"> {/* Use _id for key */}
                     <td className="py-3 pr-4">{lang.name}</td>
                     <td className="py-3 pr-4">{lang.proficiency}</td>
                     <td className="py-3 pr-4">{lang.read && <Tick />}</td>
@@ -251,11 +351,18 @@ const LanguageDetails = () => {
                     <td className="py-3 pr-4">{lang.speak && <Tick />}</td>
                     <td className="py-3 pr-4">
                       <button
-                        onClick={() => handleEditLanguageClick(idx)}
+                        onClick={() => handleEditLanguageClick(lang)}  
                         className="p-1 text-gray-500 hover:text-yellow-400 transition"
                         title="Edit Language"
                       >
                         <FaPen className="text-lg" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteLanguage(lang._id)} 
+                        className="p-1 text-gray-500 hover:text-red-600 transition ml-2"
+                        title="Delete Language"
+                      >
+                        <FaTimes className="text-lg" />
                       </button>
                     </td>
                   </tr>
@@ -265,10 +372,10 @@ const LanguageDetails = () => {
           </div>
         </>
       )}
- 
+
       {showLanguageForm && renderLanguageForm()}
     </div>
   );
 };
 
-export default LanguageDetails; 
+export default LanguageDetails;

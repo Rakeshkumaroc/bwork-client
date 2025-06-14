@@ -81,6 +81,7 @@ console.log("url", url);
         body: JSON.stringify(payload),
       });
     }
+console.log('response',response);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -140,6 +141,8 @@ export const updateForm = async ({
   localStorageData,
 }) => {
   setIsLoading(true);
+  console.log('url');
+  
   try {
     const response = await fetch(url, {
       method: "PUT",
@@ -148,6 +151,7 @@ export const updateForm = async ({
       },
       body: JSON.stringify(payload),
     });
+console.log('response',response);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -177,6 +181,9 @@ export const updateForm = async ({
     if (successRedirect) {
       navigate(successRedirect);
     }
+
+    console.log('data',data);
+    
 
     return data;
   } catch (error) {

@@ -7,7 +7,8 @@ import {
   FaChevronUp,
   FaBuilding,
   FaBriefcase,
-} from "react-icons/fa"; 
+} from "react-icons/fa";
+import { toast } from "react-toastify";
 import Logo from "../../assets/logo.png";
 import { fetchData } from "../../utils/api";
 
@@ -21,7 +22,8 @@ const Navbar = ({ isActive }) => {
     jobTitle: "Not provided",
     userProfilePic:
       "https://www.shareicon.net/data/128x128/2016/09/15/829466_man_512x512.png",
-  }); 
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -47,7 +49,7 @@ const Navbar = ({ isActive }) => {
               });
             }
           },
-      
+          setIsLoading,
           setError
         );
 

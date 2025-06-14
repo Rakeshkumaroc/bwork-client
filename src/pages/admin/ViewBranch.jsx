@@ -32,7 +32,7 @@ const ViewBranch = () => {
   return (
   <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
     <Topbar />
-    <div className="max-w-5xl mx-auto bg-white rounded-md shadow-md p-6">
+    <div className=" mx-auto bg-white rounded-md shadow-md p-6">
       <div className="flex-1">
         <div className="flex justify-between items-start mb-6">
           <div>
