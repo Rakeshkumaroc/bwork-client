@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Topbar from "../../components/admin/Topbar";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -71,7 +71,7 @@ const ViewJobProvider = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-light-cream p-4 sm:p-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 p-4 sm:p-8 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-yellow-400"></div>
       </div>
     );
@@ -79,7 +79,7 @@ const ViewJobProvider = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-light-cream p-4 sm:p-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 p-4 sm:p-8 flex items-center justify-center">
         <p className="text-red-600">Error: {error}</p>
       </div>
     );
@@ -87,7 +87,7 @@ const ViewJobProvider = () => {
 
   if (!providerData) {
     return (
-      <div className="min-h-screen bg-light-cream p-4 sm:p-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 p-4 sm:p-8 flex items-center justify-center">
         <p className="text-gray-600">No job provider data available.</p>
       </div>
     );
@@ -96,7 +96,7 @@ const ViewJobProvider = () => {
   return (
   <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
     <Topbar />
-    <div className="max-w-5xl mx-auto bg-white rounded-md shadow-md p-6 space-y-6">
+    <div className="w-full mx-auto bg-white rounded-md shadow-md p-6 space-y-6">
       {/* Header Section */}
       <div className="flex flex-wrap gap-4 sm:gap-6 items-center justify-between">
         <div className="flex gap-4 items-center">
@@ -115,6 +115,12 @@ const ViewJobProvider = () => {
             <p className="text-sm text-gray-600">Job Provider</p>
           </div>
         </div>
+          <Link
+            to="/dashboard/manage-job-providers/list"
+            className="px-4 py-2 bg-gray-300 rounded-md text-sm font-semibold hover:bg-gray-400"
+          >
+            Back
+          </Link>
       </div>
 
       {/* Info Section */}

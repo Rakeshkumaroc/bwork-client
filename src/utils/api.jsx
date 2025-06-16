@@ -21,7 +21,7 @@ export const fetchData = async (endpoint, setData, setLoading, setError) => {
     // Handle different API response structures
     const result = Array.isArray(data) ? data : data.resData || [];
     setData(result);
-    console.log(result);
+    console.log('result',result);
     
     setLoading(false);
   } catch (err) {

@@ -101,16 +101,18 @@ const BranchUserAdd = ({ action }) => {
       phone: formData.phone,
       email: formData.email,
       branchId: formData.branch, // Send branch _id
-      orgId: JSON.parse(localStorage.getItem("authToken") || "{}").orgId,
+      userId: JSON.parse(localStorage.getItem("authToken") || "{}").userId,
       address: formData.address,
       password: formData.password,
       image: image ? "" : "", // Placeholder, actual image sent via FormData if present
     };
+    console.log('payload',payload);
+    
 
     // Submit form using submitForm function
     const apiUrl =
       action === "edit"
-        ? `${baseUrl}/user/update-user/${id}`
+        ? `${baseUrl}/user/update-internal-user/${id}`
         : `${baseUrl}/user/add-internal-user`;
 
     try {
@@ -164,9 +166,9 @@ const BranchUserAdd = ({ action }) => {
     const authToken = JSON.parse(
       localStorage.getItem("authToken") || "{}"
     );
-    const orgId = authToken.orgId; // Assuming userId is orgId; adjust if different
+    const userId = authToken.userId; // Assuming userId is userId; adjust if different
     fetchData(
-      `${baseUrl}/branch/get-branch-by-org-id/${orgId}`,
+      `${baseUrl}/branch/get-branch-by-user-id/${userId}`,
       setBranches,
       setLoading,
       setError
@@ -192,7 +194,7 @@ const getData = async () => {
   }
 
   try {
-    const res = await fetch(`${baseUrl}/user/get-user-by-id/${id}`);
+    const res = await fetch(`${baseUrl}/user/get-single-internal-user-by-id/${id}`);
     const data = await res.json();
     console.log("Fetched user data:", data);
     if (res.ok && data.resData) {

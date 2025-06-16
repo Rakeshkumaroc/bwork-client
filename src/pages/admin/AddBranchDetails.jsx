@@ -103,21 +103,21 @@ const AddBranchDetails = ({ action }) => {
       return;
     }
 
-    // Retrieve organization ID
+    // Retrieve user ID
     const authToken = JSON.parse(localStorage.getItem("authToken") || "{}");
-    const orgId = authToken.orgId;
+    const userId = authToken.userId;
 
-    if (!orgId) {
-      toast.error("Organization ID not found. Please set up an organization first.", {
+    if (!userId) {
+      toast.error("user ID not found. Please set up an user first.", {
         position: "top-right",
         autoClose: 3000,
       });
-      navigate("/org-setup");
+      navigate("/employers-signup");
       return;
     }
 
     // Prepare payload
-    const payload = { ...formData, orgId };
+    const payload = { ...formData, userId };
 
     // Handle create or update
     const apiUrl =

@@ -19,8 +19,8 @@ const ManageUserList = () => {
      const authToken = JSON.parse(
         localStorage.getItem("authToken") || "{}"
       );
-      const orgId = authToken.orgId; // Assuming userId is orgId; adjust if different
-    fetchData(`${baseUrl}/user/get-user-by-org-id/${orgId}`, setUsers, setLoading, setError);
+      const userId = authToken.userId; // Assuming userId is userId; adjust if different
+    fetchData(`${baseUrl}/user/get-internal-users-by-user-id/${userId}`, setUsers, setLoading, setError);
   }, []);
 
   const filteredUsers = users.filter((user) =>
@@ -57,7 +57,7 @@ const ManageUserList = () => {
  if (window.confirm(`Are you sure you want to delete ${user.userName}?`)) {
       try {
         await deleteForm({
-          url: `${baseUrl}/user/delete-user/${user._id}`,
+          url: `${baseUrl}/user/delete-internal-user/${user._id}`,
           setIsLoading: setLoading,
           successMessage: "user deleted successfully!",
            

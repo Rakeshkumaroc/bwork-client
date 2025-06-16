@@ -11,7 +11,7 @@ const ViewBranchUser = () => {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`${baseUrl}/user/get-user-by-id/${id}`)
+    fetch(`${baseUrl}/user/get-single-internal-user-by-id/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setUserData(data.resData);

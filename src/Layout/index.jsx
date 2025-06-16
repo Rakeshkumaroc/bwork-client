@@ -33,6 +33,8 @@ import ManageProviderList from "../pages/admin/ManageProviderList";
 import ViewJob from "../pages/admin/ViewJob";
 import JobSeekerSetup from "../pages/admin/JobSeekerSetup";
 import ViewJobProvider from "../pages/admin/ViewJobProvider";
+import ManageSeekerList from "../pages/admin/ManageSeekerList";
+import ViewJobSeeker from "../pages/admin/ViewJobSeeker";
 
 const index = () => {
   return (
@@ -75,6 +77,8 @@ const index = () => {
           />
            <Route path="manage-job-providers/list" element={<ManageProviderList />} />
           <Route path="manage-job-providers/list/:id" element={<ViewJobProvider />} />
+           <Route path="manage-job-seekers/list" element={<ManageSeekerList />} />
+           <Route path="manage-job-seekers/list/:id" element={<ViewJobSeeker />} />
           <Route path="manage-job/list" element={<ManageJobsList />} />
           <Route path="manage-job/list/:id" element={<ViewJob />} />
           <Route path="manage-job/add" element={<AddJobDetails />} />

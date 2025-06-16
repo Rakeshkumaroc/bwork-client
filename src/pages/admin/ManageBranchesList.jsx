@@ -18,9 +18,9 @@ const ManageBranchesList = () => {
     const authToken = JSON.parse(
       localStorage.getItem("authToken") || "{}"
     );
-    const orgId = authToken.orgId;
+    const userId = authToken.userId;
     fetchData(
-      `${baseUrl}/branch/get-branch-by-org-id/${orgId}`,
+      `${baseUrl}/branch/get-branch-by-user-id/${userId}`,
       setBranches,
       setLoading,
       setError

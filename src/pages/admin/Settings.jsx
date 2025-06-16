@@ -57,10 +57,10 @@ const Settings = () => {
       phone: formData.phone,
     };
     const authToken = JSON.parse(localStorage.getItem("authToken") || "{}");
-    const orgId = authToken.orgId;
+    const userId = authToken.userId;
  
     try {
-      const result = await fetch(`${baseUrl}/org/update-org-by-id/${orgId}`, {
+      const result = await fetch(`${baseUrl}/org/update-org-by-id/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
