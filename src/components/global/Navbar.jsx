@@ -27,7 +27,10 @@ const Navbar = ({ isActive }) => {
   const [error, setError] = useState(null);
 
   const userData = JSON.parse(localStorage.getItem("userData"));
+  const authToken = JSON.parse(localStorage.getItem("authToken")); // Get authToken
   const isLoggedIn = userData && userData._id;
+  // Determine if the logged-in user is a jobProvider
+  const isJobProvider = authToken && authToken.role === "jobProvider";
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -58,7 +61,6 @@ const Navbar = ({ isActive }) => {
         }
       } catch (err) {
         console.error("Error fetching profile data:", err);
-        
       }
     };
 
@@ -76,6 +78,7 @@ const Navbar = ({ isActive }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("userData");
+    localStorage.removeItem("authToken"); // Also remove authToken on logout
     window.location.reload();
   };
 
@@ -132,20 +135,50 @@ const Navbar = ({ isActive }) => {
           </button>
           {dropdownOpen === "hire" && (
             <div className="absolute top-full mt-2 w-44 bg-white text-black shadow-md rounded-md z-20">
-              <Link
-                to="/employers-signup"
-                onClick={closeAll}
-                className="block px-4 py-2 hover:bg-yellow-100 text-sm"
-              >
-                New account
-              </Link>
-              <Link
-                to="/employers-login"
-                onClick={closeAll}
-                className="block px-4 py-2 hover:bg-yellow-100 text-sm"
-              >
-                Existing account
-              </Link>
+              {isJobProvider ? (
+                <>
+                  {/* Content for logged-in Job Provider */}
+                  <Link
+                    to="/dashboard" // Example route for job provider dashboard
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/dashboard/manage-job/add" // Example route for posting a new job
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Post New Job
+                  </Link>
+                  <Link
+                    to="/dashboard/manage-job/list" // Example route for managing posted jobs
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Manage Jobs
+                  </Link>
+                </>
+              ) : (
+                <>
+                  {/* Original content for non-job providers or logged-out users */}
+                  <Link
+                    to="/employers-signup"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    New account
+                  </Link>
+                  <Link
+                    to="/employers-login"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Existing account
+                  </Link>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -176,20 +209,69 @@ const Navbar = ({ isActive }) => {
                     />
                     <div>
                       <div className="font-semibold">{`Hi ${profileData.userName}`}</div>
-                      <div className="text-sm text-gray-500">{profileData.jobTitle}</div>
+                      <div className="text-sm text-gray-500">
+                        {profileData.jobTitle}
+                      </div>
                     </div>
                   </div>
-                  <Link to="/profile" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Profile</Link>
-                  <Link to="/profile/search-history" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Search History</Link>
-                  <Link to="/profile/my-jobs" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">My Jobs</Link>
-                  <Link to="/profile/my-reviews" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">My Reviews</Link>
-                  <Link to="/profile/settings" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Settings</Link>
-                  <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-red-600 hover:bg-yellow-100 text-sm">Log out</button>
+                  <Link
+                    to="/profile"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/profile/search-history"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Search History
+                  </Link>
+                  <Link
+                    to="/profile/my-jobs"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    My Jobs
+                  </Link>
+                  <Link
+                    to="/profile/my-reviews"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    My Reviews
+                  </Link>
+                  <Link
+                    to="/profile/settings"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Settings
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-red-600 hover:bg-yellow-100 text-sm"
+                  >
+                    Log out
+                  </button>
                 </>
               ) : (
                 <>
-                  <Link to="/login" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Job Seeker Login</Link>
-                  <Link to="/signup" onClick={closeAll} className="block px-4 py-2 hover:bg-yellow-100 text-sm">Job Seeker Register</Link>
+                  <Link
+                    to="/login"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Job Seeker Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    onClick={closeAll}
+                    className="block px-4 py-2 hover:bg-yellow-100 text-sm"
+                  >
+                    Job Seeker Register
+                  </Link>
                 </>
               )}
             </div>
@@ -208,9 +290,27 @@ const Navbar = ({ isActive }) => {
       {/* Mobile Nav */}
       {menuOpen && (
         <div className="absolute top-full left-0 w-full bg-black text-white flex flex-col items-start px-4 py-4 gap-3 z-40 lg:hidden">
-          <Link to="/" onClick={closeAll} className="text-sm hover:text-yellow-400">Home</Link>
-          <Link to="/about" onClick={closeAll} className="text-sm hover:text-yellow-400">About Us</Link>
-          <Link to="/help" onClick={closeAll} className="text-sm hover:text-yellow-400">Help</Link>
+          <Link
+            to="/"
+            onClick={closeAll}
+            className="text-sm hover:text-yellow-400"
+          >
+            Home
+          </Link>
+          <Link
+            to="/about"
+            onClick={closeAll}
+            className="text-sm hover:text-yellow-400"
+          >
+            About Us
+          </Link>
+          <Link
+            to="/help"
+            onClick={closeAll}
+            className="text-sm hover:text-yellow-400"
+          >
+            Help
+          </Link>
 
           {/* Hire - Mobile */}
           <div className="w-full">
@@ -228,8 +328,50 @@ const Navbar = ({ isActive }) => {
             </button>
             {dropdownOpen === "hire" && (
               <div className="flex flex-col mt-2 text-sm pl-4">
-                <Link to="/employers-signup" onClick={closeAll} className="py-1 hover:text-yellow-400">New account</Link>
-                <Link to="/employers-login" onClick={closeAll} className="py-1 hover:text-yellow-400">Existing account</Link>
+                {isJobProvider ? (
+                  <>
+                    {/* Content for logged-in Job Provider - Mobile */}
+                    <Link
+                      to="/job-provider-dashboard"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/post-new-job"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Post New Job
+                    </Link>
+                    <Link
+                      to="/manage-jobs"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Manage Jobs
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    {/* Original content for non-job providers or logged-out users - Mobile */}
+                    <Link
+                      to="/employers-signup"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      New account
+                    </Link>
+                    <Link
+                      to="/employers-login"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Existing account
+                    </Link>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -260,20 +402,69 @@ const Navbar = ({ isActive }) => {
                       />
                       <div>
                         <div className="font-semibold">{`Hi ${profileData.userName}`}</div>
-                        <div className="text-sm text-gray-500">{profileData.jobTitle}</div>
+                        <div className="text-sm text-gray-500">
+                          {profileData.jobTitle}
+                        </div>
                       </div>
                     </div>
-                    <Link to="/profile" onClick={closeAll} className="py-1 hover:text-yellow-400">Profile</Link>
-                    <Link to="/profile/search-history" onClick={closeAll} className="py-1 hover:text-yellow-400">Search History</Link>
-                    <Link to="/profile/my-jobs" onClick={closeAll} className="py-1 hover:text-yellow-400">My Jobs</Link>
-                    <Link to="/profile/my-reviews" onClick={closeAll} className="py-1 hover:text-yellow-400">My Reviews</Link>
-                    <Link to="/profile/settings" onClick={closeAll} className="py-1 hover:text-yellow-400">Settings</Link>
-                    <button onClick={handleLogout} className="text-left py-1 text-red-400 hover:text-yellow-400">Log out</button>
+                    <Link
+                      to="/profile"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Profile
+                    </Link>
+                    <Link
+                      to="/profile/search-history"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Search History
+                    </Link>
+                    <Link
+                      to="/profile/my-jobs"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      My Jobs
+                    </Link>
+                    <Link
+                      to="/profile/my-reviews"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      My Reviews
+                    </Link>
+                    <Link
+                      to="/profile/settings"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Settings
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="text-left py-1 text-red-400 hover:text-yellow-400"
+                    >
+                      Log out
+                    </button>
                   </>
                 ) : (
                   <>
-                    <Link to="/login" onClick={closeAll} className="py-1 hover:text-yellow-400">Job Seeker Login</Link>
-                    <Link to="/signup" onClick={closeAll} className="py-1 hover:text-yellow-400">Job Seeker Register</Link>
+                    <Link
+                      to="/login"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Job Seeker Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      onClick={closeAll}
+                      className="py-1 hover:text-yellow-400"
+                    >
+                      Job Seeker Register
+                    </Link>
                   </>
                 )}
               </div>
