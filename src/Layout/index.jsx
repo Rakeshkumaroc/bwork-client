@@ -37,6 +37,7 @@ import ManageSeekerList from "../pages/admin/ManageSeekerList";
 import ViewJobSeeker from "../pages/admin/ViewJobSeeker";
 import JobListing from "../pages/landing/JobListing";
 import JobDetails from "../pages/landing/JobDetails";
+import JobSeekerDetails from "../pages/admin/JobSeekerDetails";
 
 const index = () => {
   return (
@@ -56,6 +57,7 @@ const index = () => {
         <Route path="/org-setup" element={<OrgSetup />} />
         <Route path="/job-provider-setup" element={<JobProviderSetup />} />
         <Route path="/job-seeker-setup" element={<JobSeekerSetup />} />
+        <Route path="/job-seeker-setupp" element={<JobSeekerDetails />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/my-jobs" element={<MyJobs />} />
         <Route path="/profile/my-reviews" element={<MyReviews />} />
