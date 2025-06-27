@@ -7,8 +7,7 @@ import {
   FaChevronUp,
   FaBuilding,
   FaBriefcase,
-} from "react-icons/fa";
-import { toast } from "react-toastify";
+} from "react-icons/fa"; 
 import Logo from "../../assets/logo.png";
 import { fetchData } from "../../utils/api";
 
@@ -107,6 +106,16 @@ const Navbar = ({ isActive }) => {
           }`}
         >
           About Us
+        </Link>
+        <Link
+          to="/jobs"
+          className={`text-sm ${
+            isActive === "Job"
+              ? "text-yellow-400 font-semibold"
+              : "hover:text-yellow-400"
+          }`}
+        >
+          Jobs
         </Link>
         <Link
           to="/help"
