@@ -22,13 +22,11 @@ const jobs = [
   { label: "Receptionist Jobs", count: "3835 Jobs", img: Receptionist },
 ];
 
-const JobCategories = () => {
+const JobByCategories = () => {
   return (
     <section className=" py-12 px-4">
-      <div className="w-full mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-14">
-          Search Jobs By Categories
-        </h2>
+      <div className="max-w-7xl mx-auto text-center">
+      <h2 className="text-2xl md:text-3xl font-bold mb-14">Search Jobs By Categories</h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
           {jobs.map((job, index) => (
@@ -43,20 +41,10 @@ const JobCategories = () => {
           ))}
         </div>
 
-        <div className="flex justify-center gap-4 mt-10 flex-wrap">
-          <button className="px-6 py-2 border border-black text-black bg-bgYellow/50 rounded hover:bg-blue-50 transition font-medium">
-            Browse All Jobs
-          </button>
-          <button className="px-6 py-2 border border-black text-black bg-bgYellow/50 rounded hover:bg-blue-50 transition font-medium">
-            Jobs By Categories
-          </button>
-          <button className="px-6 py-2 border border-black text-black bg-bgYellow/50 rounded hover:bg-blue-50 transition font-medium">
-            Jobs By Cities
-          </button>
-        </div>
+       
       </div>
     </section>
   );
 };
 
-export default JobCategories;
+export default JobByCategories; 
