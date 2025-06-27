@@ -9,6 +9,8 @@ import {
   FaHeart,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { GlobalContext } from "../../../App";
 
 const JobListingCard = ({
   title = "Food Delivery Boy",
@@ -20,6 +22,7 @@ const JobListingCard = ({
   salary = "Rs. 30,000–Rs. 40,000",
   description = "Nel's Food is looking for reliable and energetic delivery executives to join our team as a Delivery Boy.",
 }) => {
+  const { setCreateAccountPopUp } = useContext(GlobalContext);
   return (
     <div className="bg-jobcard p-4 md:p-6 rounded-md border border-cream w-full max-w-full">
       {/* Header Section - Responsive flex layout */}
@@ -34,9 +37,15 @@ const JobListingCard = ({
             <FaEye className="cursor-pointer hover:text-apply text-lg sm:text-base" />
           </Link>
           <FaHeart className="cursor-pointer hover:text-apply text-lg sm:text-base" />
-          <button className="bg-apply text-light-cream px-3 py-2 sm:px-4 sm:py-1 font-[700] text-sm rounded-[8px] flex items-center gap-2 hover:bg-[#306142] whitespace-nowrap">
-            <FaCircleCheck className="text-xs sm:text-sm" />
-            <span className="">APPLY HERE</span>
+
+          <button
+            onClick={() => {
+              setCreateAccountPopUp(true);
+            }}
+            className="bg-apply text-light-cream px-4 py-1 font-[700] text-md rounded-[4px] flex items-center justify-center gap-2 hover:bg-[#306142] w-full sm:w-auto"
+          >
+            <FaCircleCheck className="text-sm sm:text-md" />
+            <span>APPLY HERE</span>
           </button>
         </div>
       </div>
@@ -84,7 +93,12 @@ const JobListingCard = ({
           <FaEye className="cursor-pointer hover:text-apply text-lg sm:text-base" />
         </Link>
         <FaHeart className="cursor-pointer hover:text-apply text-lg sm:text-base" />
-        <button className="bg-apply text-light-cream px-3 py-2 sm:px-4 sm:py-1 font-[700] text-sm rounded-[8px] flex items-center gap-2 hover:bg-[#306142] whitespace-nowrap">
+        <button
+          onClick={() => {
+            setCreateAccountPopUp(true);
+          }}
+          className="bg-apply text-light-cream px-3 py-2 sm:px-4 sm:py-1 font-[700] text-sm rounded-[4px]  flex items-center gap-2 hover:bg-[#306142] whitespace-nowrap"
+        >
           <FaCircleCheck className="text-xs sm:text-sm" />
           <span className="hidden xs:inline">APPLY HERE</span>
           <span className="xs:hidden">APPLY</span>

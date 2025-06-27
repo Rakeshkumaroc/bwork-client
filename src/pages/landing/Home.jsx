@@ -5,16 +5,20 @@ import Hero from "../../components/landing/home/Hero";
 import HowItWorks from "../../components/landing/home/HowItWorks";
 import JobCategories from "../../components/landing/home/JobCategories";
 import RegisterNow from "../../components/landing/home/RegisterNow";
+import SearchByCity from "../../components/landing/home/SearchByCity";
+import Testimonials from "../../components/landing/home/Testimonials";
 import TestimonialSection from "../../components/landing/home/TestimonialSection";
 
 const Home = () => {
   return (
     <>
-      <Navbar isActive="Home" /> 
+      <Navbar isActive="Home" />
       <Hero />
+      <JobCategories />
       <ClientLogos />
       <HowItWorks />
-      <JobCategories />
+      <Testimonials />
+      <SearchByCity />
       <RegisterNow />
       <TestimonialSection />
       <Footer />

@@ -42,3 +42,12 @@ body {
 .thin-scrollbar::-webkit-scrollbar-thum {
   background: #838485;
 }
+
+/* FilterBox.css */
+input[type="checkbox"]:checked {
+  accent-color: black;
+}
+
+input[type="range"] {
+  accent-color: black;
+}

@@ -76,21 +76,21 @@ const JobDetailsCard = () => {
       </div>
 
       {/* Job Description */}
-      <div className="p-4 md:p-6">
-        <h2 className="text-xl font-bold mb-2 border-b-2 border-yellow-100 pb-5 pt-4">
+      <div className="">
+        <h2 className="text-xl p-4 md:p-6 font-bold mb-2 border-b-2 border-yellow-100 pb-5 pt-4">
           Job Description
         </h2>
-        <p className="text-sm">
+        <p className="text-sm p-4 md:p-6">
           We are Hiring for Delivery Boys in Bangalore Location
         </p>
       </div>
 
       {/* Benefits */}
-      <div className="p-4 md:p-6">
-        <h2 className="text-xl font-bold mb-4 border-b-2 border-yellow-100 pb-5   pt-4">
+      <div className="">
+        <h2 className="text-xl p-4 md:p-6 font-bold mb-4 border-b-2 border-yellow-100 pb-5   pt-4">
           Benefits for the Employee
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-3 text-sm">
+        <div className="grid  p-4 md:p-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-3 text-sm">
           <div className="flex items-center gap-2">
             <FaPhone /> <span>Verified Mobile Number</span>
           </div>

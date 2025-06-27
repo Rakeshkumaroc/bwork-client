@@ -24,15 +24,15 @@ const jobs = [
 
 const JobCategories = () => {
   return (
-    <section className="bg-gray-100 py-12 px-4">
+    <section className=" py-12 px-4">
       <div className="max-w-7xl mx-auto text-center">
-      
+      <h2 className="text-3xl md:text-4xl font-bold mb-14">Search Jobs By Categories</h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
           {jobs.map((job, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-sm p-6 flex flex-col items-center hover:shadow-md transition"
+              className="bg-white rounded-xl border-[2px] border-jobcard shadow-sm p-6 flex flex-col items-center hover:shadow-md transition"
             >
               <img src={job.img} alt={job.label} className="w-32 h-32 mb-4" />
               <p className="font-semibold text-gray-800">{job.label}</p>

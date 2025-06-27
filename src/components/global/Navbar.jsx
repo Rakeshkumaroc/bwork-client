@@ -117,16 +117,7 @@ const Navbar = ({ isActive }) => {
         >
           Jobs
         </Link>
-        <Link
-          to="/help"
-          className={`text-sm ${
-            isActive === "Help"
-              ? "text-yellow-400 font-semibold"
-              : "hover:text-yellow-400"
-          }`}
-        >
-          Help
-        </Link>
+  
 
         {/* Hire Dropdown */}
         <div className="relative">
@@ -313,13 +304,7 @@ const Navbar = ({ isActive }) => {
           >
             About Us
           </Link>
-          <Link
-            to="/help"
-            onClick={closeAll}
-            className="text-sm hover:text-yellow-400"
-          >
-            Help
-          </Link>
+      
 
           {/* Hire - Mobile */}
           <div className="w-full">

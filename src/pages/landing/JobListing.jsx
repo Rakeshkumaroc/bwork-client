@@ -1,9 +1,14 @@
+import { useContext } from "react";
 import Footer from "../../components/global/Footer";
+import JobseekerLogin from "../../components/global/JobseekerLogin";
 import Navbar from "../../components/global/Navbar";
 import FilterBoxHeader from "../../components/landing/job/FilterBoxHeader";
 import JobListingCard from "../../components/landing/job/JobListingCard";
+import { GlobalContext } from "../../App";
 
 const JobListContainer = () => {
+  const { createAccountPopUp} =
+    useContext(GlobalContext);
   return (
     <>
       <Navbar isActive="Job" />
@@ -15,10 +20,11 @@ const JobListContainer = () => {
 
         <div className="space-y-4 ">
           <JobListingCard />
-          <JobListingCard /> 
+          <JobListingCard />
         </div>
       </div>
       <Footer />
+      {createAccountPopUp ? <JobseekerLogin /> : ""}
     </>
   );
 };
