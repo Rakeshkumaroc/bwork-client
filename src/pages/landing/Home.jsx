@@ -8,8 +8,7 @@ import JobCategories from "../../components/landing/home/JobCategories";
 import JobPlatformSection from "../../components/landing/home/JobPlatformSection";
 import RegisterNow from "../../components/landing/home/RegisterNow";
 import SearchByCity from "../../components/landing/home/SearchByCity";
-import Testimonials from "../../components/landing/home/Testimonials";
-import TestimonialSection from "../../components/landing/home/TestimonialSection";
+import Testimonials from "../../components/landing/home/Testimonials"; 
 
 const Home = () => {
   return (

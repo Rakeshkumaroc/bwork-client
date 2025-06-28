@@ -8,6 +8,7 @@ import Beautician from "../../../assets/job-categories/beautician.svg";
 import Bpo from "../../../assets/job-categories/bpo.svg";
 import Marketing from "../../../assets/job-categories/marketing.svg";
 import Receptionist from "../../../assets/job-categories/receptionist.svg";
+import { useNavigate } from "react-router-dom";
 
 const jobs = [
   { label: "Cook Jobs", count: "22800 Jobs", img: Cook },
@@ -23,6 +24,7 @@ const jobs = [
 ];
 
 const JobCategories = () => {
+  const navigater =useNavigate()
   return (
     <section className=" py-12 px-4">
       <div className="w-full mx-auto text-center">
@@ -34,6 +36,9 @@ const JobCategories = () => {
           {jobs.map((job, index) => (
             <div
               key={index}
+              onClick={()=>{
+                navigater('/jobs')
+              }}
               className="bg-white rounded-xl border-[2px] border-jobcard shadow-sm p-6 flex flex-col items-center hover:shadow-md transition"
             >
               <img src={job.img} alt={job.label} className="w-32 h-32 mb-4" />

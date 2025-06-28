@@ -97,7 +97,7 @@ const Testimonials = () => {
         {/* Left Arrow */}
         <button
           onClick={prevSlide}
-          className="text-2xl sm:text-3xl text-gray-800 hover:text-yellow-600 transition-colors duration-200"
+          className="text-2xl sm:text-3xl text-gray-800 hover:text-jobcard transition-colors duration-200"
         >
           <IoIosArrowBack />
         </button>
@@ -135,7 +135,7 @@ const Testimonials = () => {
         {/* Right Arrow */}
         <button
           onClick={nextSlide}
-          className="text-2xl sm:text-3xl text-gray-800 hover:text-yellow-600 transition-colors duration-200"
+          className="text-2xl sm:text-3xl text-gray-800 hover:text-jobcard transition-colors duration-200"
         >
           <IoIosArrowForward />
         </button>
@@ -149,7 +149,7 @@ const Testimonials = () => {
             onClick={() => setCurrentIndex(index * itemsPerPage)}
             className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors duration-200 ${
               Math.floor(currentIndex / itemsPerPage) === index
-                ? 'bg-yellow-600'
+                ? 'bg-jobcard'
                 : 'bg-gray-300 hover:bg-gray-400'
             }`}
           />

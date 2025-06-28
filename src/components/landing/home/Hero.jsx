@@ -33,7 +33,7 @@ const Hero = () => {
               Post a Job
             </Link>
             <Link
-              to="/find-job"
+              to="/jobs"
               className="bg-black text-white px-6 py-2 rounded flex items-center gap-2 hover:bg-gray-800 transition"
             >
               <FaUserPlus />
