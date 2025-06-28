@@ -1,20 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @theme {
-  --color-orange-global: #FF6F20;
+  --color-orange-global: #ff6f20;
   --color-light-cream: #faf3e1;
   --color-cream: #f5e7c6;
-  --color-bgYellow: #FEC400;
-  --color-jobcard: #FFE180;
-  --color-apply: #1A6D39;
+  --color-bgYellow: #fec400;
+  --color-jobcard: #ffe180;
+  --color-apply: #1a6d39;
+  --font-heading: "Work Sans", sans-serif;
+  --font-body: "JetBrains Mono", monospace;
 }
 
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "JetBrains Mono", monospace;
 }
 
-
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Work Sans", sans-serif;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
@@ -27,13 +38,13 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #FEC400;
+  background: #fec400;
   border-radius: 40px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #FEC390;
+  background: #fec390;
 }
 
 .thin-scrollbar::-webkit-scrollbar {

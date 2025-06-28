@@ -38,6 +38,9 @@ import ViewJobSeeker from "../pages/admin/ViewJobSeeker";
 import JobListing from "../pages/landing/JobListing";
 import JobDetails from "../pages/landing/JobDetails";
 import JobSeekerDetails from "../pages/admin/JobSeekerDetails";
+import AddJobCategory from "../pages/admin/AddJobCategory";
+import ViewJobCategory from "../pages/admin/ViewJobCategory";
+import JobCategoryList from "../pages/admin/JobCategoryList";
 
 const index = () => {
   return (
@@ -96,6 +99,21 @@ const index = () => {
             path="manage-job-seekers/list/:id"
             element={<ViewJobSeeker />}
           />
+
+          <Route
+            path="manage-job-category/list"
+            element={<JobCategoryList />}
+          />
+          <Route
+            path="manage-job-category/list/:id"
+            element={<ViewJobCategory />}
+          />
+          <Route path="manage-job-category/add" element={<AddJobCategory />} />
+          <Route
+            path="manage-job-category/:id"
+            element={<AddJobCategory action={"edit"} />}
+          />
+
           <Route path="manage-job/list" element={<ManageJobsList />} />
           <Route path="manage-job/list/:id" element={<ViewJob />} />
           <Route path="manage-job/add" element={<AddJobDetails />} />

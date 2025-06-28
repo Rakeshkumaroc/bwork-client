@@ -134,7 +134,7 @@ const Navbar = ({ isActive }) => {
             )}
           </button>
           {dropdownOpen === "hire" && (
-            <div className="absolute top-full mt-2 w-44 bg-white text-black shadow-md rounded-md z-20">
+            <div className="absolute top-full overflow-hidden mt-2 w-44 bg-white text-black shadow-md rounded-md z-20">
               {isJobProvider ? (
                 <>
                   {/* Content for logged-in Job Provider */}
@@ -187,7 +187,7 @@ const Navbar = ({ isActive }) => {
         <div className="relative">
           <button
             onClick={() => toggleDropdown("jobs")}
-            className="flex items-center px-4 py-2 bg-yellow-400 text-black rounded-md font-semibold text-sm hover:bg-yellow-500"
+            className="flex items-center px-4 py-2  bg-yellow-400 text-black rounded-md font-semibold text-sm hover:bg-yellow-500"
           >
             <FaBriefcase className="mr-2" />
             {isLoggedIn ? `Hi ${profileData.userName}` : "Look for Jobs"}
@@ -198,7 +198,7 @@ const Navbar = ({ isActive }) => {
             )}
           </button>
           {dropdownOpen === "jobs" && (
-            <div className="absolute top-full mt-2 right-0 w-56 bg-white text-black shadow-md rounded-md z-20">
+            <div className="absolute overflow-hidden top-full mt-2 right-0 w-56 bg-white text-black shadow-md rounded-md z-20">
               {isLoggedIn ? (
                 <>
                   <div className="flex items-center px-4 py-3 border-b">

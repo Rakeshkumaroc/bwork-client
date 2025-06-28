@@ -54,6 +54,15 @@ const navItems = [
   },
   {
     icon: <Briefcase size={20} />,
+    label: "Manage Job Category",
+    children: [
+      { label: "Job List", path: "./manage-job-category/list" },
+      { label: "Create Job", path: "./manage-job-category/add" },
+    ],
+    roles: ["admin"], // Accessible to both roles
+  },
+  {
+    icon: <Briefcase size={20} />,
     label: "Manage Jobs",
     children: [
       { label: "Job List", path: "./manage-job/list" },
